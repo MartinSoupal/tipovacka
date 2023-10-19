@@ -5,8 +5,8 @@
   >
     <app-result-button
       [backgroundColor]="data?.homeTeam?.color"
-      [hide]="chosenResult !== 1 && chosenResult !== null"
-      [highlight]="chosenResult === 1"
+      [hide]="data?.vote !== 1 && data?.vote !== null"
+      [highlight]="data?.vote === 1"
       [label]="data?.homeTeam?.name"
     >
       <img
@@ -21,8 +21,8 @@
   >
     <app-result-button
       [backgroundColor]="'#CCC'"
-      [hide]="chosenResult !== 0 && chosenResult !== null"
-      [highlight]="chosenResult === 0"
+      [hide]="data?.vote !== 0 && data?.vote !== null"
+      [highlight]="data?.vote === 0"
       [label]="'Remíza'"
     >
       <span class="material-icons md-36 text-gray-100">close</span>
@@ -34,8 +34,8 @@
   >
     <app-result-button
       [backgroundColor]="data?.awayTeam?.color"
-      [hide]="chosenResult !== 2 && chosenResult !== null"
-      [highlight]="chosenResult === 2"
+      [hide]="data?.vote !== 2 && data?.vote !== null"
+      [highlight]="data?.vote === 2"
       [label]="data?.awayTeam?.name"
     >
       <img

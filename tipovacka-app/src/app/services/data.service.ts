@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Team} from '../models/team.model';
-import {Match, NewMatch} from '../models/match.model';
+import {Match, MatchResult, NewMatch} from '../models/match.model';
 import {map} from 'rxjs';
 import * as R from 'ramda';
+import {Vote} from '../models/vote.model';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,35 @@ export class DataService {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  addVote = (matchId: string, result: MatchResult) =>
+    this.http.post<string>(
+      `${this.privateUrl}/vote`,
+      {
+        matchId,
+        result,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  getVotes = (matchIds: string[]) =>
+    this.http.post<Vote[]>(
+      `${this.privateUrl}/votes`,
+      {
+        matchIds
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : '',
         },
       }
     )

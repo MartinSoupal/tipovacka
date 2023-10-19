@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatchResult, MatchWithTeamName} from '../../models/match.model';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-match',
@@ -9,9 +10,17 @@ import {MatchResult, MatchWithTeamName} from '../../models/match.model';
 export class MatchComponent {
   @Input() data: MatchWithTeamName | undefined;
 
-  chosenResult: MatchResult = null;
+  constructor(
+    private dataService: DataService
+  ) {
+  }
 
   chooseResult = (chosenResult: MatchResult) => {
-    this.chosenResult = chosenResult;
+    this.dataService.addVote(this.data!.id, chosenResult)
+      .subscribe({
+        next: () => {
+          this.data!.vote = chosenResult;
+        }
+      })
   }
 }

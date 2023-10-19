@@ -14,6 +14,9 @@ export async function getMatches(req: CustomRequest, res: any) {
       datetime: data.datetime.toDate(),
       round: data.round,
       result: data.result,
+      0: data[0],
+      1: data[1],
+      2: data[2],
     });
   });
   res.status(200).send(JSON.stringify(matches));

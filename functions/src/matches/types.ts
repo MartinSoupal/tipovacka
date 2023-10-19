@@ -7,6 +7,9 @@ export interface Match {
   datetime: Date;
   round: string;
   result: number;
+  0: number;
+  1: number;
+  2: number;
 }
 
 export interface NewMatch {

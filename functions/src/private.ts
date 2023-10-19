@@ -4,6 +4,8 @@ import * as cors from 'cors';
 import {addMatch} from './matches/addMatch';
 import {validateFirebaseToken} from './validateFirebaseToken';
 import {deleteMatch} from './matches/deleteMatch';
+import {addVote} from './votes/addVote';
+import {getVotes} from './votes/getVotes';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -12,5 +14,7 @@ app.use(validateFirebaseToken);
 
 app.post('/match', addMatch);
 app.delete('/match/:matchId', deleteMatch);
+app.post('/vote', addVote);
+app.post('/votes', getVotes);
 
 export const privateApi = functions.https.onRequest(app);
