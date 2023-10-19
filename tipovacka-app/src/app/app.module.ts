@@ -1,4 +1,4 @@
-import {isDevMode, LOCALE_ID, NgModule} from '@angular/core';
+import {inject, isDevMode, LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -16,15 +16,18 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ResultButtonComponent} from './components/result-button/result-button.component';
 import {registerLocaleData} from '@angular/common';
 import localeCs from '@angular/common/locales/cs';
+import {UserTokenResolver} from './resolver/token.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
+    resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
     path: 'admin',
     component: AdminComponent,
+    resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
     path: '**',

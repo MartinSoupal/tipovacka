@@ -1,10 +1,5 @@
 import {db} from '../firebaseConfig';
-
-type Team = {
-  id: string;
-  name: string;
-  color: string;
-}
+import {Team} from './types';
 
 export async function getTeams(req: any, res: any) {
   const snapshot = await db.collection('teams').get();

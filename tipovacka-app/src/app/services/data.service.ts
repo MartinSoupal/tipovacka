@@ -10,16 +10,22 @@ import * as R from 'ramda';
 })
 export class DataService {
 
-  private url = 'https://us-central1-tipovacka-c63cb.cloudfunctions.net/api';
+  private publicUrl = 'https://us-central1-tipovacka-c63cb.cloudfunctions.net/public';
+  private privateUrl = 'https://us-central1-tipovacka-c63cb.cloudfunctions.net/private';
+  private token: string | null = null;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
   ) {
+  }
+
+  setToken = (token: string | null) => {
+    this.token = token;
   }
 
   getTeams = () =>
     this.http.get<Team[]>(
-      `${this.url}/teams`,
+      `${this.publicUrl}/teams`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +35,7 @@ export class DataService {
 
   getMatches = () =>
     this.http.get<Match[]>(
-      `${this.url}/matches`,
+      `${this.publicUrl}/matches`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -49,11 +55,23 @@ export class DataService {
 
   addMatch = (newMatch: NewMatch) =>
     this.http.post<string>(
-      `${this.url}/match`,
+      `${this.privateUrl}/match`,
       newMatch,
       {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  deleteMatch = (matchId: string) =>
+    this.http.delete<void>(
+      `${this.privateUrl}/match/${matchId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       }
     )

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {GoogleAuthProvider} from '@angular/fire/auth';
 import {map, take} from 'rxjs';
+import {DataService} from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,10 +23,10 @@ export class AuthService {
     )
   getUserData$ =
     this.afAuth.authState
-  private token: string | null = null;
 
   constructor(
-    private afAuth: AngularFireAuth // Inject Firebase auth service
+    private afAuth: AngularFireAuth, // Inject Firebase auth service
+    private dataService: DataService
   ) {
   }
 
@@ -38,11 +39,9 @@ export class AuthService {
           .pipe(
             take(1)
           )
-          .subscribe(
-            token => {
-              this.token = token;
-            }
-          )
+          .subscribe({
+            next: this.dataService.setToken,
+          })
       })
 
 
@@ -50,7 +49,7 @@ export class AuthService {
     this.afAuth
       .signOut()
       .then(() => {
-        this.token = null;
+        this.dataService.setToken(null)
       })
   }
 }
