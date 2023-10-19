@@ -1,0 +1,21 @@
+<div
+  [formGroup]="newMatchFormGroup"
+  class="grid grid-cols-2">
+  <input
+    formControlName="round"
+    type="number">
+  <input
+    formControlName="datetime"
+    type="datetime-local">
+  <select formControlName="home">
+    <option
+      *ngFor="let team of teams"
+      [value]="team.id">{{team.name}}</option>
+  </select>
+  <select formControlName="away">
+    <option
+      *ngFor="let team of teams"
+      [value]="team.id">{{team.name}}</option>
+  </select>
+</div>
+<button (click)="addMatch()">Přidat</button>

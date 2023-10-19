@@ -1,0 +1,15 @@
+<div
+  [ngClass]="{
+      'border-blue-400': highlight,
+      'border-gray-300': !highlight,
+      'opacity-50': hide
+    }"
+  class="rounded-full border-2 w-24 h-24 flex justify-center items-center"
+>
+  <div
+    [style.background-color]="backgroundColor"
+    class="rounded-full flex justify-center items-center w-20 h-20">
+    <ng-content></ng-content>
+  </div>
+</div>
+<div class="mt-2 text-xs text-gray-600">{{label}}</div>

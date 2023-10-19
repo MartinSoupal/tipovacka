@@ -1,0 +1,15 @@
+<div class="grid grid-cols-1 w-full gap-y-20 mt-8">
+  <div
+    *ngFor="let group of groupOfMatches"
+    class="grid grid-cols-1 w-full gap-y-8">
+    <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
+      <div>{{group[0].round}}. kolo</div>
+      <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
+      <div>(za {{group[0].daysTill}} dnů/y)</div>
+    </div>
+    <app-match
+      *ngFor="let match of group"
+      [data]="match"
+    />
+  </div>
+</div>

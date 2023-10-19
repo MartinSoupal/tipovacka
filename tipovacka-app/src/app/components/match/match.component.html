@@ -1,0 +1,47 @@
+<div class="w-full grid grid-cols-3 gap-4 content-start">
+  <button
+    (click)="chooseResult(1)"
+    class="flex justify-center"
+  >
+    <app-result-button
+      [backgroundColor]="data?.homeTeam?.color"
+      [hide]="chosenResult !== 1 && chosenResult !== null"
+      [highlight]="chosenResult === 1"
+      [label]="data?.homeTeam?.name"
+    >
+      <img
+        [src]="'assets/images/' + data?.home + '.png'"
+        alt="Rounded avatar"
+        class="w-auto h-12 drop-shadow-2xl"/>
+    </app-result-button>
+  </button>
+  <button
+    (click)="chooseResult(0)"
+    class="flex justify-center"
+  >
+    <app-result-button
+      [backgroundColor]="'#CCC'"
+      [hide]="chosenResult !== 0 && chosenResult !== null"
+      [highlight]="chosenResult === 0"
+      [label]="'Remíza'"
+    >
+      <span class="material-icons md-36 text-gray-100">close</span>
+    </app-result-button>
+  </button>
+  <button
+    (click)="chooseResult(2)"
+    class="flex justify-center"
+  >
+    <app-result-button
+      [backgroundColor]="data?.awayTeam?.color"
+      [hide]="chosenResult !== 2 && chosenResult !== null"
+      [highlight]="chosenResult === 2"
+      [label]="data?.awayTeam?.name"
+    >
+      <img
+        [src]="'assets/images/' + data?.away + '.png'"
+        alt="Rounded avatar"
+        class="w-auto h-12 drop-shadow-2xl">
+    </app-result-button>
+  </button>
+</div>
