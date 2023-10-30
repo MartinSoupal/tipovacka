@@ -35,7 +35,7 @@ export class AdminComponent {
   ) {
     combineLatest([
       this.dataService.getTeams(),
-      this.dataService.getMatches(),
+      this.dataService.getAllMatches(),
     ])
       .subscribe({
         next: ([teams, matches]) => {
@@ -57,11 +57,10 @@ export class AdminComponent {
 
   addMatch = () => {
     const match: NewMatch = this.newMatchFormGroup.value as NewMatch;
+    match.datetime = new Date(`${match.datetime}+01:00`);
     this.dataService.addMatch(match)
       .subscribe({
         next: (id) => {
-          match.datetime = new Date(match.datetime);
-          match.datetime.setHours(match.datetime.getHours() - 2);
           this.matches.push({
             id,
             round: match.round,

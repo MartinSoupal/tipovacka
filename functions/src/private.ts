@@ -6,12 +6,14 @@ import {validateFirebaseToken} from './validateFirebaseToken';
 import {deleteMatch} from './matches/deleteMatch';
 import {addVote} from './votes/addVote';
 import {getVotes} from './votes/getVotes';
+import {getAllMatches} from './matches/getMatches';
 
 const app = express();
 app.use(cors({origin: true}));
 app.use(express.json());
 app.use(validateFirebaseToken);
 
+app.get('/match/all', getAllMatches);
 app.post('/match', addMatch);
 app.delete('/match/:matchId', deleteMatch);
 app.post('/vote', addVote);

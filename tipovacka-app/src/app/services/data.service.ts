@@ -54,6 +54,27 @@ export class DataService {
         )
       )
 
+  getAllMatches = () =>
+    this.http.get<Match[]>(
+      `${this.privateUrl}/match/all`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : '',
+        },
+      }
+    )
+      .pipe(
+        map(
+          R.map(
+            match => ({
+              ...match,
+              datetime: new Date(match.datetime),
+            })
+          )
+        )
+      )
+
   addMatch = (newMatch: NewMatch) =>
     this.http.post<string>(
       `${this.privateUrl}/match`,

@@ -7,7 +7,7 @@ interface Request extends CustomRequest {
   body: {
     home: string;
     away: string;
-    datetime: Date;
+    datetime: string;
     round: number;
   }
 }
@@ -17,13 +17,11 @@ export async function addMatch(req: Request, res: any) {
     res.status(403).send('Unauthorized');
     return;
   }
-  const datetime = new Date(req.body.datetime);
-  datetime.setHours(datetime.getHours() - 2);
   const newMatch: NewMatch = {
     home: req.body.home,
     away: req.body.away,
     round: req.body.round,
-    datetime: admin.firestore.Timestamp.fromDate(datetime),
+    datetime: admin.firestore.Timestamp.fromDate(new Date(req.body.datetime)),
     result: '',
   };
   const ress = await db.collection('matches').add(newMatch);
