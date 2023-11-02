@@ -34,9 +34,29 @@ export class DataService {
       }
     )
 
-  getMatches = () =>
+  getPrevMatches = () =>
     this.http.get<Match[]>(
-      `${this.publicUrl}/matches`,
+      `${this.publicUrl}/matches/prev`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .pipe(
+        map(
+          R.map(
+            match => ({
+              ...match,
+              datetime: new Date(match.datetime),
+            })
+          )
+        )
+      )
+
+  getNextMatches = () =>
+    this.http.get<Match[]>(
+      `${this.publicUrl}/matches/next`,
       {
         headers: {
           'Content-Type': 'application/json',

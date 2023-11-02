@@ -13,7 +13,9 @@ import {Vote} from '../../models/vote.model';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  groupOfMatches: MatchWithTeamName[][] = [];
+  groupOfPrevMatches: MatchWithTeamName[][] = [];
+  groupOfNextMatches: MatchWithTeamName[][] = [];
+  activeTab: 'previous' | 'next' | 'standings' = 'next';
 
   constructor(
     private dataService: DataService
@@ -23,7 +25,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     combineLatest([
       this.dataService.getTeams(),
-      this.dataService.getMatches(),
+      this.dataService.getNextMatches(),
     ])
       .pipe(
         switchMap(
@@ -38,7 +40,41 @@ export class DashboardComponent implements OnInit {
         next: ([teams, matches, votes]: [Team[], Match[], Vote[]]) => {
           const teamsInHashMap = arrayToHashMap('id', teams);
           const votesInHashMap = arrayToHashMap('matchId', votes);
-          this.groupOfMatches = R.groupWith(
+          this.groupOfNextMatches = R.groupWith(
+            (a, b) => a.datetime.getTime() === b.datetime.getTime(),
+            R.sort(
+              (a, b) => a.datetime.getTime() - b.datetime.getTime(),
+              matches.map(
+                (match): MatchWithTeamName => ({
+                  ...match,
+                  homeTeam: teamsInHashMap[match.home],
+                  awayTeam: teamsInHashMap[match.away],
+                  daysTill: this.daysDifferenceTillNow(match.datetime),
+                  vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
+                })
+              )
+            )
+          )
+        }
+      })
+    combineLatest([
+      this.dataService.getTeams(),
+      this.dataService.getPrevMatches(),
+    ])
+      .pipe(
+        switchMap(
+          ([teams, matches]: [Team[], Match[]]) =>
+            this.dataService.getVotes(R.map(R.prop('id'), matches))
+              .pipe(
+                map((votes): [Team[], Match[], Vote[]] => [teams, matches, votes])
+              )
+        )
+      )
+      .subscribe({
+        next: ([teams, matches, votes]: [Team[], Match[], Vote[]]) => {
+          const teamsInHashMap = arrayToHashMap('id', teams);
+          const votesInHashMap = arrayToHashMap('matchId', votes);
+          this.groupOfPrevMatches = R.groupWith(
             (a, b) => a.datetime.getTime() === b.datetime.getTime(),
             R.sort(
               (a, b) => a.datetime.getTime() - b.datetime.getTime(),

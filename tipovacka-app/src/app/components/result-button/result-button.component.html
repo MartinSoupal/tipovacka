@@ -1,14 +1,19 @@
 <div
   [ngClass]="{
-      'border-blue-400': highlight,
+      'border-gray-950': highlight,
       'border-gray-300': !highlight,
-      'opacity-50': hide
+      'border-green-600': correct,
+      'border-red-600': incorrect,
+      'opacity-50': hide,
+      'w-20 h-20': !small,
+      'w-14 h-14': small
     }"
-  class="rounded-full border-2 w-24 h-24 flex justify-center items-center"
+  class="rounded-full border-2 flex justify-center items-center p-2"
 >
   <div
     [style.background-color]="backgroundColor"
-    class="rounded-full flex justify-center items-center w-20 h-20">
+    class="rounded-full flex justify-center items-center w-full h-full p-2"
+  >
     <ng-content></ng-content>
   </div>
 </div>

@@ -1,11 +1,73 @@
-<div class="grid grid-cols-1 w-full gap-y-20 mt-8">
+<div class="border-b border-gray-200">
+  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
+    <li class="mr-2">
+      <button
+        (click)="activeTab = 'next'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'next',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'next'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        Budoucí
+      </button>
+    </li>
+    <li class="">
+      <button
+        (click)="activeTab = 'previous'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'previous',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'previous'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        Minulé
+      </button>
+    </li>
+    <li class="">
+      <button
+        (click)="activeTab = 'standings'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'standings',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'standings'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        Pořadí
+      </button>
+    </li>
+  </ul>
+</div>
+
+
+<div
+  *ngIf="activeTab === 'next'"
+  class="grid grid-cols-1 w-full gap-y-20 mt-8">
   <div
-    *ngFor="let group of groupOfMatches"
+    *ngFor="let group of groupOfNextMatches"
     class="grid grid-cols-1 w-full gap-y-8">
     <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
-      <div>{{group[0].round}}. kolo</div>
+      <div class="text-gray-950 font-medium">{{group[0].round}}. kolo</div>
       <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
-      <div>(za {{group[0].daysTill}} dnů/y)</div>
+      <div *ngIf="group[0].daysTill > 0">(za {{group[0].daysTill}} dnů/y)</div>
+    </div>
+    <app-match
+      *ngFor="let match of group"
+      [data]="match"
+    />
+  </div>
+</div>
+
+<div
+  *ngIf="activeTab === 'previous'"
+  class="grid grid-cols-1 w-full gap-y-8 mt-8">
+  <div
+    *ngFor="let group of groupOfPrevMatches"
+    class="grid grid-cols-1 w-full gap-y-2">
+    <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
+      <div class="text-gray-950">{{group[0].round}}. kolo</div>
+      <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
+      <div *ngIf="group[0].daysTill > 0">(za {{group[0].daysTill}} dnů/y)</div>
     </div>
     <app-match
       *ngFor="let match of group"

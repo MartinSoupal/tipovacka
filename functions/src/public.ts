@@ -1,14 +1,15 @@
 import * as functions from 'firebase-functions';
 import * as express from 'express';
 import * as cors from 'cors';
-import {getMatches} from './matches/getMatches';
 import {getTeams} from './teams/getTeams';
+import {getNextMatches, getPrevMatches} from './matches/getMatches';
 
 const app = express();
 app.use(cors({origin: true}));
 app.use(express.json());
 
 app.get('/teams', getTeams);
-app.get('/matches', getMatches);
+app.get('/matches/prev', getPrevMatches);
+app.get('/matches/next', getNextMatches);
 
 export const publicApi = functions.https.onRequest(app);

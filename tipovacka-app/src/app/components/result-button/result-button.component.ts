@@ -10,4 +10,8 @@ export class ResultButtonComponent {
   @Input() highlight: boolean = false;
   @Input() hide: boolean = false;
   @Input() label: string | undefined;
+  @Input() small = false;
+  @Input() correct: boolean | undefined;
+  @Input() incorrect: boolean | undefined;
+  @Input() bold: boolean | undefined;
 }

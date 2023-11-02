@@ -1,47 +1,68 @@
 <div class="w-full grid grid-cols-3 gap-4 content-start">
   <button
     (click)="chooseResult(1)"
+    [disabled]="data?.result !== null"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="data?.homeTeam?.color"
-      [hide]="data?.vote !== 1 && data?.vote !== null"
-      [highlight]="data?.vote === 1"
+      [bold]="data?.result !== null && data?.result === 1"
+      [correct]="data?.result !== null && data?.vote === 1 && data?.result === data?.vote"
+      [hide]="data?.result !== null ? data?.result !== 1 : data?.vote !== 1 && data?.vote !== null"
+      [highlight]="data?.result === null && data?.vote === 1"
+      [incorrect]="data?.result !== null && data?.vote === 1 && data?.result !== data?.vote"
       [label]="data?.homeTeam?.name"
+      [small]="data?.result !== null"
     >
       <img
         [src]="'assets/images/' + data?.home + '.png'"
         alt="Rounded avatar"
-        class="w-auto h-12 drop-shadow-2xl"/>
+        class="w-auto h-full drop-shadow-2xl"/>
     </app-result-button>
   </button>
   <button
     (click)="chooseResult(0)"
+    [disabled]="data?.result !== null"
     class="flex justify-center"
   >
     <app-result-button
-      [backgroundColor]="'#CCC'"
-      [hide]="data?.vote !== 0 && data?.vote !== null"
-      [highlight]="data?.vote === 0"
+      [backgroundColor]="'#333'"
+      [bold]="data?.result !== null && data?.result === 0"
+      [correct]="data?.result !== null && data?.vote === 0 && data?.result === data?.vote"
+      [hide]="data?.result !== null ? data?.result !== 0 : data?.vote !== 0 && data?.vote !== null"
+      [highlight]="data?.result === null && data?.vote === 0"
+      [incorrect]="data?.result !== null && data?.vote === 0 && data?.result !== data?.vote"
       [label]="'Remíza'"
+      [small]="data?.result !== null"
     >
-      <span class="material-icons md-36 text-gray-100">close</span>
+      <span
+        [ngClass]="{
+          'md-36': data?.result === null,
+          'md-18': data?.result !== null
+          }"
+        class="material-icons text-gray-100"
+      >close</span>
     </app-result-button>
   </button>
   <button
     (click)="chooseResult(2)"
+    [disabled]="data?.result !== null"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="data?.awayTeam?.color"
-      [hide]="data?.vote !== 2 && data?.vote !== null"
-      [highlight]="data?.vote === 2"
+      [bold]="data?.result !== null && data?.result === 2"
+      [correct]="data?.result !== null && data?.vote === 2 && data?.result === data?.vote"
+      [hide]="data?.result !== null ? data?.result !== 2 : data?.vote !== 2 && data?.vote !== null"
+      [highlight]="data?.result === null && data?.vote === 2"
+      [incorrect]="data?.result !== null && data?.vote === 2 && data?.result !== data?.vote"
       [label]="data?.awayTeam?.name"
+      [small]="data?.result !== null"
     >
       <img
         [src]="'assets/images/' + data?.away + '.png'"
         alt="Rounded avatar"
-        class="w-auto h-12 drop-shadow-2xl">
+        class="w-auto h-full drop-shadow-2xl">
     </app-result-button>
   </button>
 </div>
