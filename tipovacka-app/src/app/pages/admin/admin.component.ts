@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {Team} from '../../models/team.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Match, NewMatch} from '../../models/match.model';
+import {Match, MatchResult, NewMatch} from '../../models/match.model';
 import {combineLatest} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
@@ -67,6 +67,7 @@ export class AdminComponent {
             datetime: match.datetime,
             home: this.teamsInHashMap[match.home].name,
             away: this.teamsInHashMap[match.away].name,
+            result: null
           })
           this.newMatchFormGroup.get('home')?.reset();
           this.newMatchFormGroup.get('away')?.reset();
@@ -81,6 +82,16 @@ export class AdminComponent {
           this.matches = R.reject<Match>(
             R.propEq(id, 'id')
           )(this.matches)
+        }
+      })
+  }
+
+  selectResult = (match: Match, event: Event) => {
+    const result = Number((event.target as HTMLSelectElement).value) as MatchResult;
+    this.dataService.editMatchResult(match.id, result)
+      .subscribe({
+        next: () => {
+          match.result = result;
         }
       })
   }

@@ -7,15 +7,20 @@ import {deleteMatch} from './matches/deleteMatch';
 import {addVote} from './votes/addVote';
 import {getVotes} from './votes/getVotes';
 import {getAllMatches} from './matches/getMatches';
+import {editMatchResult} from './matches/editMatchResult';
 
 const app = express();
 app.use(cors({origin: true}));
 app.use(express.json());
 app.use(validateFirebaseToken);
 
+// admin
 app.get('/match/all', getAllMatches);
 app.post('/match', addMatch);
 app.delete('/match/:matchId', deleteMatch);
+app.post('/match/:matchId/result', editMatchResult);
+
+// user
 app.post('/vote', addVote);
 app.post('/votes', getVotes);
 

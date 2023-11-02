@@ -10,6 +10,25 @@
       <div>{{match.away}}</div>
     </div>
     <div>
+      <select (change)="selectResult(match, $event)">
+        <option
+          [selected]="match.result === null"
+          [value]="null"></option>
+        <option
+          [selected]="match.result === 0"
+          [value]="0">0
+        </option>
+        <option
+          [selected]="match.result === 1"
+          [value]="1">1
+        </option>
+        <option
+          [selected]="match.result === 2"
+          [value]="2">2
+        </option>
+      </select>
+    </div>
+    <div>
       <button>
         <span
           (click)="deleteMatch(match.id)"

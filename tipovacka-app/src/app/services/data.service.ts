@@ -126,4 +126,16 @@ export class DataService {
         },
       }
     )
+
+  editMatchResult = (matchId: string, result: MatchResult) =>
+    this.http.post<string>(
+      `${this.privateUrl}/match/${matchId}/result`,
+      {result},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
 }

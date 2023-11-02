@@ -4,14 +4,16 @@ import {Match} from './types';
 import admin = require('firebase-admin');
 
 export async function getMatches(req: CustomRequest, res: any) {
-  const now = admin.firestore.Timestamp.now();
+  const twoWeeksBeforeNow =
+    admin.firestore.Timestamp.fromDate(
+      new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
+    ); // 14 days in milliseconds
   const twoWeeksFromNow =
     admin.firestore.Timestamp.fromDate(
       new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
     ); // 14 days in milliseconds
-  // 2. Use a range query with Fi
   const snapshot = await db.collection('matches')
-    .where('datetime', '>', now)
+    .where('datetime', '>', twoWeeksBeforeNow)
     .where('datetime', '<', twoWeeksFromNow)
     .get();
   const matches: Match[] = [];

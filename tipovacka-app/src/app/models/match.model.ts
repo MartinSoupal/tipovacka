@@ -6,6 +6,7 @@ export interface Match {
   away: string;
   datetime: Date;
   round: number;
+  result: MatchResult;
 }
 
 export interface MatchWithTeamName extends Match {
