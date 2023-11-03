@@ -5,6 +5,7 @@ import {Match, MatchResult, NewMatch} from '../models/match.model';
 import {map} from 'rxjs';
 import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
+import {User} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -155,6 +156,16 @@ export class DataService {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  getStandings = () =>
+    this.http.get<User[]>(
+      `${this.publicUrl}/standings`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
       }
     )

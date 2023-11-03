@@ -22,7 +22,7 @@ export async function addMatch(req: Request, res: any) {
     away: req.body.away,
     round: req.body.round,
     datetime: admin.firestore.Timestamp.fromDate(new Date(req.body.datetime)),
-    result: '',
+    result: null,
   };
   const ress = await db.collection('matches').add(newMatch);
   res.status(200).send({id: ress.id});

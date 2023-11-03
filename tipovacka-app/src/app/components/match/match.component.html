@@ -1,7 +1,7 @@
 <div class="w-full grid grid-cols-3 gap-4 content-start">
   <button
     (click)="chooseResult(1)"
-    [disabled]="data?.result !== null"
+    [disabled]="data?.result !== null || data?.vote === 1"
     class="flex justify-center"
   >
     <app-result-button
@@ -22,7 +22,7 @@
   </button>
   <button
     (click)="chooseResult(0)"
-    [disabled]="data?.result !== null"
+    [disabled]="data?.result !== null || data?.vote === 0"
     class="flex justify-center"
   >
     <app-result-button
@@ -46,7 +46,7 @@
   </button>
   <button
     (click)="chooseResult(2)"
-    [disabled]="data?.result !== null"
+    [disabled]="data?.result !== null || data?.vote === 2"
     class="flex justify-center"
   >
     <app-result-button

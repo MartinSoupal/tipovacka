@@ -40,7 +40,10 @@ export class AuthService {
             take(1)
           )
           .subscribe({
-            next: this.dataService.setToken,
+            next: token => {
+              this.dataService.setToken(token);
+              dispatchEvent(new Event('signIn'));
+            },
           })
       })
 
@@ -49,7 +52,8 @@ export class AuthService {
     this.afAuth
       .signOut()
       .then(() => {
-        this.dataService.setToken(null)
+        this.dataService.setToken(null);
+        dispatchEvent(new Event('signOut'));
       })
   }
 }

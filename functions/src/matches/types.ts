@@ -6,7 +6,7 @@ export interface Match {
   away: string;
   datetime: Date;
   round: string;
-  result: number;
+  result: number | null;
   0: number;
   1: number;
   2: number;
@@ -17,5 +17,5 @@ export interface NewMatch {
   away: string;
   datetime: admin.firestore.Timestamp;
   round: number;
-  result: string;
+  result: number | null;
 }

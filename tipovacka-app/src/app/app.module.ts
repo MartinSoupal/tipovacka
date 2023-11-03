@@ -17,6 +17,7 @@ import {ResultButtonComponent} from './components/result-button/result-button.co
 import {registerLocaleData} from '@angular/common';
 import localeCs from '@angular/common/locales/cs';
 import {UserTokenResolver} from './resolver/token.resolver';
+import {SortByPipe} from './pipes/sort-by.pipe';
 
 const routes: Routes = [
   {
@@ -44,7 +45,9 @@ registerLocaleData(localeCs);
     MatchComponent,
     DashboardComponent,
     AdminComponent,
-    ResultButtonComponent
+    ResultButtonComponent,
+    SortByPipe,
+    SortByPipe
   ],
   imports: [
     BrowserModule,
