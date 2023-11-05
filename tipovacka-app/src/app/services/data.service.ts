@@ -50,6 +50,7 @@ export class DataService {
             match => ({
               ...match,
               datetime: new Date(match.datetime),
+              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
             })
           )
         )
@@ -70,6 +71,7 @@ export class DataService {
             match => ({
               ...match,
               datetime: new Date(match.datetime),
+              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
             })
           )
         )
@@ -91,6 +93,7 @@ export class DataService {
             match => ({
               ...match,
               datetime: new Date(match.datetime),
+              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
             })
           )
         )

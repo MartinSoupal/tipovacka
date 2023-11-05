@@ -1,0 +1,24 @@
+<div class="grid grid-cols-1 w-full gap-y-20 mt-8">
+  <div
+    *ngFor="let group of groupOfNextMatches"
+    class="grid grid-cols-1 w-full gap-y-8"
+  >
+    <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
+      <div class="text-gray-950 font-medium">{{group[0].round}}. kolo</div>
+      <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
+      <div *ngIf="group[0].daysTill > 1">(za {{group[0].daysTill}} dny/ů)</div>
+      <div
+        *ngIf="group[0].daysTill === 1"
+        class="text-red-600 font-medium">ZÍTRA!
+      </div>
+      <div
+        *ngIf="group[0].daysTill === 0"
+        class="text-red-600 font-medium">DNES!
+      </div>
+    </div>
+    <app-match
+      *ngFor="let match of group"
+      [data]="match"
+    />
+  </div>
+</div>

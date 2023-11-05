@@ -6,13 +6,25 @@
   >
     <app-result-button
       [backgroundColor]="data?.homeTeam?.color"
-      [bold]="data?.result !== null && data?.result === 1"
-      [correct]="data?.result !== null && data?.vote === 1 && data?.result === data?.vote"
-      [hide]="data?.result !== null ? data?.result !== 1 : data?.vote !== 1 && data?.vote !== null"
-      [highlight]="data?.result === null && data?.vote === 1"
-      [incorrect]="data?.result !== null && data?.vote === 1 && data?.result !== data?.vote"
+      [hide]="data?.datetime! < now ? data?.result !== 1: data?.vote !== null && data?.vote !== 1"
       [label]="data?.homeTeam?.name"
-      [small]="data?.result !== null"
+      [size]="data?.datetime! < now ? 'small' : 'normal'"
+      [type]="
+      data?.datetime! < now ?
+        data?.result === null ?
+          data?.vote === 1 ?
+            'highlight':
+            'normal':
+          data?.vote === 1 ?
+            data?.result === 1 ?
+              'correct':
+              'incorrect':
+            'normal':
+        data?.vote === 1 ?
+          'highlight':
+          'normal'
+      "
+      [votesRatio]="data ? ((data[1] || 0) / data.totalVotes) : 0"
     >
       <img
         [src]="'assets/images/' + data?.home + '.png'"
@@ -27,18 +39,30 @@
   >
     <app-result-button
       [backgroundColor]="'#333'"
-      [bold]="data?.result !== null && data?.result === 0"
-      [correct]="data?.result !== null && data?.vote === 0 && data?.result === data?.vote"
-      [hide]="data?.result !== null ? data?.result !== 0 : data?.vote !== 0 && data?.vote !== null"
-      [highlight]="data?.result === null && data?.vote === 0"
-      [incorrect]="data?.result !== null && data?.vote === 0 && data?.result !== data?.vote"
+      [hide]="data?.datetime! < now ? data?.result !== 0: data?.vote !== null && data?.vote !== 0"
       [label]="'Remíza'"
-      [small]="data?.result !== null"
+      [size]="!!data && data.datetime < now ? 'small' : 'normal'"
+      [type]="
+      data?.datetime! < now ?
+        data?.result === null ?
+          data?.vote === 0 ?
+            'highlight':
+            'normal':
+          data?.vote === 0 ?
+            data?.result === 0 ?
+              'correct':
+              'incorrect':
+            'normal':
+        data?.vote === 0 ?
+          'highlight':
+          'normal'
+      "
+      [votesRatio]="data ? ((data[0] || 0) / data.totalVotes) : 0"
     >
       <span
         [ngClass]="{
-          'md-36': data?.result === null,
-          'md-18': data?.result !== null
+          'md-36': !!data && data.datetime >= now,
+          'md-18': !!data && data.datetime < now
           }"
         class="material-icons text-gray-100"
       >close</span>
@@ -51,13 +75,25 @@
   >
     <app-result-button
       [backgroundColor]="data?.awayTeam?.color"
-      [bold]="data?.result !== null && data?.result === 2"
-      [correct]="data?.result !== null && data?.vote === 2 && data?.result === data?.vote"
-      [hide]="data?.result !== null ? data?.result !== 2 : data?.vote !== 2 && data?.vote !== null"
-      [highlight]="data?.result === null && data?.vote === 2"
-      [incorrect]="data?.result !== null && data?.vote === 2 && data?.result !== data?.vote"
+      [hide]="data?.datetime! < now ? data?.result !== 2: data?.vote !== null && data?.vote !== 2"
       [label]="data?.awayTeam?.name"
-      [small]="data?.result !== null"
+      [size]="!!data && data.datetime < now ? 'small' : 'normal'"
+      [type]="
+      data?.datetime! < now ?
+        data?.result === null ?
+          data?.vote === 2 ?
+            'highlight':
+            'normal':
+          data?.vote === 2 ?
+            data?.result === 2 ?
+              'correct':
+              'incorrect':
+            'normal':
+        data?.vote === 2 ?
+          'highlight':
+          'normal'
+      "
+      [votesRatio]="data ? ((data[2] || 0) / data.totalVotes) : 0"
     >
       <img
         [src]="'assets/images/' + data?.away + '.png'"

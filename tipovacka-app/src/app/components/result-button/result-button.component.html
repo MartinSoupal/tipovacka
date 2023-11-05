@@ -1,12 +1,12 @@
 <div
   [ngClass]="{
-      'border-gray-950': highlight,
-      'border-gray-300': !highlight,
-      'border-green-600': correct,
-      'border-red-600': incorrect,
+      'border-gray-950': type === 'highlight',
+      'border-gray-300': type === 'normal',
+      'border-green-600': type === 'correct',
+      'border-red-600': type === 'incorrect',
       'opacity-50': hide,
-      'w-20 h-20': !small,
-      'w-14 h-14': small
+      'w-20 h-20': size === 'normal',
+      'w-14 h-14': size === 'small'
     }"
   class="rounded-full border-2 flex justify-center items-center p-2"
 >
@@ -18,3 +18,19 @@
   </div>
 </div>
 <div class="mt-2 text-xs text-gray-600">{{label}}</div>
+<div class="mt-1 w-full text-xs flex bg-gray-100 rounded">
+  <div
+    [style.background-color]="backgroundColor"
+    [style.width]="votesRatio*100+'%'"
+    class="text-gray-100 rounded"
+  >
+    <div
+      *ngIf="votesRatio >= .5"
+      class="mx-1 text-right">{{(votesRatio * 100) | number: '1.1-1':'cs-CZ'}}%
+    </div>
+  </div>
+  <div
+    *ngIf="votesRatio < .5"
+    class="text-gray-600 mx-1">{{(votesRatio * 100) | number: '1.1-1':'cs-CZ'}}%
+  </div>
+</div>

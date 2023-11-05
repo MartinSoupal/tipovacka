@@ -17,7 +17,10 @@ export class DashboardComponent implements OnInit {
   groupOfPrevMatches: MatchWithTeamName[][] = [];
   groupOfNextMatches: MatchWithTeamName[][] = [];
   users: User[] = [];
-  activeTab: 'previous' | 'next' | 'standings' = 'standings';
+  activeTab: 'previous' | 'next' | 'standings' = 'next';
+  loadingNextMatches = true;
+  loadingPrevMatches = true;
+  loadingStandings = true;
 
   constructor(
     private dataService: DataService
@@ -31,6 +34,7 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: users => {
           this.users = users;
+          this.loadingStandings = false;
         }
       })
     addEventListener('signIn', () => {
@@ -58,6 +62,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadNextMatches = () => {
+    this.loadingNextMatches = true;
     combineLatest([
       this.dataService.getTeams(),
       this.dataService.getNextMatches(),
@@ -89,12 +94,14 @@ export class DashboardComponent implements OnInit {
                 })
               )
             )
-          )
+          );
+          this.loadingNextMatches = false;
         }
       })
   }
 
   private loadPrevMatches = () => {
+    this.loadingPrevMatches = true;
     combineLatest([
       this.dataService.getTeams(),
       this.dataService.getPrevMatches(),
@@ -115,7 +122,7 @@ export class DashboardComponent implements OnInit {
           this.groupOfPrevMatches = R.groupWith(
             (a, b) => a.datetime.getTime() === b.datetime.getTime(),
             R.sort(
-              (a, b) => a.datetime.getTime() - b.datetime.getTime(),
+              (a, b) => b.datetime.getTime() - a.datetime.getTime(),
               matches.map(
                 (match): MatchWithTeamName => ({
                   ...match,
@@ -126,7 +133,8 @@ export class DashboardComponent implements OnInit {
                 })
               )
             )
-          )
+          );
+          this.loadingPrevMatches = false;
         }
       })
   }

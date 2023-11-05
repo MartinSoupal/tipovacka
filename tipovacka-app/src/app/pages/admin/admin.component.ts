@@ -67,7 +67,11 @@ export class AdminComponent {
             datetime: match.datetime,
             home: this.teamsInHashMap[match.home].name,
             away: this.teamsInHashMap[match.away].name,
-            result: null
+            result: null,
+            0: 0,
+            1: 0,
+            2: 0,
+            totalVotes: 0
           })
           this.newMatchFormGroup.get('home')?.reset();
           this.newMatchFormGroup.get('away')?.reset();

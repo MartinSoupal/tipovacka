@@ -7,6 +7,10 @@ export interface Match {
   datetime: Date;
   round: number;
   result: MatchResult;
+  0: number;
+  1: number;
+  2: number;
+  totalVotes: number;
 }
 
 export interface MatchWithTeamName extends Match {

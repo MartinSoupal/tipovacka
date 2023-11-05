@@ -10,6 +10,8 @@ import {DataService} from '../../services/data.service';
 export class MatchComponent {
   @Input() data: MatchWithTeamName | undefined;
 
+  now = new Date();
+
   constructor(
     private dataService: DataService
   ) {

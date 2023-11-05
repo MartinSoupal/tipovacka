@@ -40,86 +40,14 @@
 </div>
 
 
-<div
-  *ngIf="activeTab === 'next'"
-  class="grid grid-cols-1 w-full gap-y-20 mt-8">
-  <div
-    *ngFor="let group of groupOfNextMatches"
-    class="grid grid-cols-1 w-full gap-y-8">
-    <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
-      <div class="text-gray-950 font-medium">{{group[0].round}}. kolo</div>
-      <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
-      <div *ngIf="group[0].daysTill > 0">(za {{group[0].daysTill}} dnů/y)</div>
-    </div>
-    <app-match
-      *ngFor="let match of group"
-      [data]="match"
-    />
-  </div>
-</div>
-
-<div
-  *ngIf="activeTab === 'previous'"
-  class="grid grid-cols-1 w-full gap-y-8 mt-8">
-  <div
-    *ngFor="let group of groupOfPrevMatches"
-    class="grid grid-cols-1 w-full gap-y-2">
-    <div class="flex gap-2 justify-center text-center mb-2 text-xs text-gray-500">
-      <div class="text-gray-950">{{group[0].round}}. kolo</div>
-      <div>{{group[0].datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
-      <div *ngIf="group[0].daysTill > 0">(za {{group[0].daysTill}} dnů/y)</div>
-    </div>
-    <app-match
-      *ngFor="let match of group"
-      [data]="match"
-    />
-  </div>
-</div>
-
-<div
-  *ngIf="activeTab === 'standings'"
-  class="relative overflow-x-auto sm:rounded-lg mt-8 w-full">
-  <table class="w-full text-left text-gray-700">
-    <thead class="text-xs text-gray-500 bg-gray-50">
-    <tr>
-      <th
-        class="px-6 py-3"
-        scope="col">
-        Jméno
-      </th>
-      <th
-        class="px-6 py-3 text-right"
-        scope="col">
-        Body
-      </th>
-      <th
-        class="px-6 py-3 text-right"
-        scope="col">
-        Úspěšnost
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr
-      *ngFor="let user of users | sortBy: 'correctVotes': 'desc'"
-      class="bg-white border-b even:bg-gray-50">
-      <td class="px-6 py-4 text-sm">
-        {{user.name}}
-      </td>
-      <td class="px-6 py-4 text-right text-gray-950 font-bold">
-        {{user.correctVotes}}
-      </td>
-      <td
-        [ngClass]="{
-          'text-red-400': user.correctVotes / user.totalVotes < 0.34,
-          'text-orange-400': user.correctVotes / user.totalVotes > 0.34 && user.correctVotes / user.totalVotes < 0.67,
-          'text-green-400': user.correctVotes / user.totalVotes > 0.66,
-        }"
-        class="px-6 py-4 text-right"
-      >
-        {{(user.correctVotes / user.totalVotes * 100) | number: '1.1-1':'cs-CZ'}}%
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<ng-container [ngSwitch]="activeTab">
+  <app-next-matches
+    *ngSwitchCase="'next'"
+    [groupOfNextMatches]="groupOfNextMatches"/>
+  <app-previous-matches
+    *ngSwitchCase="'previous'"
+    [groupOfPrevMatches]="groupOfPrevMatches"/>
+  <app-standings
+    *ngSwitchCase="'standings'"
+    [users]="users"/>
+</ng-container>
