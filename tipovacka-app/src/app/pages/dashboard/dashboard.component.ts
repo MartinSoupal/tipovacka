@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Match, MatchWithTeamName} from '../../models/match.model';
 import {DataService} from '../../services/data.service';
-import {combineLatest, map, switchMap} from 'rxjs';
+import {map, switchMap} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
 import {Team} from '../../models/team.model';
@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   loadingNextMatches = true;
   loadingPrevMatches = true;
   loadingStandings = true;
+  teamsInHashMap: Record<string, Team> = {};
 
   constructor(
     private dataService: DataService
@@ -28,8 +29,14 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadNextMatches();
-    this.loadPrevMatches();
+    this.dataService.getTeams()
+      .subscribe({
+        next: teams => {
+          this.teamsInHashMap = arrayToHashMap('id', teams);
+          this.loadNextMatches();
+          this.loadPrevMatches();
+        }
+      })
     this.dataService.getStandings()
       .subscribe({
         next: users => {
@@ -63,22 +70,18 @@ export class DashboardComponent implements OnInit {
 
   private loadNextMatches = () => {
     this.loadingNextMatches = true;
-    combineLatest([
-      this.dataService.getTeams(),
-      this.dataService.getNextMatches(),
-    ])
+    this.dataService.getNextMatches()
       .pipe(
         switchMap(
-          ([teams, matches]: [Team[], Match[]]) =>
+          (matches) =>
             this.dataService.getVotes(R.map(R.prop('id'), matches))
               .pipe(
-                map((votes): [Team[], Match[], Vote[]] => [teams, matches, votes])
+                map((votes): [Match[], Vote[]] => [matches, votes])
               )
         )
       )
       .subscribe({
-        next: ([teams, matches, votes]: [Team[], Match[], Vote[]]) => {
-          const teamsInHashMap = arrayToHashMap('id', teams);
+        next: ([matches, votes]: [Match[], Vote[]]) => {
           const votesInHashMap = arrayToHashMap('matchId', votes);
           this.groupOfNextMatches = R.groupWith(
             (a, b) => a.datetime.getTime() === b.datetime.getTime(),
@@ -87,8 +90,8 @@ export class DashboardComponent implements OnInit {
               matches.map(
                 (match): MatchWithTeamName => ({
                   ...match,
-                  homeTeam: teamsInHashMap[match.home],
-                  awayTeam: teamsInHashMap[match.away],
+                  homeTeam: this.teamsInHashMap[match.home],
+                  awayTeam: this.teamsInHashMap[match.away],
                   daysTill: this.daysDifferenceTillNow(match.datetime),
                   vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
                 })
@@ -102,22 +105,18 @@ export class DashboardComponent implements OnInit {
 
   private loadPrevMatches = () => {
     this.loadingPrevMatches = true;
-    combineLatest([
-      this.dataService.getTeams(),
-      this.dataService.getPrevMatches(),
-    ])
+    this.dataService.getPrevMatches()
       .pipe(
         switchMap(
-          ([teams, matches]: [Team[], Match[]]) =>
+          (matches) =>
             this.dataService.getVotes(R.map(R.prop('id'), matches))
               .pipe(
-                map((votes): [Team[], Match[], Vote[]] => [teams, matches, votes])
+                map((votes): [Match[], Vote[]] => [matches, votes])
               )
         )
       )
       .subscribe({
-        next: ([teams, matches, votes]: [Team[], Match[], Vote[]]) => {
-          const teamsInHashMap = arrayToHashMap('id', teams);
+        next: ([matches, votes]: [Match[], Vote[]]) => {
           const votesInHashMap = arrayToHashMap('matchId', votes);
           this.groupOfPrevMatches = R.groupWith(
             (a, b) => a.datetime.getTime() === b.datetime.getTime(),
@@ -126,8 +125,8 @@ export class DashboardComponent implements OnInit {
               matches.map(
                 (match): MatchWithTeamName => ({
                   ...match,
-                  homeTeam: teamsInHashMap[match.home],
-                  awayTeam: teamsInHashMap[match.away],
+                  homeTeam: this.teamsInHashMap[match.home],
+                  awayTeam: this.teamsInHashMap[match.away],
                   daysTill: this.daysDifferenceTillNow(match.datetime),
                   vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
                 })

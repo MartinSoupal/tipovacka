@@ -8,7 +8,7 @@
       'w-20 h-20': size === 'normal',
       'w-14 h-14': size === 'small'
     }"
-  class="rounded-full border-2 flex justify-center items-center p-2"
+  class="rounded-full border-2 flex justify-center items-center p-2 transition-all"
 >
   <div
     [style.background-color]="backgroundColor"
@@ -22,7 +22,7 @@
   <div
     [style.background-color]="backgroundColor"
     [style.width]="votesRatio*100+'%'"
-    class="text-gray-100 rounded"
+    class="text-gray-100 rounded transition-all"
   >
     <div
       *ngIf="votesRatio >= .5"

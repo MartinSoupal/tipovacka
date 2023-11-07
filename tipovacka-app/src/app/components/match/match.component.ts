@@ -18,9 +18,24 @@ export class MatchComponent {
   }
 
   chooseResult = (chosenResult: MatchResult) => {
+    if (chosenResult === this.data?.vote) {
+      chosenResult = null;
+    }
     this.dataService.addVote(this.data!.id, chosenResult)
       .subscribe({
         next: () => {
+          if (this.data && this.data.vote !== null) {
+            this.data![this.data.vote]--;
+          }
+          if (this.data && this.data.vote === null) {
+            this.data.totalVotes++;
+          }
+          if (chosenResult !== null) {
+            this.data![chosenResult]++;
+          }
+          if (chosenResult === null) {
+            this.data!.totalVotes--;
+          }
           this.data!.vote = chosenResult;
         }
       })

@@ -172,4 +172,14 @@ export class DataService {
         },
       }
     )
+      .pipe(
+        map(
+          R.map(
+            (user) => ({
+              ...user,
+              correctRatio: user.correctVotes / user.totalVotes,
+            })
+          )
+        )
+      )
 }
