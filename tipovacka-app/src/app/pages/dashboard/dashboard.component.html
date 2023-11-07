@@ -43,11 +43,17 @@
 <ng-container [ngSwitch]="activeTab">
   <app-next-matches
     *ngSwitchCase="'next'"
-    [groupOfNextMatches]="groupOfNextMatches"/>
+    [groupOfNextMatches]="groupOfNextMatches"
+    [loading]="loadingNextMatches"
+  />
   <app-previous-matches
     *ngSwitchCase="'previous'"
-    [groupOfPrevMatches]="groupOfPrevMatches"/>
+    [groupOfPrevMatches]="groupOfPrevMatches"
+    [loading]="loadingPrevMatches"
+  />
   <app-standings
     *ngSwitchCase="'standings'"
-    [users]="users"/>
+    [loading]="loadingStandings"
+    [users]="users"
+  />
 </ng-container>

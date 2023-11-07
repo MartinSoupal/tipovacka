@@ -8,4 +8,5 @@ import {MatchWithTeamName} from '../../../models/match.model';
 })
 export class NextMatchesComponent {
   @Input() groupOfNextMatches: MatchWithTeamName[][] = [];
+  @Input() loading = true;
 }

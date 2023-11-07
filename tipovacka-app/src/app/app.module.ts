@@ -21,6 +21,7 @@ import {SortByPipe} from './pipes/sort-by.pipe';
 import {PreviousMatchesComponent} from './pages/dashboard/previous-matches/previous-matches.component';
 import {NextMatchesComponent} from './pages/dashboard/next-matches/next-matches.component';
 import {StandingsComponent} from './pages/dashboard/standings/standings.component';
+import { MatchSkeletonComponent } from './components/match-skeleton/match-skeleton.component';
 
 const routes: Routes = [
   {
@@ -53,7 +54,8 @@ registerLocaleData(localeCs);
     SortByPipe,
     PreviousMatchesComponent,
     NextMatchesComponent,
-    StandingsComponent
+    StandingsComponent,
+    MatchSkeletonComponent
   ],
   imports: [
     BrowserModule,

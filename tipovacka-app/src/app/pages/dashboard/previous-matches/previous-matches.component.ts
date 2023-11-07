@@ -8,4 +8,5 @@ import {MatchWithTeamName} from '../../../models/match.model';
 })
 export class PreviousMatchesComponent {
   @Input() groupOfPrevMatches: MatchWithTeamName[][] = [];
+  @Input() loading = false;
 }

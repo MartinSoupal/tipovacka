@@ -8,6 +8,9 @@ import {User} from '../../../models/user.model';
 })
 export class StandingsComponent {
   @Input() users: User[] = [];
+  @Input() loading = false;
+
+  loadingArray = [0, 1, 2, 3, 4];
 
   sortBy: 'correctVotes' | 'correctRatio' = 'correctVotes';
 
