@@ -1,13 +1,14 @@
 <div class="w-full grid grid-cols-3 gap-4 content-start">
   <button
     (click)="chooseResult(1)"
-    [disabled]="data?.datetime! < now"
+    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="data?.homeTeam?.color"
       [hide]="data?.datetime! < now ? data?.result !== 1: data?.vote !== null && data?.vote !== 1"
       [label]="data?.homeTeam?.name"
+      [pulseAnimation]="sendingVote !== undefined"
       [size]="data?.datetime! < now ? 'small' : 'normal'"
       [type]="
       data?.datetime! < now ?
@@ -34,13 +35,14 @@
   </button>
   <button
     (click)="chooseResult(0)"
-    [disabled]="data?.datetime! < now"
+    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="'#333'"
       [hide]="data?.datetime! < now ? data?.result !== 0: data?.vote !== null && data?.vote !== 0"
       [label]="'Remíza'"
+      [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
       data?.datetime! < now ?
@@ -70,13 +72,14 @@
   </button>
   <button
     (click)="chooseResult(2)"
-    [disabled]="data?.datetime! < now"
+    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="data?.awayTeam?.color"
       [hide]="data?.datetime! < now ? data?.result !== 2: data?.vote !== null && data?.vote !== 2"
       [label]="data?.awayTeam?.name"
+      [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
       data?.datetime! < now ?

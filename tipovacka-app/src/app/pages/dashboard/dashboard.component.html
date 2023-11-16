@@ -36,9 +36,22 @@
         Pořadí
       </button>
     </li>
+    <li *ngIf="authService.isSignIn$ | async">
+      <a
+        class="py-4 px-8 block"
+        href="https://discord.gg/v8GxDMVG"
+        target="_blank"
+      >
+        <img
+          alt="Discord"
+          class="h-4 w-auto"
+          src="assets/images/discord.png"
+          srcset="assets/images/discord.png"
+        >
+      </a>
+    </li>
   </ul>
 </div>
-
 
 <ng-container [ngSwitch]="activeTab">
   <app-next-matches

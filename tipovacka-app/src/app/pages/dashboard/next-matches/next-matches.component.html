@@ -1,4 +1,11 @@
 <div
+  *ngIf="!(authService.isSignIn$ | async)"
+  class="p-4 mt-4 text-sm text-gray-800 rounded-lg bg-gray-50 flex items-center justify-center gap-2"
+  role="alert">
+  Pro uložení tipů, je třeba se přihlásit.
+  <span class="material-icons md-18">login</span>
+</div>
+<div
   *ngIf="!loading"
   class="grid grid-cols-1 w-full gap-y-20 mt-8">
   <div
@@ -22,6 +29,12 @@
       *ngFor="let match of group"
       [data]="match"
     />
+  </div>
+  <div
+    *ngIf="!groupOfNextMatches.length"
+    class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-50"
+    role="alert">
+    Žádné zápasy v následujících 14 dnech.
   </div>
 </div>
 

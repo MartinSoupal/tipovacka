@@ -9,6 +9,11 @@ interface Request extends CustomRequest {
 }
 
 export async function getVotes(req: Request, res: any) {
+  if (!req.body.matchIds.length) {
+    res.status(200).send(JSON.stringify([]));
+    return;
+  }
+
   const snapshot =
     await db.collection('votes')
       .where('matchId', 'in', req.body.matchIds)

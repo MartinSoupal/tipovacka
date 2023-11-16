@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatchWithTeamName} from '../../../models/match.model';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-next-matches',
@@ -9,4 +10,9 @@ import {MatchWithTeamName} from '../../../models/match.model';
 export class NextMatchesComponent {
   @Input() groupOfNextMatches: MatchWithTeamName[][] = [];
   @Input() loading = true;
+
+  constructor(
+    public authService: AuthService
+  ) {
+  }
 }

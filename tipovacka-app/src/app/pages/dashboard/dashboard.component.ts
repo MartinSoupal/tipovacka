@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Match, MatchWithTeamName} from '../../models/match.model';
 import {DataService} from '../../services/data.service';
-import {map, switchMap} from 'rxjs';
+import {combineLatest, map, of, switchMap} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
 import {Team} from '../../models/team.model';
 import {Vote} from '../../models/vote.model';
 import {User} from '../../models/user.model';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit {
   teamsInHashMap: Record<string, Team> = {};
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    public authService: AuthService,
   ) {
   }
 
@@ -66,15 +68,31 @@ export class DashboardComponent implements OnInit {
       },
       this.groupOfNextMatches,
     );
+    R.forEach(
+      (matches: MatchWithTeamName[]) => {
+        R.forEach(
+          (match: MatchWithTeamName) => {
+            match.vote = null;
+          },
+          matches,
+        );
+      },
+      this.groupOfPrevMatches,
+    );
   }
 
   private loadNextMatches = () => {
     this.loadingNextMatches = true;
-    this.dataService.getNextMatches()
+    combineLatest([
+      this.dataService.getNextMatches(),
+      this.authService.isSignIn$
+    ])
       .pipe(
         switchMap(
-          (matches) =>
-            this.dataService.getVotes(R.map(R.prop('id'), matches))
+          ([matches, isSignIn]) =>
+            (isSignIn && matches.length ?
+              this.dataService.getVotes(R.map(R.prop('id'), matches)) :
+              of([]))
               .pipe(
                 map((votes): [Match[], Vote[]] => [matches, votes])
               )
@@ -105,11 +123,16 @@ export class DashboardComponent implements OnInit {
 
   private loadPrevMatches = () => {
     this.loadingPrevMatches = true;
-    this.dataService.getPrevMatches()
+    combineLatest([
+      this.dataService.getPrevMatches(),
+      this.authService.isSignIn$
+    ])
       .pipe(
         switchMap(
-          (matches) =>
-            this.dataService.getVotes(R.map(R.prop('id'), matches))
+          ([matches, isSignIn]) =>
+            (isSignIn && matches.length ?
+              this.dataService.getVotes(R.map(R.prop('id'), matches)) :
+              of([]))
               .pipe(
                 map((votes): [Match[], Vote[]] => [matches, votes])
               )
