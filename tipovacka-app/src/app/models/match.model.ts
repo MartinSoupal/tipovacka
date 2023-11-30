@@ -5,8 +5,10 @@ export interface Match {
   home: string;
   away: string;
   datetime: Date;
-  round: number;
+  stage: string;
+  round: string;
   result: MatchResult;
+  league: League;
   0: number;
   1: number;
   2: number;
@@ -24,7 +26,13 @@ export interface NewMatch {
   home: string;
   away: string;
   datetime: Date;
-  round: number;
+  stage: string;
+  round: string;
+  league: League;
 }
 
 export type MatchResult = 0 | 1 | 2 | null;
+
+export type League = 'FL' | 'EURO24';
+
+export type Stage = 'Základní část' | 'Nadstavba' | 'Skupinová fáze' | 'Vyřazovací fáze';

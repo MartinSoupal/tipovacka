@@ -23,7 +23,7 @@
             'bg-orange-100 text-orange-800': user.correctVotes / user.totalVotes > 0.33 && user.correctVotes / user.totalVotes < 0.67,
             'bg-green-100 text-green-800': user.correctVotes / user.totalVotes > 0.66
           }"
-          class="text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
+          class="badge font-medium "
         >
           {{(user.correctRatio * 100) | number: '1.1-1':'cs-CZ'}}%
         </span>

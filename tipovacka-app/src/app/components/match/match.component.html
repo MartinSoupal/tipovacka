@@ -25,7 +25,7 @@
           'highlight':
           'normal'
       "
-      [votesRatio]="data ? ((data[1] || 0) / data.totalVotes) : 0"
+      [votesRatio]="data && data.totalVotes ? ((data![1] || 0) / data.totalVotes) : 0"
     >
       <img
         [src]="'assets/images/' + data?.home + '.png'"
@@ -59,7 +59,7 @@
           'highlight':
           'normal'
       "
-      [votesRatio]="data ? ((data[0] || 0) / data.totalVotes) : 0"
+      [votesRatio]="data && data.totalVotes ? ((data![0] || 0) / data.totalVotes) : 0"
     >
       <span
         [ngClass]="{
@@ -96,7 +96,7 @@
           'highlight':
           'normal'
       "
-      [votesRatio]="data ? ((data[2] || 0) / data.totalVotes) : 0"
+      [votesRatio]="data && data.totalVotes ? ((data![2] || 0) / data.totalVotes) : 0"
     >
       <img
         [src]="'assets/images/' + data?.away + '.png'"

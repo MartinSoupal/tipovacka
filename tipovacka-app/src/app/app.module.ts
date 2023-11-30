@@ -22,6 +22,8 @@ import {PreviousMatchesComponent} from './pages/dashboard/previous-matches/previ
 import {NextMatchesComponent} from './pages/dashboard/next-matches/next-matches.component';
 import {StandingsComponent} from './pages/dashboard/standings/standings.component';
 import { MatchSkeletonComponent } from './components/match-skeleton/match-skeleton.component';
+import { FilterMatchesByPipe } from './pipes/filter-matches-by.pipe';
+import { MatchesOverviewComponent } from './components/matches-overview/matches-overview.component';
 
 const routes: Routes = [
   {
@@ -55,7 +57,9 @@ registerLocaleData(localeCs);
     PreviousMatchesComponent,
     NextMatchesComponent,
     StandingsComponent,
-    MatchSkeletonComponent
+    MatchSkeletonComponent,
+    FilterMatchesByPipe,
+    MatchesOverviewComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MatchWithTeamName} from '../../../models/match.model';
+import {League, MatchWithTeamName} from '../../../models/match.model';
 import {AuthService} from '../../../services/auth.service';
 
 @Component({
@@ -8,7 +8,8 @@ import {AuthService} from '../../../services/auth.service';
   styleUrls: ['./next-matches.component.scss']
 })
 export class NextMatchesComponent {
-  @Input() groupOfNextMatches: MatchWithTeamName[][] = [];
+  @Input() nextMatches: MatchWithTeamName[] = [];
+  @Input() leagues: League[] = [];
   @Input() loading = true;
 
   constructor(

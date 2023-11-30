@@ -5,8 +5,10 @@ export interface Match {
   home: string;
   away: string;
   datetime: Date;
+  stage: string;
   round: string;
   result: number | null;
+  league: string;
   0: number;
   1: number;
   2: number;
@@ -16,6 +18,11 @@ export interface NewMatch {
   home: string;
   away: string;
   datetime: admin.firestore.Timestamp;
-  round: number;
+  stage: string;
+  round: string;
   result: number | null;
+  league: string;
+  0: number;
+  1: number;
+  2: number;
 }

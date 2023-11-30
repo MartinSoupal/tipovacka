@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.material-icons.md-12 {
+  font-size: 12px;
+}
+
 .material-icons.md-18 {
   font-size: 18px;
 }
@@ -28,4 +32,8 @@
 
 .btn-secondary {
   @apply text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200;
+}
+
+.badge {
+  @apply text-xs mr-2 px-2.5 py-1 rounded;
 }

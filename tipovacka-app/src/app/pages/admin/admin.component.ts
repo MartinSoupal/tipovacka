@@ -2,16 +2,18 @@ import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {Team} from '../../models/team.model';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Match, MatchResult, NewMatch} from '../../models/match.model';
+import {League, Match, MatchResult, NewMatch, Stage} from '../../models/match.model';
 import {combineLatest} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
 
 type NewMatchFormGroupModel = {
-  round: FormControl<number>;
+  stage: FormControl<Stage>;
+  round: FormControl<string>;
   datetime: FormControl<Date>;
   home: FormControl<string>;
   away: FormControl<string>;
+  league: FormControl<string>;
 }
 
 @Component({
@@ -23,12 +25,72 @@ export class AdminComponent {
   teams: Team[] = [];
   teamsInHashMap: Record<string, Team> = {};
   newMatchFormGroup: FormGroup<NewMatchFormGroupModel> = new FormGroup<NewMatchFormGroupModel>(<NewMatchFormGroupModel>{
-    round: new FormControl<number>(0),
+    stage: new FormControl<Stage>('Základní část'),
+    round: new FormControl<string>(''),
     datetime: new FormControl<Date>(new Date()),
     home: new FormControl<string>(''),
     away: new FormControl<string>(''),
+    league: new FormControl<string>('FL'),
   })
   matches: Match[] = [];
+  leagues: League[] = ['FL', 'EURO24'];
+  stages: Stage[] = ['Základní část', 'Nadstavba', 'Skupinová fáze', 'Vyřazovací fáze'];
+  rounds: Record<Stage, string[]> = {
+    'Základní část': [
+      "1. kolo",
+      "2. kolo",
+      "3. kolo",
+      "4. kolo",
+      "5. kolo",
+      "6. kolo",
+      "7. kolo",
+      "8. kolo",
+      "9. kolo",
+      "10. kolo",
+      "11. kolo",
+      "12. kolo",
+      "13. kolo",
+      "14. kolo",
+      "15. kolo",
+      "16. kolo",
+      "17. kolo",
+      "18. kolo",
+      "19. kolo",
+      "20. kolo",
+      "21. kolo",
+      "22. kolo",
+      "23. kolo",
+      "24. kolo",
+      "25. kolo",
+      "26. kolo",
+      "27. kolo",
+      "28. kolo",
+      "29. kolo",
+      "30. kolo"
+    ],
+    Nadstavba: [
+      "1. kolo",
+      "2. kolo",
+      "3. kolo",
+      "4. kolo",
+      "5. kolo",
+      "6. kolo",
+    ],
+    'Skupinová fáze': [
+      "1. kolo",
+      "2. kolo",
+      "3. kolo",
+      "4. kolo",
+      "5. kolo",
+      "6. kolo",
+    ],
+    'Vyřazovací fáze': [
+      'Osmifinále',
+      'Čtvrtfinále',
+      'Semifinále',
+      'Finále'
+    ]
+  }
 
   constructor(
     private dataService: DataService
@@ -53,6 +115,12 @@ export class AdminComponent {
           )
         }
       })
+    this.newMatchFormGroup.get('stage')?.valueChanges
+      .subscribe({
+        next: () => {
+          this.newMatchFormGroup.get('round')?.setValue('');
+        }
+      })
   }
 
   addMatch = () => {
@@ -63,11 +131,13 @@ export class AdminComponent {
         next: (id) => {
           this.matches.push({
             id,
+            stage: match.stage,
             round: match.round,
             datetime: match.datetime,
             home: this.teamsInHashMap[match.home].name,
             away: this.teamsInHashMap[match.away].name,
             result: null,
+            league: match.league,
             0: 0,
             1: 0,
             2: 0,

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MatchWithTeamName} from '../../../models/match.model';
+import {League, MatchWithTeamName} from '../../../models/match.model';
 
 @Component({
   selector: 'app-previous-matches',
@@ -7,6 +7,7 @@ import {MatchWithTeamName} from '../../../models/match.model';
   styleUrls: ['./previous-matches.component.scss']
 })
 export class PreviousMatchesComponent {
-  @Input() groupOfPrevMatches: MatchWithTeamName[][] = [];
+  @Input() prevMatches: MatchWithTeamName[] = [];
+  @Input() leagues: League[] = [];
   @Input() loading = false;
 }

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Match, MatchWithTeamName} from '../../models/match.model';
+import {League, Match, MatchWithTeamName} from '../../models/match.model';
 import {DataService} from '../../services/data.service';
 import {combineLatest, map, of, switchMap} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
+import {includes} from 'ramda';
 import {Team} from '../../models/team.model';
 import {Vote} from '../../models/vote.model';
 import {User} from '../../models/user.model';
@@ -15,8 +16,10 @@ import {AuthService} from '../../services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  groupOfPrevMatches: MatchWithTeamName[][] = [];
-  groupOfNextMatches: MatchWithTeamName[][] = [];
+  groupOfPrevMatches: MatchWithTeamName[] = [];
+  leaguesOfPrevMatches: League[] = [];
+  nextMatches: MatchWithTeamName[] = [];
+  leaguesOfNextMatches: League[] = [];
   users: User[] = [];
   activeTab: 'previous' | 'next' | 'standings' = 'next';
   loadingNextMatches = true;
@@ -58,24 +61,14 @@ export class DashboardComponent implements OnInit {
 
   private clearVotesFromMatches = () => {
     R.forEach(
-      (matches: MatchWithTeamName[]) => {
-        R.forEach(
-          (match: MatchWithTeamName) => {
-            match.vote = null;
-          },
-          matches,
-        );
+      (match: MatchWithTeamName) => {
+        match.vote = null;
       },
-      this.groupOfNextMatches,
+      this.nextMatches,
     );
     R.forEach(
-      (matches: MatchWithTeamName[]) => {
-        R.forEach(
-          (match: MatchWithTeamName) => {
-            match.vote = null;
-          },
-          matches,
-        );
+      (match: MatchWithTeamName) => {
+        match.vote = null;
       },
       this.groupOfPrevMatches,
     );
@@ -101,21 +94,27 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: ([matches, votes]: [Match[], Vote[]]) => {
           const votesInHashMap = arrayToHashMap('matchId', votes);
-          this.groupOfNextMatches = R.groupWith(
-            (a, b) => a.datetime.getTime() === b.datetime.getTime(),
-            R.sort(
-              (a, b) => a.datetime.getTime() - b.datetime.getTime(),
-              matches.map(
-                (match): MatchWithTeamName => ({
+          this.nextMatches =
+            R.sortWith<MatchWithTeamName>([
+              R.ascend(R.prop('datetime')),
+              R.ascend(R.prop('league')),
+              R.ascend(R.prop('stage')),
+              R.ascend(R.prop('round')),
+            ])(matches.map(
+              (match): MatchWithTeamName => {
+                if (!includes(match.league, this.leaguesOfNextMatches)) {
+                  this.leaguesOfNextMatches.push(match.league);
+                }
+                return {
                   ...match,
                   homeTeam: this.teamsInHashMap[match.home],
                   awayTeam: this.teamsInHashMap[match.away],
                   daysTill: this.daysDifferenceTillNow(match.datetime),
                   vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
-                })
-              )
-            )
-          );
+                }
+              },
+              matches
+            ))
           this.loadingNextMatches = false;
         }
       })
@@ -141,21 +140,27 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: ([matches, votes]: [Match[], Vote[]]) => {
           const votesInHashMap = arrayToHashMap('matchId', votes);
-          this.groupOfPrevMatches = R.groupWith(
-            (a, b) => a.datetime.getTime() === b.datetime.getTime(),
-            R.sort(
-              (a, b) => b.datetime.getTime() - a.datetime.getTime(),
+          this.groupOfPrevMatches =
+            R.sortWith<MatchWithTeamName>([
+              R.descend(R.prop('datetime')),
+              R.ascend(R.prop('league')),
+              R.ascend(R.prop('stage')),
+              R.ascend(R.prop('round')),
+            ])(
               matches.map(
-                (match): MatchWithTeamName => ({
-                  ...match,
-                  homeTeam: this.teamsInHashMap[match.home],
-                  awayTeam: this.teamsInHashMap[match.away],
-                  daysTill: this.daysDifferenceTillNow(match.datetime),
-                  vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
-                })
-              )
-            )
-          );
+                (match): MatchWithTeamName => {
+                  if (!includes(match.league, this.leaguesOfPrevMatches)) {
+                    this.leaguesOfPrevMatches.push(match.league);
+                  }
+                  return {
+                    ...match,
+                    homeTeam: this.teamsInHashMap[match.home],
+                    awayTeam: this.teamsInHashMap[match.away],
+                    daysTill: this.daysDifferenceTillNow(match.datetime),
+                    vote: R.defaultTo(null, votesInHashMap[match.id]?.result),
+                  }
+                },
+              ))
           this.loadingPrevMatches = false;
         }
       })

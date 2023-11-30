@@ -4,7 +4,9 @@
     class="flex"
   >
     <div class="grid grid-cols-2 w-full">
-      <div>{{match.round}}. kolo</div>
+      <div>{{match.league}}</div>
+      <div>{{match.stage}}</div>
+      <div>{{match.round}}</div>
       <div>{{match.home}}</div>
       <div>{{match.datetime | date: "d.M. 'v' H:mm" : undefined : 'cs'}}</div>
       <div>{{match.away}}</div>
@@ -41,9 +43,21 @@
 <div
   [formGroup]="newMatchFormGroup"
   class="grid grid-cols-2 mt-20">
-  <input
-    formControlName="round"
-    type="number">
+  <select formControlName="league">
+    <option
+      *ngFor="let league of leagues"
+      [value]="league">{{league}}</option>
+  </select>
+  <select formControlName="stage">
+    <option
+      *ngFor="let stage of stages"
+      [value]="stage">{{stage}}</option>
+  </select>
+  <select formControlName="round">
+    <option
+      *ngFor="let round of rounds[newMatchFormGroup.value.stage || 'Základní část']"
+      [value]="round">{{round}}</option>
+  </select>
   <input
     formControlName="datetime"
     type="datetime-local">
