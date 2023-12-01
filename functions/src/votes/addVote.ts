@@ -46,6 +46,9 @@ export async function addVote(req: Request, res: any) {
   } else {
     const voteDoc = voteSnapshot.docs.at(0)!;
     const vote = voteDoc.data();
+    if (vote.result === result) {
+      return;
+    }
     if (result !== null) {
       await matchSnapshot.ref.update({
         [vote.result]: match[vote.result] - 1,

@@ -1,22 +1,25 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm">
-  <div class="w-full flex justify-end">
-    <button
-      (click)="toggleSort()"
-      class="btn btn-secondary">
-      <span class="material-icons md-18">sort</span>
-      {{sortBy === 'correctVotes' ? 'Úspěšné tipy' : 'Úspěšnost'}}
-    </button>
-  </div>
-  <table
-    *ngIf="!loading"
-    class="w-full">
-    <tr
-      *ngFor="let user of users | sortBy: sortBy: 'desc'; let i = index"
-      class="border-gray-200 border-b-[1px] last:border-b-0">
-      <td class="text-gray-700 text-right">{{i + 1}}.</td>
-      <td class="w-full">{{user.name}}</td>
-      <td class="font-bold text-right">{{user.correctVotes}}</td>
-      <td>
+  <ng-container *ngIf="!loading">
+    <div
+      *ngIf="users.length"
+      class="w-full flex justify-end">
+      <button
+        (click)="toggleSort()"
+        class="btn btn-secondary">
+        <span class="material-icons md-18">sort</span>
+        {{sortBy === 'correctVotes' ? 'Úspěšné tipy' : 'Úspěšnost'}}
+      </button>
+    </div>
+    <table
+      *ngIf="!loading"
+      class="w-full">
+      <tr
+        *ngFor="let user of users | sortBy: sortBy: 'desc'; let i = index"
+        class="border-gray-200 border-b-[1px] last:border-b-0">
+        <td class="text-gray-700 text-right">{{i + 1}}.</td>
+        <td class="w-full">{{user.name}}</td>
+        <td class="font-bold text-right">{{user.correctVotes}}</td>
+        <td>
         <span
           [ngClass]="{
             'bg-red-100 text-red-800': user.correctVotes / user.totalVotes < 0.34,
@@ -27,14 +30,21 @@
         >
           {{(user.correctRatio * 100) | number: '1.1-1':'cs-CZ'}}%
         </span>
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+    </table>
+    <div
+      *ngIf="!users.length"
+      class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-50"
+      role="alert">
+      Zatím nebyl vyhodnocen žádný tip.
+    </div>
+  </ng-container>
   <div
     *ngIf="loading"
     class="animate-pulse flex flex-col">
     <div
-      *ngFor="let item of loadingArray"
+      *ngFor="let _ of loadingArray"
       class="border-gray-200 border-b-[1px] last:border-b-0 flex">
       <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-12"></div>
       <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-full"></div>

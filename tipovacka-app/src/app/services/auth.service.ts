@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   // Sign in with Google
-  signIn = () =>
+  signIn = () => {
     this.afAuth
       .signInWithPopup(new GoogleAuthProvider())
       .then(() => {
@@ -46,7 +46,7 @@ export class AuthService {
             },
           })
       })
-
+  }
 
   signOut = () => {
     this.afAuth

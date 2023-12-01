@@ -7,4 +7,5 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'tipovacka-app';
+  isBrowserInApp = window.navigator.userAgent.includes('FBAN') || window.navigator.userAgent.includes('FBAV');
 }
