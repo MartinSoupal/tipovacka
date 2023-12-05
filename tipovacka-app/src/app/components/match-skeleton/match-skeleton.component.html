@@ -1,0 +1,18 @@
+<div class="w-full grid grid-cols-3 gap-4 content-start">
+  <div
+    *ngFor="let item of array"
+    class="flex items-center flex-col"
+  >
+    <div
+      [ngClass]="{
+        'w-20 h-20': !small,
+        'w-14 h-14': small
+      }"
+      class="w-20 h-20 rounded-full border-2 border-gray-100 flex justify-center items-center p-2"
+    >
+      <div class="rounded-full w-full h-full bg-gray-200"></div>
+    </div>
+    <div class="mt-2 bg-gray-200 w-full rounded h-4"></div>
+    <div class="mt-1 w-full bg-gray-100 rounded h-4"></div>
+  </div>
+</div>

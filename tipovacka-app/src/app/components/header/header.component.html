@@ -1,0 +1,42 @@
+<div class="flex p-4 mx-auto items-center justify-between">
+  <a routerLink="">
+    <img
+      alt="Tipovačka"
+      class="w-6 h-6"
+      src="/assets/icons/logo.png"
+      srcset="/assets/icons/logo.png"
+    >
+  </a>
+  <div class="flex gap-2 items-center">
+    <button
+      (click)="changeLang()"
+      class="flex">
+      <span class="material-icons">language</span>
+    </button>
+    <button
+      (click)="goToAdmin()"
+      *ngIf="(authService.getUserData$ | async)?.email === 'm.soupal.06@gmail.com'"
+      class="flex"
+    >
+      <span class="material-icons">admin_panel_settings</span>
+    </button>
+    <div *ngIf="authService.isSignIn$ | async">
+      <img
+        [src]="(authService.getUserData$ | async)?.photoURL"
+        alt="Rounded avatar"
+        class="w-8 h-8 rounded-full">
+    </div>
+    <button
+      (click)="authService.signIn()"
+      *ngIf="!(authService.isSignIn$ | async)"
+      class="flex">
+      <span class="material-icons">login</span>
+    </button>
+    <button
+      (click)="authService.signOut()"
+      *ngIf="authService.isSignIn$ | async"
+      class="flex">
+      <span class="material-icons">logout</span>
+    </button>
+  </div>
+</div>

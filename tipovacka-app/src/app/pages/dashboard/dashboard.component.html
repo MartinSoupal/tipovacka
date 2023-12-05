@@ -1,0 +1,74 @@
+<div class="border-b border-gray-200">
+  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
+    <li class="mr-2">
+      <button
+        (click)="activeTab = 'next'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'next',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'next'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        {{ 'MENU.SCHEDULE' | transloco }}
+      </button>
+    </li>
+    <li class="mr-2">
+      <button
+        (click)="activeTab = 'previous'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'previous',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'previous'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        {{ 'MENU.RESULTS' | transloco }}
+      </button>
+    </li>
+    <li>
+      <button
+        (click)="activeTab = 'standings'"
+        [ngClass]="{
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'standings',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'standings'
+        }"
+        class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
+      >
+        {{ 'MENU.STANDINGS' | transloco }}
+      </button>
+    </li>
+    <li *ngIf="authService.isSignIn$ | async">
+      <a
+        class="py-4 px-4 block"
+        href="https://discord.gg/v8GxDMVG"
+        target="_blank"
+      >
+        <img
+          alt="Discord"
+          class="h-4 w-auto"
+          src="assets/images/discord.png"
+          srcset="assets/images/discord.png"
+        >
+      </a>
+    </li>
+  </ul>
+</div>
+
+<ng-container [ngSwitch]="activeTab">
+  <app-next-matches
+    *ngSwitchCase="'next'"
+    [leagues]="leaguesOfNextMatches"
+    [loading]="loadingNextMatches"
+    [nextMatches]="nextMatches"
+  />
+  <app-previous-matches
+    *ngSwitchCase="'previous'"
+    [leagues]="leaguesOfPrevMatches"
+    [loading]="loadingPrevMatches"
+    [prevMatches]="groupOfPrevMatches"
+  />
+  <app-standings
+    *ngSwitchCase="'standings'"
+    [loading]="loadingStandings"
+    [users]="users"
+  />
+</ng-container>
