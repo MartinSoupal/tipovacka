@@ -9,6 +9,7 @@ import {getVotes} from './votes/getVotes';
 import {getAllMatches} from './matches/getMatches';
 import {editMatch} from './matches/editMatch';
 import {getLeagues} from './leagues/getLeagues';
+import {addUserLeague} from './userLeagues/addUserLeague';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -25,5 +26,6 @@ app.get('/leagues/all', getLeagues);
 // user
 app.post('/vote', addVote);
 app.post('/votes', getVotes);
+app.post('/userLeague', addUserLeague);
 
 export const privateApi = functions.https.onRequest(app);

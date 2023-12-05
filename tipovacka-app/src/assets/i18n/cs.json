@@ -60,5 +60,6 @@
       "SUCCESSFUL_RATE": "Úspěšnost"
     }
   },
-  "POSTPONED": "Zápas odložen."
+  "POSTPONED": "Zápas odložen.",
+  "CREATE_USER_LEAGUE": "Vytvořit ligu přátel"
 }

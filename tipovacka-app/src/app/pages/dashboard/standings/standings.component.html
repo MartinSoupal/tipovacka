@@ -1,4 +1,12 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm">
+  <div class="flex">
+    <button
+      class="btn btn-secondary"
+    >
+      <span class="material-icons md-18">add</span>
+      {{ 'CREATE_USER_LEAGUE' | transloco }}
+    </button>
+  </div>
   <ng-container *ngIf="!loading">
     <div
       *ngIf="users.length"

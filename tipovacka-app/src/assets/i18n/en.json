@@ -60,5 +60,6 @@
       "SUCCESSFUL_RATE": "Successful rate"
     }
   },
-  "POSTPONED": "Match postponed."
+  "POSTPONED": "Match postponed.",
+  "CREATE_USER_LEAGUE": "Create user league"
 }

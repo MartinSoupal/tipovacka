@@ -80,7 +80,7 @@ registerLocaleData(localeCs);
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     TranslocoRootModule,
-    AdminDatetimeFormatPipe
+    AdminDatetimeFormatPipe,
   ],
   providers: [{provide: LOCALE_ID, useValue: 'cs-CZ'}],
   bootstrap: [AppComponent]
