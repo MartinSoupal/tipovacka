@@ -26,6 +26,7 @@ import {FilterMatchesByPipe} from './pipes/filter-matches-by.pipe';
 import {MatchesOverviewComponent} from './components/matches-overview/matches-overview.component';
 import {TranslocoRootModule} from './transloco-root.module';
 import {DatetimeFormatPipe} from './pipes/datetime-format.pipe';
+import {AdminDatetimeFormatPipe} from './pipes/admin-datetime-format.pipe';
 
 const routes: Routes = [
   {
@@ -78,7 +79,8 @@ registerLocaleData(localeCs);
     RouterOutlet,
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
-    TranslocoRootModule
+    TranslocoRootModule,
+    AdminDatetimeFormatPipe
   ],
   providers: [{provide: LOCALE_ID, useValue: 'cs-CZ'}],
   bootstrap: [AppComponent]

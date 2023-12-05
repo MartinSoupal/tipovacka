@@ -35,6 +35,7 @@ export async function getNextMatches(req: CustomRequest, res: any) {
       0: data[0],
       1: data[1],
       2: data[2],
+      postponed: data.postponed,
     });
   });
   res.status(200).send(JSON.stringify(matches));
@@ -52,6 +53,7 @@ export async function getPrevMatches(req: CustomRequest, res: any) {
   const snapshot = await db.collection('matches')
     .where('datetime', '>', twoWeeksBeforeNow)
     .where('datetime', '<', now)
+    .where('postponed', '==', false)
     .get();
   if (snapshot.empty) {
     res.status(200).send(JSON.stringify([]));
@@ -72,6 +74,7 @@ export async function getPrevMatches(req: CustomRequest, res: any) {
       0: data[0],
       1: data[1],
       2: data[2],
+      postponed: data.postponed,
     });
   });
   res.status(200).send(JSON.stringify(matches));
@@ -102,6 +105,7 @@ export async function getAllMatches(req: CustomRequest, res: any) {
       0: data[0],
       1: data[1],
       2: data[2],
+      postponed: data.postponed,
     });
   });
   res.status(200).send(JSON.stringify(matches));

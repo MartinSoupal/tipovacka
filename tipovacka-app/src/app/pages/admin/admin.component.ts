@@ -99,12 +99,11 @@ export class AdminComponent {
     const match: NewMatch = {
       home: this.newMatchFormGroup.value.home || '',
       away: this.newMatchFormGroup.value.away || '',
-      datetime: this.newMatchFormGroup.value.datetime || new Date(),
+      datetime: new Date(`${this.newMatchFormGroup.value.datetime}+01:00`) || new Date(),
       league: this.newMatchFormGroup.value.league?.name || '',
       stage: this.newMatchFormGroup.value.stage?.name || '',
       round: this.newMatchFormGroup.value.round || '',
     }
-    match.datetime = new Date(`${match.datetime}+01:00`);
     this.dataService.addMatch(match)
       .subscribe({
         next: (id) => {
@@ -120,7 +119,8 @@ export class AdminComponent {
             0: 0,
             1: 0,
             2: 0,
-            totalVotes: 0
+            totalVotes: 0,
+            postponed: false,
           })
           this.newMatchFormGroup.get('home')?.reset();
           this.newMatchFormGroup.get('away')?.reset();
@@ -141,10 +141,30 @@ export class AdminComponent {
 
   selectResult = (match: Match, event: Event) => {
     const result = Number((event.target as HTMLSelectElement).value) as MatchResult;
-    this.dataService.editMatchResult(match.id, result)
+    this.dataService.editMatch(match.id, {result})
       .subscribe({
         next: () => {
           match.result = result;
+        }
+      })
+  }
+
+  setPostponed = (match: Match, event: Event) => {
+    const postponed = (event.target as HTMLSelectElement).value === 'true'
+    this.dataService.editMatch(match.id, {postponed})
+      .subscribe({
+        next: () => {
+          match.postponed = postponed;
+        }
+      })
+  }
+
+  setDatetime = (match: Match, event: Event) => {
+    const datetime = new Date(`${(event.target as HTMLInputElement).value}+01:00`)
+    this.dataService.editMatch(match.id, {datetime})
+      .subscribe({
+        next: () => {
+          match.datetime = datetime;
         }
       })
   }

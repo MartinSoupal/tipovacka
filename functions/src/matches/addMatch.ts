@@ -33,6 +33,7 @@ export async function addMatch(req: Request, res: any) {
     0: 0,
     1: 0,
     2: 0,
+    postponed: false,
   };
   const ress = await db.collection('matches').add(newMatch);
   res.status(200).send({id: ress.id});

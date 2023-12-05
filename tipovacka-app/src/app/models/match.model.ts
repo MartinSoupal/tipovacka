@@ -13,6 +13,7 @@ export interface Match {
   1: number;
   2: number;
   totalVotes: number;
+  postponed: boolean;
 }
 
 export interface MatchWithTeamName extends Match {
@@ -29,6 +30,12 @@ export interface NewMatch {
   stage: string;
   round: string;
   league: string;
+}
+
+export interface EditedMatch {
+  datetime: Date;
+  result: MatchResult;
+  postponed: boolean;
 }
 
 export type MatchResult = 0 | 1 | 2 | null;

@@ -7,7 +7,7 @@ import {deleteMatch} from './matches/deleteMatch';
 import {addVote} from './votes/addVote';
 import {getVotes} from './votes/getVotes';
 import {getAllMatches} from './matches/getMatches';
-import {editMatchResult} from './matches/editMatchResult';
+import {editMatch} from './matches/editMatch';
 import {getLeagues} from './leagues/getLeagues';
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(validateFirebaseToken);
 app.get('/match/all', getAllMatches);
 app.post('/match', addMatch);
 app.delete('/match/:matchId', deleteMatch);
-app.post('/match/:matchId/result', editMatchResult);
+app.patch('/match/:matchId', editMatch);
 app.get('/leagues/all', getLeagues);
 
 // user

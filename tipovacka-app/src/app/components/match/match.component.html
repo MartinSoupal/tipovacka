@@ -1,8 +1,13 @@
 <div class="w-full grid grid-cols-3 gap-4 content-start relative">
   <div
-    *ngIf="data?.result === null && data?.datetime! < now"
-    class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50 font-medium text-shadow">
-    {{ 'WAITING_TO_SET_RESULT' | transloco }}
+    *ngIf="data?.result === null && data?.datetime! < now && !data?.postponed"
+    class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
+    <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'WAITING_TO_SET_RESULT' | transloco }}</div>
+  </div>
+  <div
+    *ngIf="data?.postponed"
+    class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
+    <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'POSTPONED' | transloco }}</div>
   </div>
   <button
     (click)="chooseResult(1)"

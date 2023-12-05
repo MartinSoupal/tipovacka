@@ -12,6 +12,7 @@ export interface Match {
   0: number;
   1: number;
   2: number;
+  postponed: boolean;
 }
 
 export interface NewMatch {
@@ -25,4 +26,5 @@ export interface NewMatch {
   0: number;
   1: number;
   2: number;
+  postponed: boolean;
 }

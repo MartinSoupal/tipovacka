@@ -10,7 +10,7 @@ export async function getStandings(req: CustomRequest, res: any) {
   matchesSnapshot.forEach(
     (doc) => {
       const data = doc.data();
-      if (data.result !== null) {
+      if (data.result !== null && !data.postponed) {
         matches[doc.id] = {
           id: doc.id,
           home: data.home,
@@ -23,6 +23,7 @@ export async function getStandings(req: CustomRequest, res: any) {
           0: data[0],
           1: data[1],
           2: data[2],
+          postponed: data.postponed,
         };
       }
     }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Team} from '../models/team.model';
-import {Match, MatchResult, NewMatch} from '../models/match.model';
+import {EditedMatch, Match, MatchResult, NewMatch} from '../models/match.model';
 import {map} from 'rxjs';
 import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
@@ -152,10 +152,10 @@ export class DataService {
       }
     )
 
-  editMatchResult = (matchId: string, result: MatchResult) =>
-    this.http.post<string>(
-      `${this.privateUrl}/match/${matchId}/result`,
-      {result},
+  editMatch = (matchId: string, editedMatch: Partial<EditedMatch>) =>
+    this.http.patch<string>(
+      `${this.privateUrl}/match/${matchId}`,
+      editedMatch,
       {
         headers: {
           'Content-Type': 'application/json',
