@@ -1,6 +1,6 @@
 <div
   *ngIf="leagues.length > 1"
-  class="flex">
+  class="flex mt-8">
   <button
     (click)="addLeagueToFilter(league)"
     *ngFor="let league of leagues"
@@ -20,7 +20,7 @@
       class="material-icons md-12">close</span>
   </button>
 </div>
-<div class="grid grid-cols-1 w-full gap-y-8">
+<div class="grid grid-cols-1 w-full gap-y-8 mt-8">
   <ng-container *ngFor="let match of matches; let i = index">
     <div
       *ngIf="!leaguesFilter.length || isLeagueInFilter[match.league]"
