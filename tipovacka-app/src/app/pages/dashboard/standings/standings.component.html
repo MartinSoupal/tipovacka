@@ -1,5 +1,5 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm">
-  <div class="flex">
+  <div class="flex justify-end items-end flex-col md:flex-row gap-2">
     <button
       (click)="openCreateUserLeagueModal()"
       class="btn btn-secondary"
@@ -7,16 +7,37 @@
       <span class="material-icons md-18">add</span>
       {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
     </button>
+    <button
+      (click)="openChooseUserLeagueModal()"
+      *ngIf="userLeagues.length"
+      class="btn btn-secondary"
+    >
+      <span class="material-icons md-18">groups</span>
+      {{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: userLeagues.length} }}
+    </button>
   </div>
   <ng-container *ngIf="!loading">
     <div
       *ngIf="users.length"
-      class="w-full flex justify-end">
+      class="w-full flex justify-between items-end mt-4">
+      <div class="flex flex-col">
+        <h2 class="">{{ chosenUserLeague?.name }}</h2>
+        <div
+          *ngIf="chosenUserLeague"
+          class="text-xxs italic text-gray-600"
+        >
+          <span *ngFor="let leagues of chosenUserLeague.leagues; let i = index">
+            {{ leagues + (i < chosenUserLeague.leagues.length - 1 ? ', ' : '') }}
+          </span>
+        </div>
+      </div>
       <button
         (click)="toggleSort()"
         class="btn btn-secondary">
         <span class="material-icons md-18">sort</span>
+        <span class="hidden md:block">
         {{(sortBy === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_TIPS') | transloco}}
+        </span>
       </button>
     </div>
     <table

@@ -5,7 +5,6 @@ export type League = {
 }
 
 export type LeagueStage = {
-  id: string;
   name: string;
   rounds: string[];
 }

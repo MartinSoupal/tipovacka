@@ -6,3 +6,10 @@ export interface UserLeague {
   startedDate: Date;
   leagues: [];
 }
+
+export interface UserLeagueForUser {
+  id: string;
+  name: string;
+  startedDate: Date;
+  leagues: string[];
+}

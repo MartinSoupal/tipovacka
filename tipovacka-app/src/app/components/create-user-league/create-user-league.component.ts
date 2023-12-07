@@ -5,6 +5,7 @@ import {DataService} from '../../services/data.service';
 import {League} from '../../models/league.model';
 import {NgForOf, NgIf} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {UserLeague} from '../../models/user-league.model';
 
 @Component({
   selector: 'app-create-user-league',
@@ -19,10 +20,10 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
   styleUrl: './create-user-league.component.scss'
 })
 export class CreateUserLeagueComponent {
-  ref: DialogRef<void, boolean> = inject(DialogRef);
+  ref: DialogRef<void, UserLeague | undefined> = inject(DialogRef);
   leagues: League[] = [];
   formGroup = new FormGroup<any>({
-    name: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
+    name: new FormControl<string>('', [Validators.required, Validators.maxLength(30)]),
     startedDate: new FormControl<string>(''),
     leagues: new FormGroup({}),
   })
@@ -44,15 +45,26 @@ export class CreateUserLeagueComponent {
   }
 
   submit = () => {
-    console.log(this.formGroup.value);
     this.formGroup.markAsTouched();
     if (this.formGroup.valid) {
+      const name = this.formGroup.get('name')!.value;
+      const startedDate = new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`);
+      const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true);
       this.dataService.addUserLeague({
-        name: this.formGroup.get('name')!.value,
-        startedDate: new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`),
-        leagues: Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true)
+        name,
+        startedDate,
+        leagues,
       })
-        .subscribe()
+        .subscribe({
+          next: (id) => {
+            this.ref.close({
+              id,
+              name,
+              startedDate,
+              leagues,
+            });
+          }
+        })
     }
   }
 }

@@ -70,5 +70,10 @@
     "STARTED_DATE": "Datum začátku",
     "STARTED_DATE_INFO": "Datum od kdy se začínají počítat body. Nezadané datum se rovná všechny body.",
     "CHOSEN_LEAGUES": "Vybrané ligy"
+  },
+  "CHOOSE_USER_LEAGUE_BUTTON": "Zobrazit ligu přátel ({{count}})",
+  "CHOOSE_USER_LEAGUE": {
+    "TITLE": "Zobrazit ligu přátel",
+    "CANCEL_BUTTON": "Zavřít"
   }
 }

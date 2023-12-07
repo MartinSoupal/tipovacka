@@ -9,6 +9,7 @@ import {Team} from '../../models/team.model';
 import {Vote} from '../../models/vote.model';
 import {User} from '../../models/user.model';
 import {AuthService} from '../../services/auth.service';
+import {UserLeague} from '../../models/user-league.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +27,7 @@ export class DashboardComponent implements OnInit {
   loadingPrevMatches = true;
   loadingStandings = true;
   teamsInHashMap: Record<string, Team> = {};
+  userLeagues: UserLeague[] = [];
 
   constructor(
     private dataService: DataService,
@@ -49,13 +51,16 @@ export class DashboardComponent implements OnInit {
           this.loadingStandings = false;
         }
       })
+    this.loadAllUserLeague();
     addEventListener('signIn', () => {
       this.loadNextMatches();
       this.loadPrevMatches();
+      this.loadAllUserLeague();
     });
 
     addEventListener('signOut', () => {
       this.clearVotesFromMatches();
+      this.userLeagues = [];
     });
   }
 
@@ -173,5 +178,14 @@ export class DashboardComponent implements OnInit {
 
     // Convert the difference from milliseconds to days
     return Math.round(differenceInMs / (1000 * 60 * 60 * 24));
+  }
+
+  private loadAllUserLeague = () => {
+    this.dataService.getAllUserLeagues()
+      .subscribe({
+        next: userLeagues => {
+          this.userLeagues = userLeagues;
+        }
+      })
   }
 }
