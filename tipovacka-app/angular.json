@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "tipovacka-app:build:production"
+              "buildTarget": "tipovacka-app:build:production"
             },
             "development": {
-              "browserTarget": "tipovacka-app:build:development"
+              "buildTarget": "tipovacka-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tipovacka-app:build"
+            "buildTarget": "tipovacka-app:build"
           }
         },
         "test": {

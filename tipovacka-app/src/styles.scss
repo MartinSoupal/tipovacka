@@ -37,3 +37,41 @@
 .badge {
   @apply text-xs mr-2 px-2.5 py-1 rounded;
 }
+
+.input-label {
+  @apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+.input {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+
+  &[type="date"] {
+    @apply p-1.5;
+  }
+
+  &.ng-touched.ng-invalid {
+    @apply bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500;
+  }
+}
+
+.input-checkbox {
+  @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2;
+}
+
+.input-checkbox-label {
+  @apply ms-2 text-sm font-medium text-gray-900;
+}
+
+.input-error-description {
+  @apply mt-1 text-red-600 text-xxs;
+}
+
+.input-description {
+  @apply mt-1 text-gray-600 text-xxs;
+}
+
+ngneat-dialog {
+  .ngneat-dialog-content {
+    @apply p-4;
+  }
+}

@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   nextMatches: MatchWithTeamName[] = [];
   leaguesOfNextMatches: string[] = [];
   users: User[] = [];
-  activeTab: 'previous' | 'next' | 'standings' = 'next';
+  activeTab: 'previous' | 'next' | 'standings' = 'standings';
   loadingNextMatches = true;
   loadingPrevMatches = true;
   loadingStandings = true;

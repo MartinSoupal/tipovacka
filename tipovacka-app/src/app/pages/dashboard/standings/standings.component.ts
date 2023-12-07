@@ -1,5 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {User} from '../../../models/user.model';
+import {CreateUserLeagueComponent} from '../../../components/create-user-league/create-user-league.component';
+import {DialogService} from '@ngneat/dialog';
 
 @Component({
   selector: 'app-standings',
@@ -13,6 +15,7 @@ export class StandingsComponent {
   loadingArray = [0, 1, 2, 3, 4];
 
   sortBy: 'correctVotes' | 'correctRatio' = 'correctVotes';
+  private dialog = inject(DialogService);
 
   toggleSort = () => {
     if (this.sortBy === 'correctVotes') {
@@ -23,5 +26,9 @@ export class StandingsComponent {
       this.sortBy = 'correctVotes';
       return;
     }
+  }
+
+  openCreateUserLeagueModal() {
+    const dialogRef = this.dialog.open(CreateUserLeagueComponent);
   }
 }

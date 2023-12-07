@@ -1,10 +1,11 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm">
   <div class="flex">
     <button
+      (click)="openCreateUserLeagueModal()"
       class="btn btn-secondary"
     >
       <span class="material-icons md-18">add</span>
-      {{ 'CREATE_USER_LEAGUE' | transloco }}
+      {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
     </button>
   </div>
   <ng-container *ngIf="!loading">

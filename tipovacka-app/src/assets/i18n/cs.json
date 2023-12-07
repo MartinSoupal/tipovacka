@@ -61,5 +61,14 @@
     }
   },
   "POSTPONED": "Zápas odložen.",
-  "CREATE_USER_LEAGUE": "Vytvořit ligu přátel"
+  "CREATE_USER_LEAGUE_BUTTON": "Vytvořit ligu přátel",
+  "CREATE_USER_LEAGUE": {
+    "TITLE": "Vytvořit ligu přátel",
+    "SUBMIT_BUTTON": "Vytvořit",
+    "CANCEL_BUTTON": "Zavřít",
+    "NAME": "Název",
+    "STARTED_DATE": "Datum začátku",
+    "STARTED_DATE_INFO": "Datum od kdy se začínají počítat body. Nezadané datum se rovná všechny body.",
+    "CHOSEN_LEAGUES": "Vybrané ligy"
+  }
 }

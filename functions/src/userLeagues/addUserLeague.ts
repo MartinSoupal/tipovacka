@@ -11,9 +11,10 @@ interface Request extends CustomRequest {
 
 export async function addUserLeague(req: Request, res: any) {
   const userUid = req.userUid;
-  void await db.collection('userLeagues').add({
+  const ress = await db.collection('userLeagues').add({
     ...req.body,
     admins: [userUid],
     users: [userUid],
   });
+  res.status(200).send({id: ress.id});
 }

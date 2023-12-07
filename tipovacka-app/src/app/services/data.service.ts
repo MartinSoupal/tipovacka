@@ -7,6 +7,7 @@ import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
 import {User} from '../models/user.model';
 import {League} from '../models/league.model';
+import {NewUserLeague} from '../models/user-league.model';
 
 @Injectable({
   providedIn: 'root'
@@ -191,6 +192,18 @@ export class DataService {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': this.token ? `Bearer ${this.token}` : '',
+        },
+      }
+    )
+
+  addUserLeague = (newUserLeague: NewUserLeague) =>
+    this.http.post<string>(
+      `${this.privateUrl}/user-league`,
+      newUserLeague,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       }
     )

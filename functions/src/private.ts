@@ -26,6 +26,6 @@ app.get('/leagues/all', getLeagues);
 // user
 app.post('/vote', addVote);
 app.post('/votes', getVotes);
-app.post('/userLeague', addUserLeague);
+app.post('/user-league', addUserLeague);
 
 export const privateApi = functions.https.onRequest(app);

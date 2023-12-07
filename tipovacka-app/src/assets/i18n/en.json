@@ -61,5 +61,14 @@
     }
   },
   "POSTPONED": "Match postponed.",
-  "CREATE_USER_LEAGUE": "Create user league"
+  "CREATE_USER_LEAGUE_BUTTON": "Create league of friends",
+  "CREATE_USER_LEAGUE": {
+    "TITLE": "Create league of friends",
+    "SUBMIT_BUTTON": "Create",
+    "CANCEL_BUTTON": "Cancel",
+    "NAME": "Name",
+    "STARTED_DATE": "Start date",
+    "STARTED_DATE_INFO": "The date from which points are counted. An unspecified date equals all points.",
+    "CHOSEN_LEAGUES": "Chosen leagues"
+  }
 }

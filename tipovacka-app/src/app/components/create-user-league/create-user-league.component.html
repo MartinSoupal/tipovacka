@@ -1,0 +1,58 @@
+<h1>{{ 'CREATE_USER_LEAGUE.TITLE' | transloco }}</h1>
+<div
+  [formGroup]="formGroup"
+  class="grid grid-cols-2 py-8 gap-x-2 gap-y-4">
+  <div>
+    <label
+      class="input-label"
+    >{{ 'CREATE_USER_LEAGUE.NAME' | transloco }}</label>
+    <input
+      class="input"
+      formControlName="name"
+      type="text"
+    >
+    <p
+      *ngIf="formGroup.controls['name'].touched && formGroup.controls['name'].invalid"
+      class="input-error-description"
+    >Required</p>
+  </div>
+  <div>
+    <label
+      class="input-label"
+    >{{ 'CREATE_USER_LEAGUE.STARTED_DATE' | transloco }}</label>
+    <input
+      class="input"
+      formControlName="startedDate"
+      type="date"
+    >
+    <p
+      class="input-description"
+    >{{ 'CREATE_USER_LEAGUE.STARTED_DATE_INFO' | transloco }}</p>
+  </div>
+  <div class="flex flex-col">
+    <label
+      class="input-label"
+    >{{ 'CREATE_USER_LEAGUE.CHOSEN_LEAGUES' | transloco }}</label>
+    <div
+      class="flex flex-col gap-1"
+      formGroupName="leagues">
+      <div
+        *ngFor="let league of leagues"
+        class="flex items-center">
+        <input
+          [formControlName]="league.id"
+          class="input-checkbox"
+          type="checkbox">
+        <label class="input-checkbox-label">{{league.name}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flex justify-between">
+  <button
+    (click)="ref.close(true)"
+    class="btn btn-secondary">{{ 'CREATE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
+  <button
+    (click)="submit()"
+    class="btn btn-primary">{{ 'CREATE_USER_LEAGUE.SUBMIT_BUTTON' | transloco }}</button>
+</div>
