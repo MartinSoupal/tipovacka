@@ -21,7 +21,7 @@ export type ChooseUserLeagueDialogData = {
 export class ChooseUserLeagueComponent {
   ref: DialogRef<ChooseUserLeagueDialogData, UserLeague | undefined | 'cancel'> = inject(DialogRef);
 
-  chooseUserLeague = (userLeague: UserLeague) => {
+  chooseUserLeague = (userLeague?: UserLeague) => {
     this.ref.close(userLeague);
   }
 }

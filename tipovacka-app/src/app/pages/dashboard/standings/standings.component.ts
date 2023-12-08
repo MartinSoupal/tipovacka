@@ -1,9 +1,13 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {User} from '../../../models/user.model';
-import {CreateUserLeagueComponent} from '../../../components/create-user-league/create-user-league.component';
+import {
+  CreateUserLeagueComponent
+} from '../../../components/create-user-league/create-user-league.component';
 import {DialogService} from '@ngneat/dialog';
 import {UserLeague} from '../../../models/user-league.model';
-import {ChooseUserLeagueComponent} from '../../../components/choose-user-league/choose-user-league.component';
+import {
+  ChooseUserLeagueComponent
+} from '../../../components/choose-user-league/choose-user-league.component';
 
 @Component({
   selector: 'app-standings',
@@ -13,9 +17,11 @@ import {ChooseUserLeagueComponent} from '../../../components/choose-user-league/
 export class StandingsComponent {
   @Input() users: User[] = [];
   @Input() loading = false;
+  @Input() userLeagues: UserLeague[] = [];
+  @Output() userLeagueSelected = new EventEmitter<UserLeague | undefined>();
+
   loadingArray = [0, 1, 2, 3, 4];
   sortBy: 'correctVotes' | 'correctRatio' = 'correctVotes';
-  @Input() userLeagues: UserLeague[] = [];
   chosenUserLeague: UserLeague | undefined;
   private dialog = inject(DialogService);
 
@@ -59,6 +65,7 @@ export class StandingsComponent {
             return;
           }
           this.chosenUserLeague = chosenUserLeague;
+          this.userLeagueSelected.emit(chosenUserLeague);
         }
       })
   }

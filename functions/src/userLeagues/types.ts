@@ -1,10 +1,13 @@
-export interface UserLeague {
+export interface UserLeague extends UserLeagueData {
   id: string;
+}
+
+export interface UserLeagueData {
   name: string;
   admins: string[];
-  users: [];
+  users: string[];
   startedDate: Date;
-  leagues: [];
+  leagues: string[];
 }
 
 export interface UserLeagueForUser {

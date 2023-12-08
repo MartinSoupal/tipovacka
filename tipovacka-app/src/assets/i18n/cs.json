@@ -74,6 +74,7 @@
   "CHOOSE_USER_LEAGUE_BUTTON": "Zobrazit ligu přátel ({{count}})",
   "CHOOSE_USER_LEAGUE": {
     "TITLE": "Zobrazit ligu přátel",
-    "CANCEL_BUTTON": "Zavřít"
+    "CANCEL_BUTTON": "Zavřít",
+    "SHOW_ALL": "Zobrazit všechny hráče"
   }
 }

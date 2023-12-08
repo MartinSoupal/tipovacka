@@ -44,13 +44,7 @@ export class DashboardComponent implements OnInit {
           this.loadPrevMatches();
         }
       })
-    this.dataService.getStandings()
-      .subscribe({
-        next: users => {
-          this.users = users;
-          this.loadingStandings = false;
-        }
-      })
+    this.loadStandings();
     this.loadAllUserLeague();
     addEventListener('signIn', () => {
       this.loadNextMatches();
@@ -62,6 +56,10 @@ export class DashboardComponent implements OnInit {
       this.clearVotesFromMatches();
       this.userLeagues = [];
     });
+  }
+
+  userLeagueSelected = (userLeague?: UserLeague) => {
+    this.loadStandings(userLeague?.id);
   }
 
   private clearVotesFromMatches = () => {
@@ -185,6 +183,16 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: userLeagues => {
           this.userLeagues = userLeagues;
+        }
+      })
+  }
+
+  private loadStandings = (userLeagueId?: string) => {
+    (userLeagueId ? this.dataService.getStandingsForUserLeague(userLeagueId) : this.dataService.getStandings())
+      .subscribe({
+        next: (users) => {
+          this.users = users;
+          this.loadingStandings = false;
         }
       })
   }

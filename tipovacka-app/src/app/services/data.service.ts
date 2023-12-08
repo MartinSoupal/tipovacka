@@ -185,6 +185,26 @@ export class DataService {
         )
       )
 
+  getStandingsForUserLeague = (userLeagueId: string) =>
+    this.http.get<User[]>(
+      `${this.publicUrl}/standings/${userLeagueId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .pipe(
+        map(
+          R.map(
+            (user) => ({
+              ...user,
+              correctRatio: user.correctVotes / user.totalVotes,
+            })
+          )
+        )
+      )
+
   getAllLeagues = () =>
     this.http.get<League[]>(
       `${this.privateUrl}/leagues/all`,

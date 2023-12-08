@@ -67,6 +67,7 @@
     [prevMatches]="groupOfPrevMatches"
   />
   <app-standings
+    (userLeagueSelected)="userLeagueSelected($event)"
     *ngSwitchCase="'standings'"
     [loading]="loadingStandings"
     [userLeagues]="userLeagues"
