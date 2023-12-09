@@ -1,7 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {DialogRef} from '@ngneat/dialog';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {DataService} from '../../services/data.service';
 import {League} from '../../models/league.model';
 import {NgForOf, NgIf} from '@angular/common';
 import {
@@ -10,6 +9,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import {ApiService} from '../../services/api.service';
 
 @Component({
   selector: 'app-create-user-league',
@@ -23,7 +23,7 @@ import {
   templateUrl: './create-user-league.component.html',
   styleUrl: './create-user-league.component.scss'
 })
-export class CreateUserLeagueComponent {
+export class CreateUserLeagueComponent implements OnInit {
   ref: DialogRef<void, undefined> = inject(DialogRef);
   leagues: League[] = [];
   formGroup = new FormGroup<any>({
@@ -31,11 +31,10 @@ export class CreateUserLeagueComponent {
     startedDate: new FormControl<string>(''),
     leagues: new FormGroup({}),
   })
+  private apiService = inject(ApiService);
 
-  constructor(
-    private dataService: DataService
-  ) {
-    this.dataService.getAllLeagues()
+  ngOnInit() {
+    this.apiService.getAllLeagues()
       .subscribe({
         next: leagues => {
           this.leagues = leagues;
@@ -54,7 +53,7 @@ export class CreateUserLeagueComponent {
       const name = this.formGroup.get('name')!.value;
       const startedDate = new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`);
       const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true);
-      this.dataService.addUserLeague({
+      this.apiService.addUserLeague({
         name,
         startedDate,
         leagues,

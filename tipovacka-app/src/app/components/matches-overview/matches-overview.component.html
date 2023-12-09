@@ -48,7 +48,9 @@
         </div>
         <div>{{match.datetime | datetimeFormatBy}}</div>
       </div>
-      <app-match [data]="match"/>
+      <app-match
+        [data]="match"
+        [votes]="votes"/>
     </div>
   </ng-container>
 </div>

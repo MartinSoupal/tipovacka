@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {GoogleAuthProvider} from '@angular/fire/auth';
 import {map, take} from 'rxjs';
-import {DataService} from './data.service';
+import {ApiService} from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private afAuth = inject(AngularFireAuth); // Inject Firebase auth service
   isSignIn = new Promise((resolve) => {
     this.afAuth.idToken
       .pipe(take(1))
@@ -23,12 +24,7 @@ export class AuthService {
     )
   getUserData$ =
     this.afAuth.authState
-
-  constructor(
-    private afAuth: AngularFireAuth, // Inject Firebase auth service
-    private dataService: DataService
-  ) {
-  }
+  private apiService = inject(ApiService);
 
   // Sign in with Google
   signIn = () => {
@@ -41,7 +37,7 @@ export class AuthService {
           )
           .subscribe({
             next: token => {
-              this.dataService.setToken(token);
+              this.apiService.setToken(token);
               dispatchEvent(new Event('signIn'));
             },
           })
@@ -52,7 +48,7 @@ export class AuthService {
     this.afAuth
       .signOut()
       .then(() => {
-        this.dataService.setToken(null);
+        this.apiService.setToken(null);
         dispatchEvent(new Event('signOut'));
       })
   }

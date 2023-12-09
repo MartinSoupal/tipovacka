@@ -1,7 +1,7 @@
-import {MatchResult} from './match.model';
-
 export interface Vote {
   id: string;
   matchId: string;
-  result: MatchResult;
+  result: VoteResult;
 }
+
+export type VoteResult = 0 | 1 | 2;

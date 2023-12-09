@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {DataService} from '../../services/data.service';
+import {Component, inject, OnInit} from '@angular/core';
 import {Team} from '../../models/team.model';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Match, MatchResult, NewMatch} from '../../models/match.model';
@@ -7,6 +6,7 @@ import {combineLatest} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
 import {League, LeagueStage} from '../../models/league.model';
+import {ApiService} from '../../services/api.service';
 
 type NewMatchFormGroupModel = {
   stage: FormControl<LeagueStage | undefined>;
@@ -22,7 +22,7 @@ type NewMatchFormGroupModel = {
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   teams: Team[] = [];
   teamsInHashMap: Record<string, Team> = {};
   newMatchFormGroup: FormGroup<NewMatchFormGroupModel> = new FormGroup<NewMatchFormGroupModel>(<NewMatchFormGroupModel>{
@@ -37,13 +37,12 @@ export class AdminComponent {
   leagues: League[] = [];
   stages: LeagueStage[] = [];
   rounds: string[] = [];
+  private apiService = inject(ApiService);
 
-  constructor(
-    private dataService: DataService
-  ) {
+  ngOnInit() {
     combineLatest([
-      this.dataService.getTeams(),
-      this.dataService.getAllMatches(),
+      this.apiService.getTeams(),
+      this.apiService.getAllMatches(),
     ])
       .subscribe({
         next: ([teams, matches]) => {
@@ -67,7 +66,7 @@ export class AdminComponent {
           this.newMatchFormGroup.get('round')?.setValue('');
         }
       })
-    this.dataService.getAllLeagues()
+    this.apiService.getAllLeagues()
       .subscribe({
         next: league => {
           this.leagues = league;
@@ -104,7 +103,7 @@ export class AdminComponent {
       stage: this.newMatchFormGroup.value.stage?.name || '',
       round: this.newMatchFormGroup.value.round || '',
     }
-    this.dataService.addMatch(match)
+    this.apiService.addMatch(match)
       .subscribe({
         next: (id) => {
           this.matches.push({
@@ -129,7 +128,7 @@ export class AdminComponent {
   }
 
   deleteMatch = (id: string) => {
-    this.dataService.deleteMatch(id)
+    this.apiService.deleteMatch(id)
       .subscribe({
         next: () => {
           this.matches = R.reject<Match>(
@@ -141,7 +140,7 @@ export class AdminComponent {
 
   selectResult = (match: Match, event: Event) => {
     const result = Number((event.target as HTMLSelectElement).value) as MatchResult;
-    this.dataService.editMatch(match.id, {result})
+    this.apiService.editMatch(match.id, {result})
       .subscribe({
         next: () => {
           match.result = result;
@@ -151,7 +150,7 @@ export class AdminComponent {
 
   setPostponed = (match: Match, event: Event) => {
     const postponed = (event.target as HTMLSelectElement).value === 'true'
-    this.dataService.editMatch(match.id, {postponed})
+    this.apiService.editMatch(match.id, {postponed})
       .subscribe({
         next: () => {
           match.postponed = postponed;
@@ -161,7 +160,7 @@ export class AdminComponent {
 
   setDatetime = (match: Match, event: Event) => {
     const datetime = new Date(`${(event.target as HTMLInputElement).value}+01:00`)
-    this.dataService.editMatch(match.id, {datetime})
+    this.apiService.editMatch(match.id, {datetime})
       .subscribe({
         next: () => {
           match.datetime = datetime;

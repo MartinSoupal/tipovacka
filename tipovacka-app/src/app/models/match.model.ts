@@ -20,7 +20,6 @@ export interface MatchWithTeamName extends Match {
   homeTeam: Team;
   awayTeam: Team;
   daysTill: number;
-  vote: MatchResult;
 }
 
 export interface NewMatch {

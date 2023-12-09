@@ -11,6 +11,7 @@
   <app-matches-overview
     [leagues]="(dataService.leaguesOfNextMatches$ | async) || []"
     [matches]="nextMatches"
+    [votes]="(dataService.votesOfNextMatches$ | async) || {}"
   />
   <div
     *ngIf="!nextMatches.length"

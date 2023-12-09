@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MatchWithTeamName} from '../../models/match.model';
 import {clone} from 'ramda';
+import {Vote} from '../../models/vote.model';
 
 @Component({
   selector: 'app-matches-overview',
@@ -10,6 +11,7 @@ import {clone} from 'ramda';
 export class MatchesOverviewComponent {
   @Input() matches: MatchWithTeamName[] = [];
   @Input() leagues: string[] = [];
+  @Input() votes: Record<string, Vote | undefined> = {};
 
   leaguesFilter: string[] = [];
   isLeagueInFilter: Record<string, boolean> = {

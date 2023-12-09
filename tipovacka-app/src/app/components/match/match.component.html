@@ -1,71 +1,71 @@
 <div class="w-full grid grid-cols-3 gap-4 content-start relative">
   <div
-    *ngIf="data?.result === null && data?.datetime! < now && !data?.postponed"
+    *ngIf="data.result === null && data.datetime! < now && !data.postponed"
     class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
     <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'WAITING_TO_SET_RESULT' | transloco }}</div>
   </div>
   <div
-    *ngIf="data?.postponed"
+    *ngIf="data.postponed"
     class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
     <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'POSTPONED' | transloco }}</div>
   </div>
   <button
     (click)="chooseResult(1)"
-    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
-      [backgroundColor]="data?.homeTeam?.color"
-      [hide]="data?.datetime! < now ? data?.result !== 1: data?.vote !== null && data?.vote !== 1"
-      [label]="data?.homeTeam?.name"
+      [backgroundColor]="data.homeTeam.color"
+      [hide]="data.datetime! < now ? data.result !== 1: votes[data.id]?.result !== null && votes[data.id]?.result !== 1"
+      [label]="data.homeTeam.name"
       [pulseAnimation]="sendingVote !== undefined"
-      [size]="data?.datetime! < now ? 'small' : 'normal'"
+      [size]="data.datetime! < now ? 'small' : 'normal'"
       [type]="
-      data?.datetime! < now ?
-        data?.result === null ?
-          data?.vote === 1 ?
+      data.datetime! < now ?
+        data.result === null ?
+          votes[data.id]?.result === 1 ?
             'highlight':
             'normal':
-          data?.vote === 1 ?
-            data?.result === 1 ?
+          votes[data.id]?.result === 1 ?
+            data.result === 1 ?
               'correct':
               'incorrect':
             'normal':
-        data?.vote === 1 ?
+        votes[data.id]?.result === 1 ?
           'highlight':
           'normal'
       "
       [votesRatio]="data && data.totalVotes ? ((data![1] || 0) / data.totalVotes) : 0"
     >
       <img
-        [src]="'assets/images/' + data?.home + '.png'"
+        [src]="'assets/images/' + data.home + '.png'"
         alt="Rounded avatar"
         class="w-auto h-full drop-shadow-2xl"/>
     </app-result-button>
   </button>
   <button
     (click)="chooseResult(0)"
-    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
       [backgroundColor]="'#333'"
-      [hide]="data?.datetime! < now ? data?.result !== 0: data?.vote !== null && data?.vote !== 0"
+      [hide]="data.datetime! < now ? data.result !== 0: votes[data.id]?.result !== null && votes[data.id]?.result !== 0"
       [label]="'DRAW' | transloco"
       [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
-      data?.datetime! < now ?
-        data?.result === null ?
-          data?.vote === 0 ?
+      data.datetime! < now ?
+        data.result === null ?
+          votes[data.id]?.result === 0 ?
             'highlight':
             'normal':
-          data?.vote === 0 ?
-            data?.result === 0 ?
+          votes[data.id]?.result === 0 ?
+            data.result === 0 ?
               'correct':
               'incorrect':
             'normal':
-        data?.vote === 0 ?
+        votes[data.id]?.result === 0 ?
           'highlight':
           'normal'
       "
@@ -82,34 +82,34 @@
   </button>
   <button
     (click)="chooseResult(2)"
-    [disabled]="data?.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
-      [backgroundColor]="data?.awayTeam?.color"
-      [hide]="data?.datetime! < now ? data?.result !== 2: data?.vote !== null && data?.vote !== 2"
-      [label]="data?.awayTeam?.name"
+      [backgroundColor]="data.awayTeam.color"
+      [hide]="data.datetime! < now ? data.result !== 2: votes[data.id]?.result !== null && votes[data.id]?.result !== 2"
+      [label]="data.awayTeam.name"
       [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
-      data?.datetime! < now ?
-        data?.result === null ?
-          data?.vote === 2 ?
+      data.datetime! < now ?
+        data.result === null ?
+          votes[data.id]?.result === 2 ?
             'highlight':
             'normal':
-          data?.vote === 2 ?
-            data?.result === 2 ?
+          votes[data.id]?.result === 2 ?
+            data.result === 2 ?
               'correct':
               'incorrect':
             'normal':
-        data?.vote === 2 ?
+        votes[data.id]?.result === 2 ?
           'highlight':
           'normal'
       "
       [votesRatio]="data && data.totalVotes ? ((data![2] || 0) / data.totalVotes) : 0"
     >
       <img
-        [src]="'assets/images/' + data?.away + '.png'"
+        [src]="'assets/images/' + data.away + '.png'"
         alt="Rounded avatar"
         class="w-auto h-full drop-shadow-2xl">
     </app-result-button>

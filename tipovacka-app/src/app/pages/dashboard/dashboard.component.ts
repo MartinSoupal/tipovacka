@@ -22,7 +22,9 @@ export class DashboardComponent implements OnInit {
     addEventListener('signOut', () => {
     });
     this.dataService.loadPrevMatches();
+    this.dataService.loadPrevMatchesVotes();
     this.dataService.loadNextMatches();
+    this.dataService.loadNextMatchesVotes();
     this.dataService.loadUserLeagues();
     this.dataService.loadStandings();
   }

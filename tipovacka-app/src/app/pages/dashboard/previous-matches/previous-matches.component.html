@@ -4,6 +4,7 @@
   <app-matches-overview
     [leagues]="(dataService.leaguesOfPrevMatches$ | async) || []"
     [matches]="prevMatches"
+    [votes]="(dataService.votesOfPrevMatches$ | async) || {}"
   />
   <div
     *ngIf="!prevMatches.length"

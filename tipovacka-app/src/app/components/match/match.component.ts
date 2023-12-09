@@ -1,7 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {MatchResult, MatchWithTeamName} from '../../models/match.model';
-import {DataService} from '../../services/data.service';
+import {Component, inject, Input} from '@angular/core';
+import {MatchWithTeamName} from '../../models/match.model';
 import {AuthService} from '../../services/auth.service';
+import {Vote, VoteResult} from '../../models/vote.model';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-match',
@@ -9,41 +10,32 @@ import {AuthService} from '../../services/auth.service';
   styleUrls: ['./match.component.scss']
 })
 export class MatchComponent {
-  @Input() data: MatchWithTeamName | undefined;
+  @Input({required: true}) data!: MatchWithTeamName;
+  @Input() votes: Record<string, Vote | undefined> = {};
 
   now = new Date();
 
-  sendingVote: MatchResult | undefined = undefined;
+  sendingVote: VoteResult | undefined = undefined;
+  public authService = inject(AuthService);
+  private dataService = inject(DataService);
 
-  constructor(
-    private dataService: DataService,
-    public authService: AuthService
-  ) {
-  }
-
-  chooseResult = (chosenResult: MatchResult) => {
+  chooseResult = (chosenResult: VoteResult) => {
     this.sendingVote = chosenResult;
-    if (chosenResult === this.data?.vote) {
-      chosenResult = null;
+    if (chosenResult === this.votes[this.data.id]?.result) {
+      this.dataService.deleteVote(this.data.id)
+        .subscribe({
+          next: () => {
+            this.sendingVote = undefined;
+          }
+        })
+      return;
     }
-    this.dataService.addVote(this.data!.id, chosenResult)
+    this.dataService.addVote(this.data.id, chosenResult)
       .subscribe({
         next: () => {
-          if (this.data && this.data.vote !== null) {
-            this.data![this.data.vote]--;
-          }
-          if (this.data && this.data.vote === null) {
-            this.data.totalVotes++;
-          }
-          if (chosenResult !== null) {
-            this.data![chosenResult]++;
-          }
-          if (chosenResult === null) {
-            this.data!.totalVotes--;
-          }
-          this.data!.vote = chosenResult;
           this.sendingVote = undefined;
         }
       })
+
   }
 }

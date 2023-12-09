@@ -1,23 +1,21 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {map, Observable, take, tap} from 'rxjs';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {DataService} from '../services/data.service';
+import {ApiService} from '../services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserTokenResolver {
-  constructor(
-    private angularFireAuth: AngularFireAuth,
-    private dataService: DataService,
-  ) {
-  }
+  private angularFireAuth = inject(AngularFireAuth);
+  private apiService = inject(ApiService);
+
 
   resolve(): Observable<boolean> {
     return this.angularFireAuth.idToken
       .pipe(
         take(1),
-        tap(this.dataService.setToken),
+        tap(this.apiService.setToken),
         map(_ => true)
       )
   }
