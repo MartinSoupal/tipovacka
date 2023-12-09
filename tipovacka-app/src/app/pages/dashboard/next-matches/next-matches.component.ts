@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {MatchWithTeamName} from '../../../models/match.model';
+import {Component, inject} from '@angular/core';
+import {DataService} from '../../../services/data.service';
 import {AuthService} from '../../../services/auth.service';
 
 @Component({
@@ -8,12 +8,6 @@ import {AuthService} from '../../../services/auth.service';
   styleUrls: ['./next-matches.component.scss']
 })
 export class NextMatchesComponent {
-  @Input() nextMatches: MatchWithTeamName[] = [];
-  @Input() leagues: string[] = [];
-  @Input() loading = true;
-
-  constructor(
-    public authService: AuthService
-  ) {
-  }
+  dataService = inject(DataService);
+  authService = inject(AuthService);
 }

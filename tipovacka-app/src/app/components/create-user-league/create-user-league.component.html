@@ -40,7 +40,7 @@
         *ngFor="let league of leagues"
         class="flex items-center">
         <input
-          [formControlName]="league.id"
+          [formControlName]="league.name"
           class="input-checkbox"
           type="checkbox">
         <label class="input-checkbox-label">{{league.name}}</label>

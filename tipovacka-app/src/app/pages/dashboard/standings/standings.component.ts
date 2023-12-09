@@ -1,13 +1,12 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {User} from '../../../models/user.model';
+import {Component, inject} from '@angular/core';
 import {
   CreateUserLeagueComponent
 } from '../../../components/create-user-league/create-user-league.component';
 import {DialogService} from '@ngneat/dialog';
-import {UserLeague} from '../../../models/user-league.model';
 import {
   ChooseUserLeagueComponent
 } from '../../../components/choose-user-league/choose-user-league.component';
+import {DataService} from '../../../services/data.service';
 
 @Component({
   selector: 'app-standings',
@@ -15,14 +14,9 @@ import {
   styleUrls: ['./standings.component.scss']
 })
 export class StandingsComponent {
-  @Input() users: User[] = [];
-  @Input() loading = false;
-  @Input() userLeagues: UserLeague[] = [];
-  @Output() userLeagueSelected = new EventEmitter<UserLeague | undefined>();
-
   loadingArray = [0, 1, 2, 3, 4];
   sortBy: 'correctVotes' | 'correctRatio' = 'correctVotes';
-  chosenUserLeague: UserLeague | undefined;
+  dataService = inject(DataService);
   private dialog = inject(DialogService);
 
   toggleSort = () => {
@@ -37,36 +31,10 @@ export class StandingsComponent {
   }
 
   openCreateUserLeagueModal() {
-    const dialogRef = this.dialog.open(CreateUserLeagueComponent);
-    dialogRef.afterClosed$
-      .subscribe({
-        next: (newUserLeague) => {
-          if (!newUserLeague) {
-            return;
-          }
-          this.userLeagues.push(newUserLeague);
-        }
-      })
+    this.dialog.open(CreateUserLeagueComponent);
   }
 
   openChooseUserLeagueModal() {
-    const dialogRef = this.dialog.open(
-      ChooseUserLeagueComponent,
-      {
-        data: {
-          userLeagues: this.userLeagues,
-        },
-      }
-    )
-    dialogRef.afterClosed$
-      .subscribe({
-        next: chosenUserLeague => {
-          if (chosenUserLeague === 'cancel') {
-            return;
-          }
-          this.chosenUserLeague = chosenUserLeague;
-          this.userLeagueSelected.emit(chosenUserLeague);
-        }
-      })
+    this.dialog.open(ChooseUserLeagueComponent)
   }
 }

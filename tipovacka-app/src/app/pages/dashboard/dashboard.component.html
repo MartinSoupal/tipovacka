@@ -56,21 +56,11 @@
 <ng-container [ngSwitch]="activeTab">
   <app-next-matches
     *ngSwitchCase="'next'"
-    [leagues]="leaguesOfNextMatches"
-    [loading]="loadingNextMatches"
-    [nextMatches]="nextMatches"
   />
   <app-previous-matches
     *ngSwitchCase="'previous'"
-    [leagues]="leaguesOfPrevMatches"
-    [loading]="loadingPrevMatches"
-    [prevMatches]="groupOfPrevMatches"
   />
   <app-standings
-    (userLeagueSelected)="userLeagueSelected($event)"
     *ngSwitchCase="'standings'"
-    [loading]="loadingStandings"
-    [userLeagues]="userLeagues"
-    [users]="users"
   />
 </ng-container>

@@ -1,22 +1,21 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm flex flex-col gap-4">
-  <ng-container *ngIf="!loading">
+  <ng-container *ngIf="(dataService.standings$ | async) as standings">
     <div
       class="w-full flex justify-between items-end mt-4">
       <div class="flex flex-col">
-        <h2 class="">{{ chosenUserLeague?.name }}</h2>
-        <div
-          *ngIf="chosenUserLeague"
-          class="text-xxs italic text-gray-600"
-        >
-          <span *ngFor="let leagues of chosenUserLeague.leagues; let i = index">
-            {{ leagues + (i < chosenUserLeague.leagues.length - 1 ? ', ' : '') }}
-          </span>
-        </div>
+        <ng-container *ngIf="(dataService.selectedUserLeagues$ | async) as selectedUserLeague">
+          <h2 class="">{{ selectedUserLeague.name }}</h2>
+          <div class="text-xxs italic text-gray-600">
+            <span *ngFor="let leagues of selectedUserLeague.leagues; let i = index">
+              {{ leagues + (i < selectedUserLeague.leagues.length - 1 ? ', ' : '') }}
+            </span>
+          </div>
+        </ng-container>
       </div>
       <div class="flex gap-2">
         <button
           (click)="openCreateUserLeagueModal()"
-          *ngIf="!userLeagues.length"
+          *ngIf="!(dataService.userLeagues$ | async)?.length"
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">add</span>
@@ -24,15 +23,15 @@
         </button>
         <button
           (click)="openChooseUserLeagueModal()"
-          *ngIf="userLeagues.length"
+          *ngIf="(dataService.userLeagues$ | async)?.length"
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">groups</span>
-          {{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: userLeagues.length} }}
+          {{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}
         </button>
         <button
           (click)="toggleSort()"
-          *ngIf="users.length"
+          *ngIf="standings.length"
           class="btn btn-secondary">
           <span class="material-icons md-18">sort</span>
           <span class="hidden md:block">
@@ -42,10 +41,9 @@
       </div>
     </div>
     <table
-      *ngIf="!loading"
       class="w-full">
       <tr
-        *ngFor="let user of users | sortBy: sortBy: 'desc'; let i = index"
+        *ngFor="let user of standings | sortBy: sortBy: 'desc'; let i = index"
         class="border-gray-200 border-b-[1px] last:border-b-0">
         <td class="text-gray-700 text-right">{{i + 1}}.</td>
         <td class="w-full">{{user.name}}</td>
@@ -65,14 +63,14 @@
       </tr>
     </table>
     <div
-      *ngIf="!users.length"
+      *ngIf="!standings.length"
       class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-50"
       role="alert">
       {{ 'STANDINGS.EMPTY' | transloco }}
     </div>
   </ng-container>
   <div
-    *ngIf="loading"
+    *ngIf="!(dataService.standings$ | async)"
     class="animate-pulse flex flex-col">
     <div
       *ngFor="let _ of loadingArray"

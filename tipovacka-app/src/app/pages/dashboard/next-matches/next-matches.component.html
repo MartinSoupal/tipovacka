@@ -6,10 +6,10 @@
   <span class="material-icons md-18">login</span>
 </div>
 <div
-  *ngIf="!loading"
+  *ngIf="(dataService.nextMatches$ | async) as nextMatches"
   class="grid grid-cols-1 w-full gap-y-8">
   <app-matches-overview
-    [leagues]="leagues"
+    [leagues]="(dataService.leaguesOfNextMatches$ | async) || []"
     [matches]="nextMatches"
   />
   <div
@@ -21,7 +21,7 @@
 </div>
 
 <div
-  *ngIf="loading"
+  *ngIf="!(dataService.nextMatches$ | async)"
   class="grid grid-cols-1 w-full gap-y-8 mt-8 animate-pulse"
 >
   <div class="flex">

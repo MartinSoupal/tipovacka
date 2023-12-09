@@ -4,8 +4,12 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {DataService} from '../../services/data.service';
 import {League} from '../../models/league.model';
 import {NgForOf, NgIf} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UserLeague} from '../../models/user-league.model';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 
 @Component({
   selector: 'app-create-user-league',
@@ -20,7 +24,7 @@ import {UserLeague} from '../../models/user-league.model';
   styleUrl: './create-user-league.component.scss'
 })
 export class CreateUserLeagueComponent {
-  ref: DialogRef<void, UserLeague | undefined> = inject(DialogRef);
+  ref: DialogRef<void, undefined> = inject(DialogRef);
   leagues: League[] = [];
   formGroup = new FormGroup<any>({
     name: new FormControl<string>('', [Validators.required, Validators.maxLength(30)]),
@@ -37,7 +41,7 @@ export class CreateUserLeagueComponent {
           this.leagues = leagues;
           leagues.forEach(
             (league) => {
-              (this.formGroup.get('leagues') as FormGroup).addControl(league.id, new FormControl<boolean>(false));
+              (this.formGroup.get('leagues') as FormGroup).addControl(league.name, new FormControl<boolean>(false));
             }
           )
         }
@@ -56,13 +60,8 @@ export class CreateUserLeagueComponent {
         leagues,
       })
         .subscribe({
-          next: (id) => {
-            this.ref.close({
-              id,
-              name,
-              startedDate,
-              leagues,
-            });
+          next: () => {
+            this.ref.close();
           }
         })
     }

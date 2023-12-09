@@ -5,7 +5,7 @@
   <div class="flex flex-col w-full md:px-20 gap-2">
     <button
       (click)="chooseUserLeague(userLeague)"
-      *ngFor="let userLeague of ref.data.userLeagues"
+      *ngFor="let userLeague of (dataService.userLeagues$ | async)"
       class="btn btn-primary flex justify-between"
     >
       {{ userLeague.name }}
@@ -19,16 +19,16 @@
       <span class="material-icons">arrow_forward_ios</span>
     </button>
     <button
-      (click)="chooseUserLeague()"
-      class="btn btn-primary flex justify-between"
+      (click)="openCreateUserLeagueModal()"
+      class="btn btn-secondary flex justify-between"
     >
-      {{ 'CHOOSE_USER_LEAGUE.SHOW_ALL' | transloco }}
-      <span class="material-icons">arrow_forward_ios</span>
+      {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
+      <span class="material-icons">add</span>
     </button>
   </div>
 </div>
 <div class="flex justify-between">
   <button
-    (click)="ref.close('cancel')"
+    (click)="ref.close()"
     class="btn btn-secondary">{{ 'CHOOSE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
 </div>

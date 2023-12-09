@@ -1,8 +1,8 @@
 <div
-  *ngIf="!loading"
+  *ngIf="(dataService.prevMatches$ | async) as prevMatches"
   class="grid grid-cols-1 w-full gap-y-8">
   <app-matches-overview
-    [leagues]="leagues"
+    [leagues]="(dataService.leaguesOfPrevMatches$ | async) || []"
     [matches]="prevMatches"
   />
   <div
@@ -14,7 +14,7 @@
 </div>
 
 <div
-  *ngIf="loading"
+  *ngIf="!(dataService.prevMatches$ | async)"
   class="grid grid-cols-1 w-full gap-y-8 mt-8 animate-pulse"
 >
   <div class="flex">

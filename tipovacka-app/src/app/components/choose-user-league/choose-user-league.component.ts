@@ -1,27 +1,36 @@
 import {Component, inject} from '@angular/core';
-import {DialogRef} from '@ngneat/dialog';
+import {DialogRef, DialogService} from '@ngneat/dialog';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {NgForOf} from '@angular/common';
+import {AsyncPipe, NgForOf} from '@angular/common';
 import {UserLeague} from '../../models/user-league.model';
-
-export type ChooseUserLeagueDialogData = {
-  userLeagues: UserLeague[]
-}
+import {
+  CreateUserLeagueComponent
+} from '../create-user-league/create-user-league.component';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-create-user-league',
   standalone: true,
   imports: [
     TranslocoPipe,
-    NgForOf
+    NgForOf,
+    AsyncPipe
   ],
   templateUrl: './choose-user-league.component.html',
   styleUrl: './choose-user-league.component.scss'
 })
 export class ChooseUserLeagueComponent {
-  ref: DialogRef<ChooseUserLeagueDialogData, UserLeague | undefined | 'cancel'> = inject(DialogRef);
+  ref: DialogRef<void, undefined> = inject(DialogRef);
+  dialog = inject(DialogService);
+  dataService = inject(DataService);
 
   chooseUserLeague = (userLeague?: UserLeague) => {
-    this.ref.close(userLeague);
+    this.dataService.setSelectedUserLeague(userLeague);
+    this.ref.close();
+  }
+
+  openCreateUserLeagueModal() {
+    this.ref.close();
+    this.dialog.open(CreateUserLeagueComponent);
   }
 }
