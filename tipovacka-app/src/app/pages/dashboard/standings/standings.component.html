@@ -3,7 +3,7 @@
     <div
       class="w-full flex justify-between items-end mt-4">
       <div class="flex flex-col">
-        <ng-container *ngIf="(dataService.selectedUserLeagues$ | async) as selectedUserLeague">
+        <ng-container *ngIf="(dataService.selectedUserLeague$ | async) as selectedUserLeague">
           <h2 class="">{{ selectedUserLeague.name }}</h2>
           <div class="text-xxs italic text-gray-600">
             <span *ngFor="let leagues of selectedUserLeague.leagues; let i = index">
@@ -19,7 +19,8 @@
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">add</span>
-          {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
+          <span class="md:hidden block material-icons md-18">groups</span>
+          <span class="hidden md:block">{{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}</span>
         </button>
         <button
           (click)="openChooseUserLeagueModal()"
@@ -27,7 +28,7 @@
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">groups</span>
-          {{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}
+          <span class="hidden md:block">{{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
         </button>
         <button
           (click)="toggleSort()"
@@ -35,8 +36,8 @@
           class="btn btn-secondary">
           <span class="material-icons md-18">sort</span>
           <span class="hidden md:block">
-        {{(sortBy === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_TIPS') | transloco}}
-        </span>
+            {{(sortBy === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_TIPS') | transloco}}
+          </span>
         </button>
       </div>
     </div>

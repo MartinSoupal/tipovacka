@@ -31,7 +31,7 @@ export class DataService {
   votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote>>({});
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
-  selectedUserLeagues$ = new BehaviorSubject<UserLeague | undefined>(undefined);
+  selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
   private teamsInHashMap?: Record<string, Team>;
 
   private apiService = inject(ApiService);
@@ -145,7 +145,7 @@ export class DataService {
   }
 
   loadStandings = () => {
-    this.selectedUserLeagues$
+    this.selectedUserLeague$
       .pipe(
         first()
       )
@@ -273,7 +273,7 @@ export class DataService {
       )
 
   setSelectedUserLeague = (selectedUserLeague?: UserLeague) => {
-    this.selectedUserLeagues$.next(selectedUserLeague);
+    this.selectedUserLeague$.next(selectedUserLeague);
     this.loadStandings();
   }
 

@@ -12,12 +12,16 @@ export class MatchesOverviewComponent {
   @Input() matches: MatchWithTeamName[] = [];
   @Input() leagues: string[] = [];
   @Input() votes: Record<string, Vote | undefined> = {};
-
   leaguesFilter: string[] = [];
-  isLeagueInFilter: Record<string, boolean> = {
-    FL: false,
-    EURO24: false,
-  };
+  isLeagueInFilter: Record<string, boolean> = {};
+
+  @Input()
+  set selectedFilterLeagues(leagues: string[] | undefined) {
+    if (!leagues?.length) {
+      return;
+    }
+    leagues.forEach(this.addLeagueToFilter);
+  }
 
   addLeagueToFilter = (league: string) => {
     if (this.isLeagueInFilter[league]) {

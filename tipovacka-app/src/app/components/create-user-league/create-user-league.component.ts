@@ -10,6 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 import {ApiService} from '../../services/api.service';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-create-user-league',
@@ -32,6 +33,7 @@ export class CreateUserLeagueComponent implements OnInit {
     leagues: new FormGroup({}),
   })
   private apiService = inject(ApiService);
+  private dataService = inject(DataService);
 
   ngOnInit() {
     this.apiService.getAllLeagues()
@@ -53,7 +55,7 @@ export class CreateUserLeagueComponent implements OnInit {
       const name = this.formGroup.get('name')!.value;
       const startedDate = new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`);
       const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true);
-      this.apiService.addUserLeague({
+      this.dataService.addUserLeague({
         name,
         startedDate,
         leagues,
