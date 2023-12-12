@@ -35,6 +35,6 @@ export class StandingsComponent {
   }
 
   openChooseUserLeagueModal() {
-    this.dialog.open(ChooseUserLeagueComponent)
+    this.dialog.open(ChooseUserLeagueComponent, {size: "lg"})
   }
 }

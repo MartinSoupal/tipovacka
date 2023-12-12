@@ -39,4 +39,8 @@ export class ChooseUserLeagueComponent {
     this.dataService.deleteUserLeague(userLeagueId)
       .subscribe();
   }
+
+  invite = (userLeagueId: string) => {
+    void navigator.clipboard.writeText(`http://localhost:4200/${userLeagueId}/join`);
+  }
 }
