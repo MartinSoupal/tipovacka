@@ -75,6 +75,9 @@
   "CHOOSE_USER_LEAGUE": {
     "TITLE": "Zobrazit ligu přátel",
     "CANCEL_BUTTON": "Zavřít",
-    "SHOW_ALL": "Zobrazit všechny hráče"
-  }
+    "SHOW_ALL": "Zrušit výběr ligy přátel"
+  },
+  "REQUIRED": "Povinný údaj",
+  "AT_LEAST_ONE": "Alespoň jedna z možností musí být vybrána.",
+  "MAX_LENGTH": "Přesáhl jsi maximální délku {{maxlength}} znaků. ({{actuallength}}/{{maxlength}})"
 }

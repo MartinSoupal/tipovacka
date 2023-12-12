@@ -1,3 +1,5 @@
+import admin = require('firebase-admin');
+
 export interface UserLeague extends UserLeagueData {
   id: string;
 }
@@ -6,13 +8,14 @@ export interface UserLeagueData {
   name: string;
   admins: string[];
   users: string[];
-  startedDate: Date;
+  startedDate: admin.firestore.Timestamp;
   leagues: string[];
 }
 
 export interface UserLeagueForUser {
   id: string;
   name: string;
-  startedDate: Date;
+  startedDate: Date | null;
   leagues: string[];
+  hasAdminRights: boolean;
 }

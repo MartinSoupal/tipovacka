@@ -12,6 +12,7 @@ import {getLeagues} from './leagues/getLeagues';
 import {addUserLeague} from './userLeagues/addUserLeague';
 import {getUserLeagues} from './userLeagues/getUserLeagues';
 import {deleteVote} from './votes/deleteVote';
+import {deleteUserLeague} from './userLeagues/deleteUserLeague';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -31,5 +32,6 @@ app.delete('/vote/:matchId', deleteVote);
 app.post('/votes', getVotes);
 app.post('/user-league', addUserLeague);
 app.get('/user-league/all', getUserLeagues);
+app.delete('/user-league/:userLeagueId', deleteUserLeague);
 
 export const privateApi = functions.https.onRequest(app);

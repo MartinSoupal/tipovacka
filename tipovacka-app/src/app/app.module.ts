@@ -13,20 +13,33 @@ import {RouterModule, RouterOutlet, Routes} from '@angular/router';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {AdminComponent} from './pages/admin/admin.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {ResultButtonComponent} from './components/result-button/result-button.component';
+import {
+  ResultButtonComponent
+} from './components/result-button/result-button.component';
 import {registerLocaleData} from '@angular/common';
 import localeCs from '@angular/common/locales/cs';
 import {UserTokenResolver} from './resolver/token.resolver';
 import {SortByPipe} from './pipes/sort-by.pipe';
-import {PreviousMatchesComponent} from './pages/dashboard/previous-matches/previous-matches.component';
-import {NextMatchesComponent} from './pages/dashboard/next-matches/next-matches.component';
-import {StandingsComponent} from './pages/dashboard/standings/standings.component';
-import {MatchSkeletonComponent} from './components/match-skeleton/match-skeleton.component';
+import {
+  PreviousMatchesComponent
+} from './pages/dashboard/previous-matches/previous-matches.component';
+import {
+  NextMatchesComponent
+} from './pages/dashboard/next-matches/next-matches.component';
+import {
+  StandingsComponent
+} from './pages/dashboard/standings/standings.component';
+import {
+  MatchSkeletonComponent
+} from './components/match-skeleton/match-skeleton.component';
 import {FilterMatchesByPipe} from './pipes/filter-matches-by.pipe';
-import {MatchesOverviewComponent} from './components/matches-overview/matches-overview.component';
+import {
+  MatchesOverviewComponent
+} from './components/matches-overview/matches-overview.component';
 import {TranslocoRootModule} from './transloco-root.module';
 import {DatetimeFormatPipe} from './pipes/datetime-format.pipe';
 import {AdminDatetimeFormatPipe} from './pipes/admin-datetime-format.pipe';
+import {DateToNumberPipe} from './pipes/date-to-number.pipe';
 
 const routes: Routes = [
   {
@@ -81,6 +94,7 @@ registerLocaleData(localeCs);
     ReactiveFormsModule,
     TranslocoRootModule,
     AdminDatetimeFormatPipe,
+    DateToNumberPipe,
   ],
   providers: [{provide: LOCALE_ID, useValue: 'cs-CZ'}],
   bootstrap: [AppComponent]

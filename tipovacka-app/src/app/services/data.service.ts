@@ -145,6 +145,7 @@ export class DataService {
   }
 
   loadStandings = () => {
+    this.standings$.next(undefined);
     this.selectedUserLeague$
       .pipe(
         first()
@@ -193,10 +194,30 @@ export class DataService {
               ...(userLeagues || []),
               {
                 id,
+                hasAdminRights: true,
                 ...newUserLeague,
               }
             ]);
             return {id};
+          }
+        )
+      )
+
+  deleteUserLeague = (userLeagueId: string): Observable<void> =>
+    combineLatest([
+      this.apiService.deleteUserLeague(userLeagueId),
+      this.userLeagues$,
+    ])
+      .pipe(
+        first(),
+        map(
+          ([_, userLeagues]) => {
+            if (!userLeagues?.length) {
+              return;
+            }
+            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues);
+            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues));
+            return;
           }
         )
       )
@@ -273,8 +294,18 @@ export class DataService {
       )
 
   setSelectedUserLeague = (selectedUserLeague?: UserLeague) => {
-    this.selectedUserLeague$.next(selectedUserLeague);
-    this.loadStandings();
+    this.selectedUserLeague$
+      .pipe(
+        first()
+      )
+      .subscribe({
+        next: userLeague => {
+          if (userLeague !== selectedUserLeague) {
+            this.selectedUserLeague$.next(selectedUserLeague);
+            this.loadStandings();
+          }
+        }
+      })
   }
 
   private loadAllTeams = () => new Promise<Record<string, Team>>((resolve) => {

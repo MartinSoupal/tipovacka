@@ -9,4 +9,5 @@ export interface UserLeague {
   name: string;
   startedDate: Date;
   leagues: string[];
+  hasAdminRights: boolean;
 }

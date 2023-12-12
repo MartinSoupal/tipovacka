@@ -239,6 +239,17 @@ export class ApiService {
       }
     )
 
+  deleteUserLeague = (userLeagueId: string) =>
+    this.http.delete<void>(
+      `${this.privateUrl}/user-league/${userLeagueId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
   getAllUserLeagues = () =>
     this.http.get<UserLeague[]>(
       `${this.privateUrl}/user-league/all`,

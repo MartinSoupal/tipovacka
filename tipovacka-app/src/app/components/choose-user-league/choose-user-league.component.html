@@ -1,34 +1,44 @@
-<h1>{{ 'CHOOSE_USER_LEAGUE.TITLE' | transloco }}</h1>
-<div
-  class="py-8"
->
-  <div class="flex flex-col w-full md:px-20 gap-2">
+<header>
+  <h1>{{ 'CHOOSE_USER_LEAGUE.TITLE' | transloco }}</h1>
+</header>
+<div class="flex flex-col w-full md:px-20 gap-2">
+  <div
+    *ngFor="let userLeague of (dataService.userLeagues$ | async)"
+    class="flex gap-2"
+  >
     <button
       (click)="chooseUserLeague(userLeague)"
-      *ngFor="let userLeague of (dataService.userLeagues$ | async)"
-      class="btn btn-primary flex justify-between"
+      class="btn btn-primary flex justify-between flex-grow"
     >
       {{ userLeague.name }}
       <span class="material-icons">arrow_forward_ios</span>
     </button>
     <button
-      (click)="chooseUserLeague()"
-      class="btn btn-primary flex justify-between"
+      (click)="deleteUserLeague(userLeague.id)"
+      *ngIf="userLeague.hasAdminRights"
+      class="btn btn-critical"
     >
-      {{ 'CHOOSE_USER_LEAGUE.SHOW_ALL' | transloco }}
-      <span class="material-icons">arrow_forward_ios</span>
-    </button>
-    <button
-      (click)="openCreateUserLeagueModal()"
-      class="btn btn-secondary flex justify-between"
-    >
-      {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
-      <span class="material-icons">add</span>
+      <span class="material-icons">delete_forever</span>
     </button>
   </div>
+  <button
+    (click)="chooseUserLeague()"
+    *ngIf="dataService.selectedUserLeague$ | async"
+    class="btn btn-secondary flex justify-between"
+  >
+    {{ 'CHOOSE_USER_LEAGUE.SHOW_ALL' | transloco }}
+    <span class="material-icons">close</span>
+  </button>
+  <button
+    (click)="openCreateUserLeagueModal()"
+    class="btn btn-secondary flex justify-between mt-8"
+  >
+    {{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}
+    <span class="material-icons">add</span>
+  </button>
 </div>
-<div class="flex justify-between">
+<footer>
   <button
     (click)="ref.close()"
     class="btn btn-secondary">{{ 'CHOOSE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
-</div>
+</footer>

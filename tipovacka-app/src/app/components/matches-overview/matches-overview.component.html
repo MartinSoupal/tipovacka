@@ -28,7 +28,7 @@
     >
       <div
         *ngIf="i === 0 ||
-        match.datetime > matches[i-1].datetime ||
+        (match.datetime | dateToNumber) !== (matches[i-1].datetime | dateToNumber) ||
         match.league !== matches[i-1].league ||
         match.stage !== matches[i-1].stage ||
         match.round !== matches[i-1].round"

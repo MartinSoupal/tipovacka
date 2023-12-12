@@ -1,7 +1,9 @@
-<h1>{{ 'CREATE_USER_LEAGUE.TITLE' | transloco }}</h1>
+<header>
+  <h1>{{ 'CREATE_USER_LEAGUE.TITLE' | transloco }}</h1>
+</header>
 <div
   [formGroup]="formGroup"
-  class="grid grid-cols-1 md:grid-cols-2 py-8 gap-x-2 gap-y-4">
+  class="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4">
   <div>
     <label
       class="input-label"
@@ -12,9 +14,16 @@
       type="text"
     >
     <p
-      *ngIf="formGroup.controls['name'].touched && formGroup.controls['name'].invalid"
+      *ngIf="formGroup.touched && formGroup.controls['name'].errors?.['required']"
       class="input-error-description"
-    >Required</p>
+    >{{ 'REQUIRED' | transloco }}</p>
+    <p
+      *ngIf="formGroup.touched && formGroup.controls['name'].errors?.['maxlength']"
+      class="input-error-description"
+    >{{ 'MAX_LENGTH' | transloco: {
+      actuallength: formGroup.controls['name'].errors?.['maxlength'].actualLength,
+      maxlength: formGroup.controls['name'].errors?.['maxlength'].requiredLength
+    } }}</p>
   </div>
   <div>
     <label
@@ -46,13 +55,17 @@
         <label class="input-checkbox-label">{{league.name}}</label>
       </div>
     </div>
+    <p
+      *ngIf="formGroup.touched && formGroup.controls['leagues'].invalid"
+      class="input-error-description"
+    >{{ 'AT_LEAST_ONE' | transloco }}</p>
   </div>
 </div>
-<div class="flex justify-between">
+<footer>
   <button
     (click)="ref.close()"
     class="btn btn-secondary">{{ 'CREATE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
   <button
     (click)="submit()"
     class="btn btn-primary">{{ 'CREATE_USER_LEAGUE.SUBMIT_BUTTON' | transloco }}</button>
-</div>
+</footer>

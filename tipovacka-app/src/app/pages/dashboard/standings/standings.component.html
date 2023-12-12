@@ -1,21 +1,21 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm flex flex-col gap-4">
-  <ng-container *ngIf="(dataService.standings$ | async) as standings">
-    <div
-      class="w-full flex justify-between items-end mt-4">
-      <div class="flex flex-col">
-        <ng-container *ngIf="(dataService.selectedUserLeague$ | async) as selectedUserLeague">
-          <h2 class="">{{ selectedUserLeague.name }}</h2>
-          <div class="text-xxs italic text-gray-600">
+  <div
+    class="w-full flex justify-between items-end mt-4">
+    <div class="flex flex-col">
+      <ng-container *ngIf="(dataService.selectedUserLeague$ | async) as selectedUserLeague">
+        <h2 class="">{{ selectedUserLeague.name }}</h2>
+        <div class="text-xxs italic text-gray-600">
             <span *ngFor="let leagues of selectedUserLeague.leagues; let i = index">
               {{ leagues + (i < selectedUserLeague.leagues.length - 1 ? ', ' : '') }}
             </span>
-          </div>
-        </ng-container>
-      </div>
-      <div class="flex gap-2">
+        </div>
+      </ng-container>
+    </div>
+    <div class="flex gap-2">
+      <ng-container *ngIf="(dataService.userLeagues$ | async) as userLeagues; else btnLoading">
         <button
           (click)="openCreateUserLeagueModal()"
-          *ngIf="!(dataService.userLeagues$ | async)?.length"
+          *ngIf="!userLeagues.length"
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">add</span>
@@ -24,23 +24,24 @@
         </button>
         <button
           (click)="openChooseUserLeagueModal()"
-          *ngIf="(dataService.userLeagues$ | async)?.length"
+          *ngIf="userLeagues.length"
           class="btn btn-secondary"
         >
           <span class="material-icons md-18">groups</span>
           <span class="hidden md:block">{{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
         </button>
-        <button
-          (click)="toggleSort()"
-          *ngIf="standings.length"
-          class="btn btn-secondary">
-          <span class="material-icons md-18">sort</span>
-          <span class="hidden md:block">
+      </ng-container>
+      <button
+        (click)="toggleSort()"
+        class="btn btn-secondary">
+        <span class="material-icons md-18">sort</span>
+        <span class="hidden md:block">
             {{(sortBy === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_TIPS') | transloco}}
           </span>
-        </button>
-      </div>
+      </button>
     </div>
+  </div>
+  <ng-container *ngIf="(dataService.standings$ | async) as standings">
     <table
       class="w-full">
       <tr
@@ -83,3 +84,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #btnLoading>
+  <div class="btn btn-secondary btn-loading"></div>
+</ng-template>

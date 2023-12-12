@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {DialogRef, DialogService} from '@ngneat/dialog';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {AsyncPipe, NgForOf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {UserLeague} from '../../models/user-league.model';
 import {
   CreateUserLeagueComponent
@@ -14,7 +14,8 @@ import {DataService} from '../../services/data.service';
   imports: [
     TranslocoPipe,
     NgForOf,
-    AsyncPipe
+    AsyncPipe,
+    NgIf
   ],
   templateUrl: './choose-user-league.component.html',
   styleUrl: './choose-user-league.component.scss'
@@ -32,5 +33,10 @@ export class ChooseUserLeagueComponent {
   openCreateUserLeagueModal() {
     this.ref.close();
     this.dialog.open(CreateUserLeagueComponent);
+  }
+
+  deleteUserLeague = (userLeagueId: string) => {
+    this.dataService.deleteUserLeague(userLeagueId)
+      .subscribe();
   }
 }
