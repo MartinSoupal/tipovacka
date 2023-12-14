@@ -7,6 +7,7 @@ import {
   CreateUserLeagueComponent
 } from '../create-user-league/create-user-league.component';
 import {DataService} from '../../services/data.service';
+import {HotToastService} from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-create-user-league',
@@ -24,6 +25,7 @@ export class ChooseUserLeagueComponent {
   ref: DialogRef<void, undefined> = inject(DialogRef);
   dialog = inject(DialogService);
   dataService = inject(DataService);
+  private toastService = inject(HotToastService);
 
   chooseUserLeague = (userLeague?: UserLeague) => {
     this.dataService.setSelectedUserLeague(userLeague);
@@ -42,5 +44,11 @@ export class ChooseUserLeagueComponent {
 
   invite = (userLeagueId: string) => {
     void navigator.clipboard.writeText(`http://localhost:4200/${userLeagueId}/join`);
+    this.toastService.success('Invite link has been copy into clipboard.');
+  }
+
+  leave = (userLeagueId: string) => {
+    this.dataService.leaveUserLeague(userLeagueId)
+      .subscribe()
   }
 }

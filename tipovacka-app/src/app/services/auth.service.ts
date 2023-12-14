@@ -9,15 +9,6 @@ import {ApiService} from './api.service';
 })
 export class AuthService {
   private afAuth = inject(AngularFireAuth); // Inject Firebase auth service
-  isSignIn = new Promise((resolve) => {
-    this.afAuth.idToken
-      .pipe(take(1))
-      .subscribe(
-        token => {
-          resolve(!!token)
-        }
-      )
-  })
   isSignIn$ = this.afAuth.idToken
     .pipe(
       map(token => token != null)

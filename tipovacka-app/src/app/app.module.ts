@@ -40,6 +40,10 @@ import {TranslocoRootModule} from './transloco-root.module';
 import {DatetimeFormatPipe} from './pipes/datetime-format.pipe';
 import {AdminDatetimeFormatPipe} from './pipes/admin-datetime-format.pipe';
 import {DateToNumberPipe} from './pipes/date-to-number.pipe';
+import {HotToastModule} from '@ngneat/hot-toast';
+import {
+  JoinUserLeagueComponent
+} from './pages/joinUserLeague/joinUserLeague.component';
 
 const routes: Routes = [
   {
@@ -50,6 +54,11 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
+  },
+  {
+    path: ':userLeagueId/join',
+    component: JoinUserLeagueComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
@@ -95,6 +104,7 @@ registerLocaleData(localeCs);
     TranslocoRootModule,
     AdminDatetimeFormatPipe,
     DateToNumberPipe,
+    HotToastModule.forRoot()
   ],
   providers: [{provide: LOCALE_ID, useValue: 'cs-CZ'}],
   bootstrap: [AppComponent]

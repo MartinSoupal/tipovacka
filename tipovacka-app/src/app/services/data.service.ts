@@ -165,20 +165,26 @@ export class DataService {
   }
 
   loadUserLeagues = () => {
-    this.authService.isSignIn
-      .then(
-        (token) => {
+    this.authService.isSignIn$
+      .pipe(
+        first(),
+      )
+      .subscribe({
+        next: (token) => {
           if (!token) {
             return;
           }
           this.apiService.getAllUserLeagues()
+            .pipe(
+              first(),
+            )
             .subscribe({
               next: (userLeagues) => {
                 this.userLeagues$.next(userLeagues);
               }
             })
         }
-      )
+      })
   }
 
   addUserLeague = (newUserLeague: NewUserLeague): Observable<returnIdValue> =>
@@ -217,6 +223,36 @@ export class DataService {
             }
             const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues);
             this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues));
+            return;
+          }
+        )
+      )
+
+  leaveUserLeague = (userLeagueId: string): Observable<void> =>
+    combineLatest([
+      this.apiService.leaveUserLeague(userLeagueId),
+      this.userLeagues$,
+    ])
+      .pipe(
+        first(),
+        map(
+          ([_, userLeagues]) => {
+            if (!userLeagues?.length) {
+              return;
+            }
+            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues);
+            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues));
+            return;
+          }
+        )
+      )
+
+  joinUserLeague = (userLeagueId: string): Observable<void> =>
+    this.apiService.joinUserLeague(userLeagueId)
+      .pipe(
+        first(),
+        map(
+          () => {
             return;
           }
         )
@@ -293,15 +329,20 @@ export class DataService {
         )
       )
 
-  setSelectedUserLeague = (selectedUserLeague?: UserLeague) => {
-    this.selectedUserLeague$
+  setSelectedUserLeague = (selectedUserLeague?: UserLeague | string) => {
+    combineLatest([
+      this.selectedUserLeague$,
+      typeof selectedUserLeague === 'string' ?
+        this.apiService.getUserLeague(selectedUserLeague) :
+        of(selectedUserLeague)
+    ])
       .pipe(
         first()
       )
       .subscribe({
-        next: userLeague => {
-          if (userLeague !== selectedUserLeague) {
-            this.selectedUserLeague$.next(selectedUserLeague);
+        next: ([actualSelectedUserLeague, newSelectedUserLeague]) => {
+          if (actualSelectedUserLeague?.id !== newSelectedUserLeague?.id) {
+            this.selectedUserLeague$.next(newSelectedUserLeague);
             this.loadStandings();
           }
         }

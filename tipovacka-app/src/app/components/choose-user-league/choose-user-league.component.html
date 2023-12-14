@@ -6,7 +6,17 @@
     *ngFor="let userLeague of (dataService.userLeagues$ | async)"
     class="flex flex-col gap-2"
   >
-    <div>{{userLeague.name}}</div>
+    <div>
+      <div class="flex gap-2">
+        <h2>
+          {{ userLeague.name }}
+        </h2>
+        <span
+          *ngIf="userLeague.hasAdminRights"
+          class="material-icons"
+        >admin_panel_settings</span>
+      </div>
+    </div>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
       <button
         (click)="chooseUserLeague(userLeague)"
@@ -31,6 +41,7 @@
         <span class="material-icons md-18">ios_share</span>
       </button>
       <button
+        (click)="leave(userLeague.id)"
         class="btn btn-secondary flex justify-between"
       >
         LEAVE
@@ -44,22 +55,6 @@
         <span class="material-icons md-18">group_remove</span>
       </button>
     </div>
-    <!--
-    <button
-      (click)="chooseUserLeague(userLeague)"
-      class="btn btn-primary flex justify-between flex-grow"
-    >
-      {{ userLeague.name }}
-      <span class="material-icons">arrow_forward_ios</span>
-    </button>
-    <button
-      (click)="deleteUserLeague(userLeague.id)"
-      *ngIf="userLeague.hasAdminRights"
-      class="btn btn-critical"
-    >
-      <span class="material-icons">delete_forever</span>
-    </button>
-    -->
   </div>
   <button
     (click)="chooseUserLeague()"

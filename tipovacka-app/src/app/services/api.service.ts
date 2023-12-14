@@ -250,9 +250,44 @@ export class ApiService {
       }
     )
 
+  leaveUserLeague = (userLeagueId: string) =>
+    this.http.post<void>(
+      `${this.privateUrl}/user-league/${userLeagueId}/leave`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  joinUserLeague = (userLeagueId: string) =>
+    this.http.post<void>(
+      `${this.privateUrl}/user-league/${userLeagueId}/join`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
   getAllUserLeagues = () =>
     this.http.get<UserLeague[]>(
       `${this.privateUrl}/user-league/all`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  getUserLeague = (userLeagueId: string) =>
+    this.http.get<UserLeague>(
+      `${this.privateUrl}/user-league/${userLeagueId}`,
       {
         headers: {
           'Content-Type': 'application/json',
