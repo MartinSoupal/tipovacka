@@ -102,12 +102,14 @@ export async function getStandingsForUserLeague(req: Request, res: any) {
       .where('userUid', 'in', userLeagueData.users)
       .get();
   const users: Record<string, [number, number]> = {};
+  userLeagueData.users.forEach(
+    (user) => {
+      users[user] = [0, 0];
+    }
+  );
   votesSnapshot.forEach(
     (doc) => {
       const vote = doc.data();
-      if (!Object.prototype.hasOwnProperty.call(users, vote.userUid)) {
-        users[vote.userUid] = [0, 0];
-      }
       users[vote.userUid][0]++;
       if (vote.result === matches[vote.matchId]) {
         users[vote.userUid][1]++;

@@ -190,7 +190,7 @@ export class ApiService {
           R.map(
             (user) => ({
               ...user,
-              correctRatio: user.correctVotes / user.totalVotes,
+              correctRatio: (user.correctVotes / user.totalVotes) || 0,
             })
           )
         )
@@ -210,7 +210,7 @@ export class ApiService {
           R.map(
             (user) => ({
               ...user,
-              correctRatio: user.correctVotes / user.totalVotes,
+              correctRatio: (user.correctVotes / user.totalVotes) || 0,
             })
           )
         )
