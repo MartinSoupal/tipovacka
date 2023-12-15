@@ -4,13 +4,15 @@ import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest} from 'rxjs';
 
+type Tabs = 'results' | 'next' | 'standings';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  activeTab: 'previous' | 'next' | 'standings' = 'next';
+  activeTab: Tabs = 'next';
   authService = inject(AuthService);
   private dataService = inject(DataService);
   private route = inject(ActivatedRoute);
@@ -32,6 +34,12 @@ export class DashboardComponent implements OnInit {
           this.dataService.loadPrevMatches();
           this.dataService.loadNextMatches();
           this.dataService.loadUserLeagues();
+        }
+      })
+    this.route.paramMap
+      .subscribe({
+        next: (params) => {
+          this.activeTab = (params.get('activeTab') as Tabs) || 'next';
         }
       })
 

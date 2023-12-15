@@ -1,40 +1,40 @@
 <div class="border-b border-gray-200 sticky top-0 bg-white">
   <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
     <li class="mr-2">
-      <button
-        (click)="activeTab = 'next'"
+      <a
         [ngClass]="{
           'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'next',
           'hover:text-gray-600 hover:border-gray-300': activeTab !== 'next'
         }"
+        [routerLink]="['/next']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.SCHEDULE' | transloco }}
-      </button>
+      </a>
     </li>
     <li class="mr-2">
-      <button
-        (click)="activeTab = 'previous'"
+      <a
         [ngClass]="{
-          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'previous',
-          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'previous'
+          'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'results',
+          'hover:text-gray-600 hover:border-gray-300': activeTab !== 'results'
         }"
+        [routerLink]="['/results']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.RESULTS' | transloco }}
-      </button>
+      </a>
     </li>
     <li>
-      <button
-        (click)="activeTab = 'standings'"
+      <a
         [ngClass]="{
           'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'standings',
           'hover:text-gray-600 hover:border-gray-300': activeTab !== 'standings'
         }"
+        [routerLink]="['/standings']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.STANDINGS' | transloco }}
-      </button>
+      </a>
     </li>
     <li *ngIf="authService.isSignIn$ | async">
       <a
@@ -58,7 +58,7 @@
     *ngSwitchCase="'next'"
   />
   <app-previous-matches
-    *ngSwitchCase="'previous'"
+    *ngSwitchCase="'results'"
   />
   <app-standings
     *ngSwitchCase="'standings'"
