@@ -47,7 +47,7 @@ import {
 
 const routes: Routes = [
   {
-    path: ':activeTab',
+    path: 'dashboard/:activeTab',
     component: DashboardComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
@@ -63,7 +63,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/next'
+    redirectTo: '/dashboard/next'
   }
 ];
 

@@ -6,7 +6,7 @@
           'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'next',
           'hover:text-gray-600 hover:border-gray-300': activeTab !== 'next'
         }"
-        [routerLink]="['/next']"
+        [routerLink]="['/dashboard/next']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.SCHEDULE' | transloco }}
@@ -18,7 +18,7 @@
           'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'results',
           'hover:text-gray-600 hover:border-gray-300': activeTab !== 'results'
         }"
-        [routerLink]="['/results']"
+        [routerLink]="['/dashboard/results']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.RESULTS' | transloco }}
@@ -30,7 +30,7 @@
           'text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600': activeTab === 'standings',
           'hover:text-gray-600 hover:border-gray-300': activeTab !== 'standings'
         }"
-        [routerLink]="['/standings']"
+        [routerLink]="['/dashboard/standings']"
         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group"
       >
         {{ 'MENU.STANDINGS' | transloco }}
@@ -63,4 +63,5 @@
   <app-standings
     *ngSwitchCase="'standings'"
   />
+  <app-next-matches *ngSwitchDefault/>
 </ng-container>
