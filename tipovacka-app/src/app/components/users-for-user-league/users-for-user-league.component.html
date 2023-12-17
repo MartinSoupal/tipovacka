@@ -1,0 +1,29 @@
+<header>
+  <h1>{{ 'CHOOSE_USER_LEAGUE.TITLE' | transloco }}</h1>
+</header>
+<div class="flex flex-col gap-4">
+  <div
+    *ngFor="let user of users; let i = index"
+    class="flex items-center justify-between"
+  >
+    <div class="flex gap-2">
+      <div>{{user.name}}</div>
+      <span
+        *ngIf="user.hasAdminRights"
+        class="material-icons"
+      >admin_panel_settings</span>
+    </div>
+    <button
+      (click)="removeUser(user.userUid)"
+      class="btn btn-critical flex justify-between"
+    >
+      REMOVE
+      <span class="material-icons md-18">person_remove</span>
+    </button>
+  </div>
+</div>
+<footer>
+  <button
+    (click)="ref.close()"
+    class="btn btn-secondary">{{ 'CHOOSE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
+</footer>

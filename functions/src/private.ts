@@ -17,6 +17,7 @@ import {joinUserLeague} from './userLeagues/joinUserLeague';
 import {leaveUserLeague} from './userLeagues/leaveUserLeague';
 import {removeUserFromUserLeague} from './userLeagues/removeUserFromUserLeague';
 import {getUserLeague} from './userLeagues/getUserLeague';
+import {getUserLeagueUsers} from './userLeagues/getUserLeagueUsers';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -40,6 +41,10 @@ app.get('/user-league/:userLeagueId', getUserLeague);
 app.delete('/user-league/:userLeagueId', deleteUserLeague);
 app.post('/user-league/:userLeagueId/join', joinUserLeague);
 app.post('/user-league/:userLeagueId/leave', leaveUserLeague);
-app.patch('/user-league/:userLeagueId/remove-user', removeUserFromUserLeague);
+app.get('/user-league/:userLeagueId/users', getUserLeagueUsers);
+app.patch(
+  '/user-league/:userLeagueId/leave/:userUid',
+  removeUserFromUserLeague
+);
 
 export const privateApi = functions.https.onRequest(app);

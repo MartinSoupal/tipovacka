@@ -11,3 +11,9 @@ export interface UserLeague {
   leagues: string[];
   hasAdminRights: boolean;
 }
+
+export interface UserInUserLeague {
+  userUid: string;
+  name: string;
+  hasAdminRights: boolean;
+}

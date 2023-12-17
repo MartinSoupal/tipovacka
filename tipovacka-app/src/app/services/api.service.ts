@@ -7,7 +7,11 @@ import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
 import {User} from '../models/user.model';
 import {League} from '../models/league.model';
-import {NewUserLeague, UserLeague} from '../models/user-league.model';
+import {
+  NewUserLeague,
+  UserInUserLeague,
+  UserLeague
+} from '../models/user-league.model';
 
 export type returnIdValue = { id: string };
 
@@ -294,5 +298,28 @@ export class ApiService {
           'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       }
+    )
+
+  getUserLeagueUsers = (userLeagueId: string) =>
+    this.http.get<UserInUserLeague[]>(
+      `${this.privateUrl}/user-league/${userLeagueId}/users`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  deleteUserFromUserLeague = (userLeagueId: string, userUid: string) =>
+    this.http.patch <void>(
+      `${this.privateUrl}/user-league/${userLeagueId}/leave/${userUid}`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      },
     )
 }

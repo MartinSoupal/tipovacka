@@ -7,10 +7,8 @@ import FieldValue = firestore.FieldValue;
 interface Request extends CustomRequest {
   params: {
     userLeagueId: string;
+    userUid: string
   },
-  body: {
-    userUid: string;
-  }
 }
 
 export async function removeUserFromUserLeague(req: Request, res: any) {
@@ -28,12 +26,12 @@ export async function removeUserFromUserLeague(req: Request, res: any) {
     res.status(403).send('Unauthorized');
     return;
   }
-  if (userLeagueData.users.indexOf(req.body.userUid) === -1) {
+  if (userLeagueData.users.indexOf(req.params.userUid) === -1) {
     res.status(404).send('Not in the league of friends');
     return;
   }
   await userLeagueSnapshot.ref.update({
-    users: FieldValue.arrayRemove(req.body.userUid),
+    users: FieldValue.arrayRemove(req.params.userUid),
   });
   res.status(200).send();
 }

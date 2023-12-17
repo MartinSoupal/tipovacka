@@ -8,6 +8,9 @@ import {
 } from '../create-user-league/create-user-league.component';
 import {DataService} from '../../services/data.service';
 import {HotToastService} from '@ngneat/hot-toast';
+import {
+  UsersForUserLeagueComponent
+} from '../users-for-user-league/users-for-user-league.component';
 
 @Component({
   selector: 'app-create-user-league',
@@ -50,5 +53,9 @@ export class ChooseUserLeagueComponent {
   leave = (userLeagueId: string) => {
     this.dataService.leaveUserLeague(userLeagueId)
       .subscribe()
+  }
+
+  openUsersInUserLeagueModal(userLeagueId: string) {
+    this.dialog.open(UsersForUserLeagueComponent, {data: {userLeagueId}});
   }
 }

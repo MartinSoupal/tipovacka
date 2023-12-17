@@ -1,8 +1,9 @@
 import {CustomRequest} from '../types';
-import {auth, db} from '../firebaseConfig';
+import {db} from '../firebaseConfig';
 import {User} from './types';
 import {Match} from '../matches/types';
 import {UserLeagueData} from '../userLeagues/types';
+import {getDisplayName} from '../helpers';
 
 export async function getStandings(req: CustomRequest, res: any) {
   const matchesSnapshot = await db.collection('matches').get();
@@ -127,14 +128,4 @@ export async function getStandingsForUserLeague(req: Request, res: any) {
     )
   );
   res.status(200).send(JSON.stringify(standing));
-}
-
-async function getDisplayName(uid: string) {
-  try {
-    const user = await auth.getUser(uid);
-    return user.displayName || '';
-  } catch (error) {
-    console.error(`Error fetching user with uid ${uid}:`, error);
-    return '';
-  }
 }
