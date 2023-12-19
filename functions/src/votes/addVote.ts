@@ -54,6 +54,6 @@ export async function addVote(req: Request, res: any) {
       [result]: (match[result] || 0) + 1,
     });
     await voteDoc.ref.update({result});
-    res.status(200).send({id: vote.id});
+    res.status(200).send();
   }
 }

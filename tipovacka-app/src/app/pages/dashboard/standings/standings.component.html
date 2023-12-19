@@ -12,24 +12,26 @@
       </ng-container>
     </div>
     <div class="flex gap-2">
-      <ng-container *ngIf="(dataService.userLeagues$ | async) as userLeagues; else btnLoading">
-        <button
-          (click)="openCreateUserLeagueModal()"
-          *ngIf="!userLeagues.length"
-          class="btn btn-secondary"
-        >
-          <span class="material-icons md-18">add</span>
-          <span class="md:hidden block material-icons md-18">groups</span>
-          <span class="hidden md:block">{{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}</span>
-        </button>
-        <button
-          (click)="openChooseUserLeagueModal()"
-          *ngIf="userLeagues.length"
-          class="btn btn-secondary"
-        >
-          <span class="material-icons md-18">groups</span>
-          <span class="hidden md:block">{{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
-        </button>
+      <ng-container *ngIf="(authService.isSignIn$ | async)">
+        <ng-container *ngIf="(dataService.userLeagues$ | async) as userLeagues; else btnLoading">
+          <button
+            (click)="openCreateUserLeagueModal()"
+            *ngIf="!userLeagues.length"
+            class="btn btn-secondary"
+          >
+            <span class="material-icons md-18">add</span>
+            <span class="md:hidden block material-icons md-18">groups</span>
+            <span class="hidden md:block">{{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}</span>
+          </button>
+          <button
+            (click)="openChooseUserLeagueModal()"
+            *ngIf="userLeagues.length"
+            class="btn btn-secondary"
+          >
+            <span class="material-icons md-18">groups</span>
+            <span class="hidden md:block">{{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
+          </button>
+        </ng-container>
       </ng-container>
       <button
         (click)="toggleSort()"

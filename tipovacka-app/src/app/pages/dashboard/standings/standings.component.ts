@@ -7,6 +7,7 @@ import {
   ChooseUserLeagueComponent
 } from '../../../components/choose-user-league/choose-user-league.component';
 import {DataService} from '../../../services/data.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-standings',
@@ -17,6 +18,7 @@ export class StandingsComponent {
   loadingArray = [0, 1, 2, 3, 4];
   sortBy: 'correctVotes' | 'correctRatio' = 'correctVotes';
   dataService = inject(DataService);
+  authService = inject(AuthService);
   private dialog = inject(DialogService);
 
   toggleSort = () => {

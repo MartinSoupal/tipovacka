@@ -55,7 +55,7 @@ export class ChooseUserLeagueComponent {
       .subscribe()
   }
 
-  openUsersInUserLeagueModal(userLeagueId: string) {
-    this.dialog.open(UsersForUserLeagueComponent, {data: {userLeagueId}});
+  openUsersInUserLeagueModal(userLeague: UserLeague) {
+    this.dialog.open(UsersForUserLeagueComponent, {data: {userLeague}});
   }
 }

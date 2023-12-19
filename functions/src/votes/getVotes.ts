@@ -23,7 +23,6 @@ export async function getVotes(req: Request, res: any) {
     (doc) => {
       const data = doc.data();
       return {
-        id: doc.id,
         matchId: data.matchId,
         result: data.result,
       };

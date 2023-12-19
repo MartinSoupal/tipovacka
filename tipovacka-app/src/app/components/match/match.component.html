@@ -18,7 +18,6 @@
       [backgroundColor]="data.homeTeam.color"
       [hide]="data.datetime! < now ? data.result !== 1: votes[data.id]?.result !== null && votes[data.id]?.result !== 1"
       [label]="data.homeTeam.name"
-      [pulseAnimation]="sendingVote !== undefined"
       [size]="data.datetime! < now ? 'small' : 'normal'"
       [type]="
       data.datetime! < now ?
@@ -52,7 +51,6 @@
       [backgroundColor]="'#333'"
       [hide]="data.datetime! < now ? data.result !== 0: votes[data.id]?.result !== null && votes[data.id]?.result !== 0"
       [label]="'DRAW' | transloco"
-      [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
       data.datetime! < now ?
@@ -89,7 +87,6 @@
       [backgroundColor]="data.awayTeam.color"
       [hide]="data.datetime! < now ? data.result !== 2: votes[data.id]?.result !== null && votes[data.id]?.result !== 2"
       [label]="data.awayTeam.name"
-      [pulseAnimation]="sendingVote !== undefined"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
       data.datetime! < now ?

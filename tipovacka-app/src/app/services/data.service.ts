@@ -37,9 +37,20 @@ export class DataService {
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
 
+  clearAllMatchesVotes = () => {
+    this.votesOfPrevMatches$.next({});
+    this.votesOfNextMatches$.next({});
+  }
+
+  clearUserLeagues = () => {
+    this.userLeagues$.next(undefined);
+    this.selectedUserLeague$.next(undefined);
+  }
+
   loadPrevMatchesVotes = () => {
     this.prevMatches$
       .pipe(
+        first(),
         switchMap(
           (matches) =>
             (matches?.length ?
@@ -57,6 +68,7 @@ export class DataService {
   loadNextMatchesVotes = () => {
     this.nextMatches$
       .pipe(
+        first(),
         switchMap(
           (matches) =>
             (matches?.length ?
@@ -72,7 +84,7 @@ export class DataService {
   }
 
 
-  loadPrevMatches = () => {
+  loadPrevMatches = (): Promise<void> => new Promise((resolve) => {
     combineLatest([
       this.loadAllTeams(),
       this.apiService.getPrevMatches(),
@@ -104,11 +116,12 @@ export class DataService {
             ))
           this.leaguesOfPrevMatches$.next(leaguesOfPrevMatches);
           this.prevMatches$.next(prevMatches);
+          resolve();
         }
       })
-  }
+  })
 
-  loadNextMatches = () => {
+  loadNextMatches = (): Promise<void> => new Promise((resolve) => {
     combineLatest([
       this.loadAllTeams(),
       this.apiService.getNextMatches(),
@@ -140,9 +153,10 @@ export class DataService {
             ))
           this.leaguesOfNextMatches$.next(leaguesOfNextMatches);
           this.nextMatches$.next(nextMatches);
+          resolve();
         }
       })
-  }
+  })
 
   loadStandings = () => {
     this.standings$.next(undefined);
@@ -258,21 +272,19 @@ export class DataService {
         )
       )
 
-  addVote = (matchId: string, result: VoteResult): Observable<returnIdValue> =>
+  addVote = (matchId: string, result: VoteResult): Observable<void> =>
     combineLatest([
-      this.apiService.addVote(matchId, result),
       this.votesOfNextMatches$,
       this.nextMatches$,
     ])
       .pipe(
         first(),
-        map(
-          ([{id}, votes, matches]) => {
+        switchMap(
+          ([votes, matches]) => {
             const previousVote: Vote | undefined = votes[matchId];
             this.votesOfNextMatches$.next({
               ...votes,
-              matchId: {
-                id,
+              [matchId]: {
                 matchId,
                 result,
               }
@@ -294,22 +306,21 @@ export class DataService {
                 },
                 matches!,
               )
-            )
-            return {id};
+            );
+            return this.apiService.addVote(matchId, result);
           }
         )
       )
 
   deleteVote = (matchId: string): Observable<void> =>
     combineLatest([
-      this.apiService.deleteVote(matchId),
       this.votesOfNextMatches$,
       this.nextMatches$,
     ])
       .pipe(
         first(),
-        map(
-          ([_, votes, matches]) => {
+        switchMap(
+          ([votes, matches]) => {
             const previousVote: Vote | undefined = votes[matchId];
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
             this.nextMatches$.next(
@@ -324,7 +335,7 @@ export class DataService {
                 matches!,
               )
             )
-            return;
+            return this.apiService.deleteVote(matchId);
           }
         )
       )

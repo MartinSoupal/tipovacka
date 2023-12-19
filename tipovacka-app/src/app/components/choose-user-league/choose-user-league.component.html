@@ -22,7 +22,7 @@
         (click)="chooseUserLeague(userLeague)"
         class="btn btn-primary flex justify-between"
       >
-        SELECT
+        {{"CHOOSE_USER_LEAGUE.SELECT" | transloco}}
         <span class="material-icons md-18">arrow_forward_ios</span>
       </button>
       <button
@@ -30,30 +30,30 @@
         *ngIf="userLeague.hasAdminRights"
         class="btn btn-critical flex justify-between"
       >
-        DELETE
+        {{"CHOOSE_USER_LEAGUE.DELETE" | transloco}}
         <span class="material-icons md-18">delete_forever</span>
       </button>
       <button
         (click)="invite(userLeague.id)"
         class="btn btn-secondary flex justify-between"
       >
-        INVITE
+        {{"CHOOSE_USER_LEAGUE.INVITE" | transloco}}
         <span class="material-icons md-18">ios_share</span>
       </button>
       <button
         (click)="leave(userLeague.id)"
         class="btn btn-secondary flex justify-between"
       >
-        LEAVE
+        {{"CHOOSE_USER_LEAGUE.LEAVE" | transloco}}
         <span class="material-icons md-18">logout</span>
       </button>
       <button
-        (click)="openUsersInUserLeagueModal(userLeague.id)"
+        (click)="openUsersInUserLeagueModal(userLeague)"
         *ngIf="userLeague.hasAdminRights"
         class="btn btn-secondary flex justify-between"
       >
-        USERS
-        <span class="material-icons md-18">group_remove</span>
+        {{"CHOOSE_USER_LEAGUE.USERS" | transloco}}
+        <span class="material-icons md-18">group</span>
       </button>
     </div>
   </div>
@@ -76,5 +76,5 @@
 <footer>
   <button
     (click)="ref.close()"
-    class="btn btn-secondary">{{ 'CHOOSE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
+    class="btn btn-secondary">{{ 'CANCEL_BUTTON' | transloco }}</button>
 </footer>

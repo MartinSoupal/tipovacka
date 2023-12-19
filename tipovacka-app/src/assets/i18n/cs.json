@@ -65,19 +65,33 @@
   "CREATE_USER_LEAGUE": {
     "TITLE": "Vytvořit ligu přátel",
     "SUBMIT_BUTTON": "Vytvořit",
-    "CANCEL_BUTTON": "Zavřít",
     "NAME": "Název",
     "STARTED_DATE": "Datum začátku",
     "STARTED_DATE_INFO": "Datum od kdy se začínají počítat body. Nezadané datum se rovná všechny body.",
     "CHOSEN_LEAGUES": "Vybrané ligy"
   },
-  "CHOOSE_USER_LEAGUE_BUTTON": "Zobrazit ligu přátel ({{count}})",
+  "CHOOSE_USER_LEAGUE_BUTTON": "Ligy přátel ({{count}})",
   "CHOOSE_USER_LEAGUE": {
-    "TITLE": "Zobrazit ligu přátel",
-    "CANCEL_BUTTON": "Zavřít",
-    "SHOW_ALL": "Zrušit výběr ligy přátel"
+    "TITLE": "Přehled lig přátel",
+    "SHOW_ALL": "Zrušit výběr ligy přátel",
+    "SELECT": "Vybrat",
+    "DELETE": "Smazat",
+    "INVITE": "Pozvat",
+    "LEAVE": "Opustit",
+    "USERS": "Přátelé"
   },
   "REQUIRED": "Povinný údaj",
   "AT_LEAST_ONE": "Alespoň jedna z možností musí být vybrána.",
-  "MAX_LENGTH": "Přesáhl jsi maximální délku {{maxlength}} znaků. ({{actuallength}}/{{maxlength}})"
+  "MAX_LENGTH": "Přesáhl jsi maximální délku {{maxlength}} znaků. ({{actuallength}}/{{maxlength}})",
+  "USER_LEAGUE_USERS": {
+    "TITLE": "Přátelé ligy {{userLeagueName}}",
+    "REMOVE": "Vyřadit z ligy"
+  },
+  "CANCEL_BUTTON": "Zavřít",
+  "VOTE_SAVING": "Tip se ukládá...",
+  "VOTE_SAVED": "Tip uložen.",
+  "VOTE_COULD_NOT_SAVE": "Nepodařilo se uložit tip.",
+  "VOTE_REMOVING": "Tip se odstraňuje...",
+  "VOTE_REMOVED": "Tip odstraněn.",
+  "VOTE_COULD_NOT_REMOVED": "Nepodařilo se odstranit tip."
 }

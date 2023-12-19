@@ -65,10 +65,33 @@
   "CREATE_USER_LEAGUE": {
     "TITLE": "Create league of friends",
     "SUBMIT_BUTTON": "Create",
-    "CANCEL_BUTTON": "Cancel",
     "NAME": "Name",
     "STARTED_DATE": "Start date",
     "STARTED_DATE_INFO": "The date from which points are counted. An unspecified date equals all points.",
     "CHOSEN_LEAGUES": "Chosen leagues"
-  }
+  },
+  "CHOOSE_USER_LEAGUE_BUTTON": "Leagues of friends ({{count}})",
+  "CHOOSE_USER_LEAGUE": {
+    "TITLE": "Overview of leagues of friends",
+    "SHOW_ALL": "Cancel filter for league of friends",
+    "SELECT": "Select",
+    "DELETE": "Delete",
+    "INVITE": "Invite",
+    "LEAVE": "Leave",
+    "USERS": "Friends"
+  },
+  "REQUIRED": "Required",
+  "AT_LEAST_ONE": "At least one of the options must be selected.",
+  "MAX_LENGTH": "You have exceeded the maximum length of {{maxlength}} characters. ({{actuallength}}/{{maxlength}})",
+  "USER_LEAGUE_USERS": {
+    "TITLE": "Friends of the league {{userLeagueName}}",
+    "REMOVE": "Remove from league of friends"
+  },
+  "CANCEL_BUTTON": "Close",
+  "VOTE_SAVING": "Vote saving...",
+  "VOTE_SAVED": "Vote saved.",
+  "VOTE_COULD_NOT_SAVE": "Could not save vote.",
+  "VOTE_REMOVING": "Vote removing...",
+  "VOTE_REMOVED": "Vote removed.",
+  "VOTE_COULD_NOT_REMOVED": "Could not remove vote."
 }

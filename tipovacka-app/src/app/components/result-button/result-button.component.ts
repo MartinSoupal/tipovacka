@@ -14,5 +14,4 @@ export class ResultButtonComponent {
   @Input() votesRatio: number = 0;
   @Input() type: ResultButtonType = 'normal';
   @Input() size: 'normal' | 'small' = 'normal';
-  @Input() pulseAnimation = false;
 }

@@ -24,15 +24,27 @@ export class DashboardComponent implements OnInit {
     ])
       .subscribe({
         next: ([token, queryParams]) => {
-          if (!token) {
-            return;
+          if (token) {
+            const userLeagueId = queryParams['ul'] as string;
+            if (userLeagueId) {
+              this.dataService.setSelectedUserLeague(userLeagueId);
+            }
+            this.dataService.loadPrevMatches()
+              .then(
+                () => {
+                  this.dataService.loadPrevMatchesVotes();
+                }
+              )
+            this.dataService.loadNextMatches()
+              .then(
+                () => {
+                  this.dataService.loadNextMatchesVotes();
+                }
+              )
           }
-          const userLeagueId = queryParams['ul'] as string;
-          if (userLeagueId) {
-            this.dataService.setSelectedUserLeague(userLeagueId);
-          }
-          this.dataService.loadPrevMatches();
-          this.dataService.loadNextMatches();
+          void this.dataService.loadPrevMatches();
+          void this.dataService.loadNextMatches();
+          this.dataService.loadStandings();
           this.dataService.loadUserLeagues();
         }
       })
@@ -44,12 +56,8 @@ export class DashboardComponent implements OnInit {
       })
 
     addEventListener('signOut', () => {
+      this.dataService.clearAllMatchesVotes();
+      this.dataService.clearUserLeagues();
     });
-    this.dataService.loadPrevMatches();
-    this.dataService.loadPrevMatchesVotes();
-    this.dataService.loadNextMatches();
-    this.dataService.loadNextMatchesVotes();
-    this.dataService.loadUserLeagues();
-    this.dataService.loadStandings();
   }
 }

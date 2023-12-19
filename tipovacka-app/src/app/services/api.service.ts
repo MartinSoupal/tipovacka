@@ -129,7 +129,7 @@ export class ApiService {
     )
 
   addVote = (matchId: string, result: MatchResult) =>
-    this.http.post<returnIdValue>(
+    this.http.post<void>(
       `${this.privateUrl}/vote`,
       {
         matchId,

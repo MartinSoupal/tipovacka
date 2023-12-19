@@ -1,5 +1,5 @@
 <header>
-  <h1>{{ 'CHOOSE_USER_LEAGUE.TITLE' | transloco }}</h1>
+  <h1>{{ 'USER_LEAGUE_USERS.TITLE' | transloco: {userLeagueName: ref.data.userLeague.name} }}</h1>
 </header>
 <div class="flex flex-col gap-4">
   <div
@@ -17,7 +17,7 @@
       (click)="removeUser(user.userUid)"
       class="btn btn-critical flex justify-between"
     >
-      REMOVE
+      {{"USER_LEAGUE_USERS.REMOVE" | transloco}}
       <span class="material-icons md-18">person_remove</span>
     </button>
   </div>
@@ -25,5 +25,5 @@
 <footer>
   <button
     (click)="ref.close()"
-    class="btn btn-secondary">{{ 'CHOOSE_USER_LEAGUE.CANCEL_BUTTON' | transloco }}</button>
+    class="btn btn-secondary">{{ 'CANCEL_BUTTON' | transloco }}</button>
 </footer>
