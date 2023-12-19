@@ -8,11 +8,24 @@ import {
 } from '../../../components/choose-user-league/choose-user-league.component';
 import {DataService} from '../../../services/data.service';
 import {AuthService} from '../../../services/auth.service';
+import {SortByPipe} from '../../../pipes/sort-by.pipe';
+import {AsyncPipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {TranslocoPipe} from '@ngneat/transloco';
 
 @Component({
   selector: 'app-standings',
   templateUrl: './standings.component.html',
-  styleUrls: ['./standings.component.scss']
+  styleUrls: ['./standings.component.scss'],
+  standalone: true,
+  imports: [
+    SortByPipe,
+    AsyncPipe,
+    NgForOf,
+    TranslocoPipe,
+    NgIf,
+    NgClass,
+    DecimalPipe
+  ],
 })
 export class StandingsComponent {
   loadingArray = [0, 1, 2, 3, 4];

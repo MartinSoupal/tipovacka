@@ -4,7 +4,8 @@ import {TranslocoService} from '@ngneat/transloco';
 
 @Pipe({
   name: 'datetimeFormatBy',
-  pure: false
+  pure: false,
+  standalone: true,
 })
 export class DatetimeFormatPipe implements PipeTransform {
 

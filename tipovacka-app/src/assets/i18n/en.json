@@ -93,5 +93,14 @@
   "VOTE_COULD_NOT_SAVE": "Could not save vote.",
   "VOTE_REMOVING": "Vote removing...",
   "VOTE_REMOVED": "Vote removed.",
-  "VOTE_COULD_NOT_REMOVED": "Could not remove vote."
+  "VOTE_COULD_NOT_REMOVED": "Could not remove vote.",
+  "USER_LEAGUE_CREATING": "League of friends creating...",
+  "USER_LEAGUE_CREATED": "League of friends created.",
+  "USER_LEAGUE_COULD_NOT_CREATE": "Could not create league of friends.",
+  "USER_LEAGUE_DELETING": "League of friends deleting...",
+  "USER_LEAGUE_DELETED": "League of friends deleted.",
+  "USER_LEAGUE_COULD_NOT_DELETE": "Could not delete league of friends.",
+  "USER_LEAGUE_LEAVING": "League of friends leaving...",
+  "USER_LEAGUE_LEAVED": "League of friends leaved.",
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Could not leave league of friends."
 }

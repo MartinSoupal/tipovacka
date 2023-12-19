@@ -214,7 +214,8 @@ export class DataService {
               ...(userLeagues || []),
               {
                 id,
-                hasAdminRights: true,
+                isAdmin: true,
+                isUser: true,
                 ...newUserLeague,
               }
             ]);
@@ -225,38 +226,50 @@ export class DataService {
 
   deleteUserLeague = (userLeagueId: string): Observable<void> =>
     combineLatest([
-      this.apiService.deleteUserLeague(userLeagueId),
       this.userLeagues$,
+      this.selectedUserLeague$
     ])
       .pipe(
         first(),
-        map(
-          ([_, userLeagues]) => {
-            if (!userLeagues?.length) {
-              return;
+        switchMap(
+          ([userLeagues, selectedUserLeague]) => {
+            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues!);
+            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues!));
+            if (selectedUserLeague?.id === userLeagueId) {
+              this.selectedUserLeague$.next(undefined);
             }
-            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues);
-            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues));
-            return;
+            if (selectedUserLeague?.id === userLeagueId) {
+              this.loadStandings()
+            }
+            return this.apiService.deleteUserLeague(userLeagueId);
           }
         )
       )
 
   leaveUserLeague = (userLeagueId: string): Observable<void> =>
     combineLatest([
-      this.apiService.leaveUserLeague(userLeagueId),
       this.userLeagues$,
+      this.selectedUserLeague$
     ])
       .pipe(
         first(),
-        map(
-          ([_, userLeagues]) => {
-            if (!userLeagues?.length) {
-              return;
+        switchMap(
+          ([userLeagues, selectedUserLeague,]) => {
+            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues!);
+            if (!userLeagues![userLeagueIndex].isAdmin) {
+              this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues!));
+              if (selectedUserLeague?.id === userLeagueId) {
+                this.selectedUserLeague$.next(undefined);
+              }
             }
-            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues);
-            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues));
-            return;
+            if (userLeagues![userLeagueIndex].isAdmin) {
+              userLeagues![userLeagueIndex].isUser = false;
+              this.userLeagues$.next(userLeagues);
+            }
+            if (userLeagues![userLeagueIndex].isAdmin && selectedUserLeague?.id === userLeagueId) {
+              this.loadStandings()
+            }
+            return this.apiService.leaveUserLeague(userLeagueId);
           }
         )
       )

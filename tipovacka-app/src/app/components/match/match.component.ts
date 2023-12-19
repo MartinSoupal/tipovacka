@@ -4,12 +4,22 @@ import {AuthService} from '../../services/auth.service';
 import {Vote, VoteResult} from '../../models/vote.model';
 import {DataService} from '../../services/data.service';
 import {HotToastService} from '@ngneat/hot-toast';
-import {TranslocoService} from '@ngneat/transloco';
+import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
+import {AsyncPipe, NgClass, NgIf} from '@angular/common';
+import {ResultButtonComponent} from '../result-button/result-button.component';
 
 @Component({
   selector: 'app-match',
   templateUrl: './match.component.html',
-  styleUrls: ['./match.component.scss']
+  styleUrls: ['./match.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslocoPipe,
+    AsyncPipe,
+    ResultButtonComponent,
+    NgClass
+  ]
 })
 export class MatchComponent {
   @Input({required: true}) data!: MatchWithTeamName;

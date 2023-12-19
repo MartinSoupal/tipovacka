@@ -1,12 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Team} from '../../models/team.model';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Match, MatchResult, NewMatch} from '../../models/match.model';
 import {combineLatest} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
 import {League, LeagueStage} from '../../models/league.model';
 import {ApiService} from '../../services/api.service';
+import {NgForOf} from '@angular/common';
+import {AdminDatetimeFormatPipe} from '../../pipes/admin-datetime-format.pipe';
 
 type NewMatchFormGroupModel = {
   stage: FormControl<LeagueStage | undefined>;
@@ -20,7 +22,13 @@ type NewMatchFormGroupModel = {
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    NgForOf,
+    AdminDatetimeFormatPipe
+  ]
 })
 export class AdminComponent implements OnInit {
   teams: Team[] = [];

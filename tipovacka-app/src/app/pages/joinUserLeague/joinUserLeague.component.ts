@@ -1,10 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AsyncPipe, NgIf} from '@angular/common';
 import {AuthService} from '../../services/auth.service';
 import {combineLatest, delay} from 'rxjs';
 import {DataService} from '../../services/data.service';
 import {HotToastService} from '@ngneat/hot-toast';
+import {AsyncPipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-join-user-league',

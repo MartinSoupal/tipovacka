@@ -9,7 +9,7 @@
     <div class="flex gap-2">
       <div>{{user.name}}</div>
       <span
-        *ngIf="user.hasAdminRights"
+        *ngIf="user.isAdmin"
         class="material-icons"
       >admin_panel_settings</span>
     </div>

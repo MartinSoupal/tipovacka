@@ -93,5 +93,14 @@
   "VOTE_COULD_NOT_SAVE": "Nepodařilo se uložit tip.",
   "VOTE_REMOVING": "Tip se odstraňuje...",
   "VOTE_REMOVED": "Tip odstraněn.",
-  "VOTE_COULD_NOT_REMOVED": "Nepodařilo se odstranit tip."
+  "VOTE_COULD_NOT_REMOVED": "Nepodařilo se odstranit tip.",
+  "USER_LEAGUE_CREATING": "Liga přátel se vytváří...",
+  "USER_LEAGUE_CREATED": "Liga přátel vytvořena.",
+  "USER_LEAGUE_COULD_NOT_CREATE": "Nepodařilo se vytvořit ligu přátel.",
+  "USER_LEAGUE_DELETING": "Liga přátel se odstraňuje...",
+  "USER_LEAGUE_DELETED": "Liga přátel odstraněna.",
+  "USER_LEAGUE_COULD_NOT_DELETE": "Nepodařilo se smazat ligu přátel.",
+  "USER_LEAGUE_LEAVING": "Opouštíš ligu přátel...",
+  "USER_LEAGUE_LEAVED": "Opustil jsi ligu přátel.",
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Nepodařilo se opustit ligu přátel."
 }

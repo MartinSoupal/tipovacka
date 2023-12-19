@@ -1,15 +1,43 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {AuthService} from '../../services/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {combineLatest} from 'rxjs';
+import {
+  AsyncPipe,
+  NgClass,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault
+} from '@angular/common';
+import {TranslocoPipe} from '@ngneat/transloco';
+import {NextMatchesComponent} from './next-matches/next-matches.component';
+import {
+  PreviousMatchesComponent
+} from './previous-matches/previous-matches.component';
+import {StandingsComponent} from './standings/standings.component';
 
 type Tabs = 'results' | 'next' | 'standings';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    RouterLink,
+    TranslocoPipe,
+    AsyncPipe,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    NextMatchesComponent,
+    PreviousMatchesComponent,
+    StandingsComponent,
+    NgIf
+  ]
 })
 export class DashboardComponent implements OnInit {
   activeTab: Tabs = 'next';

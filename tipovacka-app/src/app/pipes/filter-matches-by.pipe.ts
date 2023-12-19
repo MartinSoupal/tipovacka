@@ -3,7 +3,8 @@ import {MatchWithTeamName} from '../models/match.model';
 import {filter, includes} from 'ramda';
 
 @Pipe({
-  name: 'filterMatchesBy'
+  name: 'filterMatchesBy',
+  standalone: true,
 })
 export class FilterMatchesByPipe implements PipeTransform {
 

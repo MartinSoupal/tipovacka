@@ -9,11 +9,12 @@ export interface UserLeague {
   name: string;
   startedDate: Date;
   leagues: string[];
-  hasAdminRights: boolean;
+  isAdmin: boolean;
+  isUser: boolean;
 }
 
 export interface UserInUserLeague {
   userUid: string;
   name: string;
-  hasAdminRights: boolean;
+  isAdmin: boolean;
 }

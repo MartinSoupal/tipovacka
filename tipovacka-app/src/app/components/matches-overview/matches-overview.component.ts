@@ -2,11 +2,26 @@ import {Component, Input} from '@angular/core';
 import {MatchWithTeamName} from '../../models/match.model';
 import {clone} from 'ramda';
 import {Vote} from '../../models/vote.model';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {DateToNumberPipe} from '../../pipes/date-to-number.pipe';
+import {TranslocoPipe} from '@ngneat/transloco';
+import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
+import {MatchComponent} from '../match/match.component';
 
 @Component({
   selector: 'app-matches-overview',
   templateUrl: './matches-overview.component.html',
-  styleUrls: ['./matches-overview.component.scss']
+  styleUrls: ['./matches-overview.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    NgClass,
+    DateToNumberPipe,
+    TranslocoPipe,
+    DatetimeFormatPipe,
+    MatchComponent
+  ]
 })
 export class MatchesOverviewComponent {
   @Input() matches: MatchWithTeamName[] = [];

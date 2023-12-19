@@ -17,5 +17,6 @@ export interface UserLeagueForUser {
   name: string;
   startedDate: Date | null;
   leagues: string[];
-  hasAdminRights: boolean;
+  isAdmin: boolean;
+  isUser: boolean;
 }

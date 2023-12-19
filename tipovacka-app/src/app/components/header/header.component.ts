@@ -1,12 +1,19 @@
 import {Component} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {TranslocoService} from '@ngneat/transloco';
+import {AsyncPipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [
+    RouterLink,
+    NgIf,
+    AsyncPipe
+  ]
 })
 export class HeaderComponent {
 

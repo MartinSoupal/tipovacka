@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {DialogRef, DialogService} from '@ngneat/dialog';
-import {TranslocoPipe} from '@ngneat/transloco';
+import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {UserLeague} from '../../models/user-league.model';
 import {
@@ -11,6 +11,7 @@ import {HotToastService} from '@ngneat/hot-toast';
 import {
   UsersForUserLeagueComponent
 } from '../users-for-user-league/users-for-user-league.component';
+import {SortByPipe} from '../../pipes/sort-by.pipe';
 
 @Component({
   selector: 'app-create-user-league',
@@ -19,7 +20,8 @@ import {
     TranslocoPipe,
     NgForOf,
     AsyncPipe,
-    NgIf
+    NgIf,
+    SortByPipe
   ],
   templateUrl: './choose-user-league.component.html',
   styleUrl: './choose-user-league.component.scss'
@@ -29,6 +31,7 @@ export class ChooseUserLeagueComponent {
   dialog = inject(DialogService);
   dataService = inject(DataService);
   private toastService = inject(HotToastService);
+  private translocoService = inject(TranslocoService);
 
   chooseUserLeague = (userLeague?: UserLeague) => {
     this.dataService.setSelectedUserLeague(userLeague);
@@ -42,6 +45,13 @@ export class ChooseUserLeagueComponent {
 
   deleteUserLeague = (userLeagueId: string) => {
     this.dataService.deleteUserLeague(userLeagueId)
+      .pipe(
+        this.toastService.observe({
+          loading: this.translocoService.translate('USER_LEAGUE_DELETING'),
+          success: this.translocoService.translate('USER_LEAGUE_DELETED'),
+          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_DELETE'),
+        })
+      )
       .subscribe();
   }
 
@@ -52,10 +62,18 @@ export class ChooseUserLeagueComponent {
 
   leave = (userLeagueId: string) => {
     this.dataService.leaveUserLeague(userLeagueId)
+      .pipe(
+        this.toastService.observe({
+          loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
+          success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
+          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
+        })
+      )
       .subscribe()
   }
 
   openUsersInUserLeagueModal(userLeague: UserLeague) {
     this.dialog.open(UsersForUserLeagueComponent, {data: {userLeague}});
   }
+
 }

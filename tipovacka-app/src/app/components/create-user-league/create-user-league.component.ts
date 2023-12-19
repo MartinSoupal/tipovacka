@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DialogRef} from '@ngneat/dialog';
-import {TranslocoPipe} from '@ngneat/transloco';
+import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
 import {League} from '../../models/league.model';
 import {JsonPipe, NgForOf, NgIf} from '@angular/common';
 import {
@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 import {ApiService} from '../../services/api.service';
 import {DataService} from '../../services/data.service';
+import {HotToastService} from '@ngneat/hot-toast';
 
 
 function atLeastOneTrueValidator(): ValidatorFn {
@@ -49,6 +50,8 @@ export class CreateUserLeagueComponent implements OnInit {
   })
   private apiService = inject(ApiService);
   private dataService = inject(DataService);
+  private toastService = inject(HotToastService);
+  private translocoService = inject(TranslocoService);
 
   ngOnInit() {
     this.apiService.getAllLeagues()
@@ -70,16 +73,20 @@ export class CreateUserLeagueComponent implements OnInit {
       const name = this.formGroup.get('name')!.value;
       const startedDate = new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`);
       const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true);
+      this.ref.close();
       this.dataService.addUserLeague({
         name,
         startedDate,
         leagues,
       })
-        .subscribe({
-          next: () => {
-            this.ref.close();
-          }
-        })
+        .pipe(
+          this.toastService.observe({
+            loading: this.translocoService.translate('USER_LEAGUE_CREATING'),
+            success: this.translocoService.translate('USER_LEAGUE_CREATED'),
+            error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_CREATE'),
+          })
+        )
+        .subscribe()
     }
   }
 }

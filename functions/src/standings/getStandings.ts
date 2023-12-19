@@ -97,6 +97,10 @@ export async function getStandingsForUserLeague(req: Request, res: any) {
     res.status(200).send(JSON.stringify([]));
   }
 
+  if (!userLeagueData.users.length) {
+    res.status(200).send(JSON.stringify([]));
+    return;
+  }
   const votesSnapshot =
     await db.collection('votes')
       .where('matchId', 'in', matchIds)

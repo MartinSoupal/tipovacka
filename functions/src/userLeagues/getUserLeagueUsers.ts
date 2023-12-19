@@ -12,7 +12,7 @@ interface Request extends CustomRequest {
 interface User {
   userUid: string;
   name: string;
-  hasAdminRights: boolean;
+  isAdmin: boolean;
 }
 
 export async function getUserLeagueUsers(req: Request, res: any) {
@@ -29,7 +29,7 @@ export async function getUserLeagueUsers(req: Request, res: any) {
     async (userUid) => ({
       userUid,
       name: await getDisplayName(userUid),
-      hasAdminRights: userLeagueData.admins.indexOf(userUid) !== -1,
+      isAdmin: userLeagueData.admins.indexOf(userUid) !== -1,
     })
   ));
   res.status(200).send(JSON.stringify(users));

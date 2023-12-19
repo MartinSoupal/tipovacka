@@ -19,7 +19,8 @@ export async function getUserLeague(req: Request, res: any) {
     name: data.name,
     startedDate: data.startedDate ? data.startedDate.toDate() : null,
     leagues: data.leagues,
-    hasAdminRights: data.admins.indexOf(req.userUid) !== -1,
+    isAdmin: data.admins.indexOf(req.userUid) !== -1,
+    isUser: data.users.indexOf(req.userUid) !== -1,
   };
   res.status(200).send(JSON.stringify(userLeague));
 }
