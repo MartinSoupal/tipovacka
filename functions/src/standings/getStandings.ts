@@ -50,6 +50,7 @@ export async function getStandings(req: CustomRequest, res: any) {
   const standing: User[] = await Promise.all(
     Object.keys(users).map(
       async (key) => ({
+        uid: key,
         totalVotes: users[key][0],
         correctVotes: users[key][1],
         name: await getDisplayName(key),
@@ -125,6 +126,7 @@ export async function getStandingsForUserLeague(req: Request, res: any) {
   const standing: User[] = await Promise.all(
     Object.keys(users).map(
       async (key) => ({
+        uid: key,
         totalVotes: users[key][0],
         correctVotes: users[key][1],
         name: await getDisplayName(key),

@@ -48,7 +48,11 @@
       class="w-full">
       <tr
         *ngFor="let user of standings | sortBy: sortBy: 'desc'; let i = index"
-        class="border-gray-200 border-b-[1px] last:border-b-0">
+        [ngClass]="{
+          'font-bold': (authService.getUserData$ | async)?.uid === user.uid
+        }"
+        class="border-gray-200 border-b-[1px] last:border-b-0"
+      >
         <td class="text-gray-700 text-right">{{i + 1}}.</td>
         <td class="w-full">{{user.name}}</td>
         <td class="font-bold text-right">{{user.correctVotes}}</td>

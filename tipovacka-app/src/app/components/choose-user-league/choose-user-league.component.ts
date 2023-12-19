@@ -39,8 +39,7 @@ export class ChooseUserLeagueComponent {
   }
 
   openCreateUserLeagueModal() {
-    this.ref.close();
-    this.dialog.open(CreateUserLeagueComponent);
+    this.dialog.open(CreateUserLeagueComponent, {id: 'create-user-league'});
   }
 
   deleteUserLeague = (userLeagueId: string) => {
@@ -73,7 +72,10 @@ export class ChooseUserLeagueComponent {
   }
 
   openUsersInUserLeagueModal(userLeague: UserLeague) {
-    this.dialog.open(UsersForUserLeagueComponent, {data: {userLeague}});
+    this.dialog.open(UsersForUserLeagueComponent, {
+      data: {userLeague},
+      id: 'users-in-user-league'
+    });
   }
 
 }

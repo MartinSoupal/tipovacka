@@ -46,10 +46,13 @@ export class StandingsComponent {
   }
 
   openCreateUserLeagueModal() {
-    this.dialog.open(CreateUserLeagueComponent);
+    this.dialog.open(CreateUserLeagueComponent, {id: 'create-user-league'});
   }
 
   openChooseUserLeagueModal() {
-    this.dialog.open(ChooseUserLeagueComponent, {size: "lg"})
+    this.dialog.open(ChooseUserLeagueComponent, {
+      size: "lg",
+      id: 'user-leagues-overview'
+    });
   }
 }

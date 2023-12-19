@@ -1,12 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DialogRef} from '@ngneat/dialog';
-import {TranslocoPipe} from '@ngneat/transloco';
+import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {UserInUserLeague, UserLeague} from '../../models/user-league.model';
 import {ApiService} from '../../services/api.service';
 import {first} from 'rxjs';
 import {HotToastService} from '@ngneat/hot-toast';
 import * as R from 'ramda';
+import {AuthService} from '../../services/auth.service';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-users-for-user-league',
@@ -23,8 +25,11 @@ import * as R from 'ramda';
 export class UsersForUserLeagueComponent implements OnInit {
   ref: DialogRef<{ userLeague: UserLeague }, undefined> = inject(DialogRef);
   users: UserInUserLeague[] = [];
+  authService = inject(AuthService);
   private apiService = inject(ApiService);
   private toastService = inject(HotToastService);
+  private dataService = inject(DataService);
+  private translocoService = inject(TranslocoService);
 
   ngOnInit() {
     this.apiService.getUserLeagueUsers(this.ref.data.userLeague.id)
@@ -58,5 +63,17 @@ export class UsersForUserLeagueComponent implements OnInit {
           }
         }
       })
+  }
+
+  leave = () => {
+    this.dataService.leaveUserLeague(this.ref.data.userLeague.id)
+      .pipe(
+        this.toastService.observe({
+          loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
+          success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
+          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
+        })
+      )
+      .subscribe()
   }
 }

@@ -14,7 +14,16 @@
       >admin_panel_settings</span>
     </div>
     <button
+      (click)="leave()"
+      *ngIf="(authService.getUserData$ | async)?.uid === user.userUid"
+      class="btn btn-critical flex justify-between"
+    >
+      {{"CHOOSE_USER_LEAGUE.LEAVE" | transloco}}
+      <span class="material-icons md-18">logout</span>
+    </button>
+    <button
       (click)="removeUser(user.userUid)"
+      *ngIf="(authService.getUserData$ | async)?.uid !== user.userUid"
       class="btn btn-critical flex justify-between"
     >
       {{"USER_LEAGUE_USERS.REMOVE" | transloco}}
