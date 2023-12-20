@@ -47,9 +47,9 @@ export class UsersForUserLeagueComponent implements OnInit {
     this.apiService.deleteUserFromUserLeague(this.ref.data.userLeague.id, userUid)
       .pipe(
         this.toastService.observe({
-          loading: 'User removing...',
-          success: 'User removed from user league!',
-          error: 'Could not removed user.',
+          loading: this.translocoService.translate('USER_REMOVING'),
+          success: this.translocoService.translate('USER_REMOVED'),
+          error: this.translocoService.translate('USER_COULD_NOT_REMOVE'),
         })
       )
       .subscribe({
@@ -66,14 +66,6 @@ export class UsersForUserLeagueComponent implements OnInit {
   }
 
   leave = () => {
-    this.dataService.leaveUserLeague(this.ref.data.userLeague.id)
-      .pipe(
-        this.toastService.observe({
-          loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
-          success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
-          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
-        })
-      )
-      .subscribe()
+    this.dataService.leaveUserLeague(this.ref.data.userLeague.id);
   }
 }

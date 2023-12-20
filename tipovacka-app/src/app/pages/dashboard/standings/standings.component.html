@@ -1,15 +1,18 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm flex flex-col gap-4">
   <div
-    class="w-full flex justify-between items-end mt-4">
-    <div class="flex flex-col">
-      <ng-container *ngIf="(dataService.selectedUserLeague$ | async) as selectedUserLeague">
+    class="w-full flex justify-between items-end">
+    <div>
+      <div
+        *ngIf="(dataService.selectedUserLeague$ | async) as selectedUserLeague"
+        class="flex flex-col"
+      >
         <h2 class="">{{ selectedUserLeague.name }}</h2>
         <div class="text-xxs italic text-gray-600">
             <span *ngFor="let leagues of selectedUserLeague.leagues; let i = index">
               {{ leagues + (i < selectedUserLeague.leagues.length - 1 ? ', ' : '') }}
             </span>
         </div>
-      </ng-container>
+      </div>
     </div>
     <div class="flex gap-2">
       <ng-container *ngIf="(authService.isSignIn$ | async)">
@@ -24,12 +27,12 @@
             <span class="hidden md:block">{{ 'CREATE_USER_LEAGUE_BUTTON' | transloco }}</span>
           </button>
           <button
-            (click)="openChooseUserLeagueModal()"
+            (click)="openUserLeaguesOverviewModal()"
             *ngIf="userLeagues.length"
             class="btn btn-secondary"
           >
             <span class="material-icons md-18">groups</span>
-            <span class="hidden md:block">{{ 'CHOOSE_USER_LEAGUE_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
+            <span class="hidden md:block">{{ 'USER_LEAGUES_OVERVIEW_BUTTON' | transloco: {count: (dataService.userLeagues$ | async)?.length} }}</span>
           </button>
         </ng-container>
       </ng-container>

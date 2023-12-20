@@ -70,9 +70,9 @@
     "STARTED_DATE_INFO": "The date from which points are counted. An unspecified date equals all points.",
     "CHOSEN_LEAGUES": "Chosen leagues"
   },
-  "CHOOSE_USER_LEAGUE_BUTTON": "Leagues of friends ({{count}})",
-  "CHOOSE_USER_LEAGUE": {
-    "TITLE": "Overview of leagues of friends",
+  "USER_LEAGUES_OVERVIEW_BUTTON": "Leagues of friends ({{count}})",
+  "USER_LEAGUES_OVERVIEW": {
+    "TITLE": "Leagues of friends",
     "SHOW_ALL": "Cancel filter for league of friends",
     "SELECT": "Select",
     "DELETE": "Delete",
@@ -102,5 +102,8 @@
   "USER_LEAGUE_COULD_NOT_DELETE": "Could not delete league of friends.",
   "USER_LEAGUE_LEAVING": "League of friends leaving...",
   "USER_LEAGUE_LEAVED": "League of friends leaved.",
-  "USER_LEAGUE_COULD_NOT_LEAVE": "Could not leave league of friends."
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Could not leave league of friends.",
+  "USER_REMOVING": "Friend removing from league of friends...",
+  "USER_REMOVED": "Friend removed from league of friends.",
+  "USER_COULD_NOT_REMOVE": "Could not remove friend from league of friends.."
 }

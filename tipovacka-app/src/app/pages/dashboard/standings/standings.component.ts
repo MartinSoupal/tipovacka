@@ -3,14 +3,14 @@ import {
   CreateUserLeagueComponent
 } from '../../../components/create-user-league/create-user-league.component';
 import {DialogService} from '@ngneat/dialog';
-import {
-  ChooseUserLeagueComponent
-} from '../../../components/choose-user-league/choose-user-league.component';
 import {DataService} from '../../../services/data.service';
 import {AuthService} from '../../../services/auth.service';
 import {SortByPipe} from '../../../pipes/sort-by.pipe';
 import {AsyncPipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
+import {
+  UserLeaguesOverviewComponent
+} from '../../../components/user-leagues-overview/user-leagues-overview.component';
 
 @Component({
   selector: 'app-standings',
@@ -49,8 +49,8 @@ export class StandingsComponent {
     this.dialog.open(CreateUserLeagueComponent, {id: 'create-user-league'});
   }
 
-  openChooseUserLeagueModal() {
-    this.dialog.open(ChooseUserLeagueComponent, {
+  openUserLeaguesOverviewModal() {
+    this.dialog.open(UserLeaguesOverviewComponent, {
       size: "lg",
       id: 'user-leagues-overview'
     });

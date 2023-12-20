@@ -70,8 +70,8 @@
     "STARTED_DATE_INFO": "Datum od kdy se začínají počítat body. Nezadané datum se rovná všechny body.",
     "CHOSEN_LEAGUES": "Vybrané ligy"
   },
-  "CHOOSE_USER_LEAGUE_BUTTON": "Ligy přátel ({{count}})",
-  "CHOOSE_USER_LEAGUE": {
+  "USER_LEAGUES_OVERVIEW_BUTTON": "Ligy přátel ({{count}})",
+  "USER_LEAGUES_OVERVIEW": {
     "TITLE": "Přehled lig přátel",
     "SHOW_ALL": "Zrušit výběr ligy přátel",
     "SELECT": "Vybrat",
@@ -102,5 +102,8 @@
   "USER_LEAGUE_COULD_NOT_DELETE": "Nepodařilo se smazat ligu přátel.",
   "USER_LEAGUE_LEAVING": "Opouštíš ligu přátel...",
   "USER_LEAGUE_LEAVED": "Opustil jsi ligu přátel.",
-  "USER_LEAGUE_COULD_NOT_LEAVE": "Nepodařilo se opustit ligu přátel."
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Nepodařilo se opustit ligu přátel.",
+  "USER_REMOVING": "Přítel se odstraňuje z ligy přátel...",
+  "USER_REMOVED": "Přítel odstraněn z ligy přátel.",
+  "USER_COULD_NOT_REMOVE": "Nepodařilo se odstranit přítele z ligy přátel."
 }

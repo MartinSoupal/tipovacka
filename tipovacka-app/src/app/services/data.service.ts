@@ -14,9 +14,11 @@ import * as R from 'ramda';
 import {User} from '../models/user.model';
 import {NewUserLeague, UserLeague} from '../models/user-league.model';
 import {arrayToHashMap} from '../utils/arrayToHashMap.fnc';
-import {ApiService, returnIdValue} from './api.service';
+import {ApiService} from './api.service';
 import {AuthService} from './auth.service';
 import {Vote, VoteResult} from '../models/vote.model';
+import {HotToastService} from '@ngneat/hot-toast';
+import {TranslocoService} from '@ngneat/transloco';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +38,8 @@ export class DataService {
 
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
+  private toastService = inject(HotToastService);
+  private translocoService = inject(TranslocoService);
 
   clearAllMatchesVotes = () => {
     this.votesOfPrevMatches$.next({});
@@ -201,13 +205,18 @@ export class DataService {
       })
   }
 
-  addUserLeague = (newUserLeague: NewUserLeague): Observable<returnIdValue> =>
+  addUserLeague = (newUserLeague: NewUserLeague): void => {
     combineLatest([
       this.apiService.addUserLeague(newUserLeague),
       this.userLeagues$,
     ])
       .pipe(
         first(),
+        this.toastService.observe({
+          loading: this.translocoService.translate('USER_LEAGUE_CREATING'),
+          success: this.translocoService.translate('USER_LEAGUE_CREATED'),
+          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_CREATE'),
+        }),
         map(
           ([{id}, userLeagues]) => {
             this.userLeagues$.next([
@@ -223,8 +232,10 @@ export class DataService {
           }
         )
       )
+      .subscribe()
+  }
 
-  deleteUserLeague = (userLeagueId: string): Observable<void> =>
+  deleteUserLeague = (userLeagueId: string): void => {
     combineLatest([
       this.userLeagues$,
       this.selectedUserLeague$
@@ -241,12 +252,21 @@ export class DataService {
             if (selectedUserLeague?.id === userLeagueId) {
               this.loadStandings()
             }
-            return this.apiService.deleteUserLeague(userLeagueId);
+            return this.apiService.deleteUserLeague(userLeagueId)
+              .pipe(
+                this.toastService.observe({
+                  loading: this.translocoService.translate('USER_LEAGUE_DELETING'),
+                  success: this.translocoService.translate('USER_LEAGUE_DELETED'),
+                  error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_DELETE'),
+                })
+              );
           }
         )
       )
+      .subscribe()
+  }
 
-  leaveUserLeague = (userLeagueId: string): Observable<void> =>
+  leaveUserLeague = (userLeagueId: string): void => {
     combineLatest([
       this.userLeagues$,
       this.selectedUserLeague$
@@ -269,10 +289,19 @@ export class DataService {
             if (userLeagues![userLeagueIndex].isAdmin && selectedUserLeague?.id === userLeagueId) {
               this.loadStandings()
             }
-            return this.apiService.leaveUserLeague(userLeagueId);
+            return this.apiService.leaveUserLeague(userLeagueId)
+              .pipe(
+                this.toastService.observe({
+                  loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
+                  success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
+                  error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
+                }),
+              );
           }
         )
       )
+      .subscribe()
+  }
 
   joinUserLeague = (userLeagueId: string): Observable<void> =>
     this.apiService.joinUserLeague(userLeagueId)
@@ -285,7 +314,7 @@ export class DataService {
         )
       )
 
-  addVote = (matchId: string, result: VoteResult): Observable<void> =>
+  addVote = (matchId: string, result: VoteResult): Promise<void> => new Promise((resolve) => {
     combineLatest([
       this.votesOfNextMatches$,
       this.nextMatches$,
@@ -320,12 +349,25 @@ export class DataService {
                 matches!,
               )
             );
-            return this.apiService.addVote(matchId, result);
+            return this.apiService.addVote(matchId, result)
+              .pipe(
+                this.toastService.observe({
+                  loading: this.translocoService.translate('VOTE_SAVING'),
+                  success: this.translocoService.translate('VOTE_SAVED'),
+                  error: this.translocoService.translate('VOTE_COULD_NOT_SAVE'),
+                })
+              );
           }
         )
       )
+      .subscribe({
+        next: () => {
+          resolve();
+        }
+      })
+  })
 
-  deleteVote = (matchId: string): Observable<void> =>
+  deleteVote = (matchId: string): Promise<void> => new Promise((resolve) => {
     combineLatest([
       this.votesOfNextMatches$,
       this.nextMatches$,
@@ -348,10 +390,23 @@ export class DataService {
                 matches!,
               )
             )
-            return this.apiService.deleteVote(matchId);
+            return this.apiService.deleteVote(matchId)
+              .pipe(
+                this.toastService.observe({
+                  loading: this.translocoService.translate('VOTE_REMOVING'),
+                  success: this.translocoService.translate('VOTE_REMOVED'),
+                  error: this.translocoService.translate('VOTE_COULD_NOT_REMOVED'),
+                })
+              )
           }
         )
       )
+      .subscribe({
+        next: () => {
+          resolve();
+        }
+      })
+  })
 
   setSelectedUserLeague = (selectedUserLeague?: UserLeague | string) => {
     combineLatest([

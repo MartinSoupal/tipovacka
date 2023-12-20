@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {DialogRef, DialogService} from '@ngneat/dialog';
-import {TranslocoPipe, TranslocoService} from '@ngneat/transloco';
+import {TranslocoPipe} from '@ngneat/transloco';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {UserLeague} from '../../models/user-league.model';
 import {
@@ -14,7 +14,7 @@ import {
 import {SortByPipe} from '../../pipes/sort-by.pipe';
 
 @Component({
-  selector: 'app-create-user-league',
+  selector: 'app-user-leagues-overview',
   standalone: true,
   imports: [
     TranslocoPipe,
@@ -23,15 +23,14 @@ import {SortByPipe} from '../../pipes/sort-by.pipe';
     NgIf,
     SortByPipe
   ],
-  templateUrl: './choose-user-league.component.html',
-  styleUrl: './choose-user-league.component.scss'
+  templateUrl: './user-leagues-overview.component.html',
+  styleUrl: './user-leagues-overview.component.scss'
 })
-export class ChooseUserLeagueComponent {
+export class UserLeaguesOverviewComponent {
   ref: DialogRef<void, undefined> = inject(DialogRef);
   dialog = inject(DialogService);
   dataService = inject(DataService);
   private toastService = inject(HotToastService);
-  private translocoService = inject(TranslocoService);
 
   chooseUserLeague = (userLeague?: UserLeague) => {
     this.dataService.setSelectedUserLeague(userLeague);
@@ -43,32 +42,16 @@ export class ChooseUserLeagueComponent {
   }
 
   deleteUserLeague = (userLeagueId: string) => {
-    this.dataService.deleteUserLeague(userLeagueId)
-      .pipe(
-        this.toastService.observe({
-          loading: this.translocoService.translate('USER_LEAGUE_DELETING'),
-          success: this.translocoService.translate('USER_LEAGUE_DELETED'),
-          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_DELETE'),
-        })
-      )
-      .subscribe();
+    this.dataService.deleteUserLeague(userLeagueId);
   }
 
   invite = (userLeagueId: string) => {
-    void navigator.clipboard.writeText(`http://localhost:4200/${userLeagueId}/join`);
+    void navigator.clipboard.writeText(`${location.origin}/${userLeagueId}/join`);
     this.toastService.success('Invite link has been copy into clipboard.');
   }
 
   leave = (userLeagueId: string) => {
-    this.dataService.leaveUserLeague(userLeagueId)
-      .pipe(
-        this.toastService.observe({
-          loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
-          success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
-          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
-        })
-      )
-      .subscribe()
+    this.dataService.leaveUserLeague(userLeagueId);
   }
 
   openUsersInUserLeagueModal(userLeague: UserLeague) {
