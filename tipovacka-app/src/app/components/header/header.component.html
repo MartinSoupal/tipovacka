@@ -9,6 +9,12 @@
   </a>
   <div class="flex gap-2 items-center">
     <button
+      (click)="openInfoModal()"
+      class="flex"
+    >
+      <span class="material-icons">info</span>
+    </button>
+    <button
       (click)="changeLang()"
       class="flex">
       <span class="material-icons">language</span>

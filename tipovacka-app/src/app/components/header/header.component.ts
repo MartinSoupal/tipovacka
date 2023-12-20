@@ -1,8 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router, RouterLink} from '@angular/router';
 import {TranslocoService} from '@ngneat/transloco';
 import {AsyncPipe, NgIf} from '@angular/common';
+import {DialogService} from '@ngneat/dialog';
+import {InfoComponent} from '../info/info.component';
 
 @Component({
   selector: 'app-header',
@@ -17,12 +19,10 @@ import {AsyncPipe, NgIf} from '@angular/common';
 })
 export class HeaderComponent {
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    private translocoService: TranslocoService
-  ) {
-  }
+  authService = inject(AuthService);
+  private router = inject(Router);
+  private translocoService = inject(TranslocoService);
+  private dialogService = inject(DialogService);
 
   goToAdmin = () => {
     void this.router.navigate(['admin']);
@@ -40,5 +40,9 @@ export class HeaderComponent {
       default:
         this.translocoService.setActiveLang('cs')
     }
+  }
+
+  openInfoModal = () => {
+    this.dialogService.open(InfoComponent);
   }
 }

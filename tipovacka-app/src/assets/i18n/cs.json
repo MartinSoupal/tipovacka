@@ -105,5 +105,10 @@
   "USER_LEAGUE_COULD_NOT_LEAVE": "Nepodařilo se opustit ligu přátel.",
   "USER_REMOVING": "Přítel se odstraňuje z ligy přátel...",
   "USER_REMOVED": "Přítel odstraněn z ligy přátel.",
-  "USER_COULD_NOT_REMOVE": "Nepodařilo se odstranit přítele z ligy přátel."
+  "USER_COULD_NOT_REMOVE": "Nepodařilo se odstranit přítele z ligy přátel.",
+  "INFO": {
+    "TITLE": "Informace a pravidla",
+    "MATCH_TIP_DEADLINE": "Tip na konečný výsledek lze zadat kdykoliv před oficiálním startem zápasu.",
+    "MATCH_RESULT_WRITE": "Výsledky se snažíme zapsat co nejdříve. Nejpozději však do 48 hodin po konci zápasu."
+  }
 }

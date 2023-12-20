@@ -105,5 +105,10 @@
   "USER_LEAGUE_COULD_NOT_LEAVE": "Could not leave league of friends.",
   "USER_REMOVING": "Friend removing from league of friends...",
   "USER_REMOVED": "Friend removed from league of friends.",
-  "USER_COULD_NOT_REMOVE": "Could not remove friend from league of friends.."
+  "USER_COULD_NOT_REMOVE": "Could not remove friend from league of friends..",
+  "INFO": {
+    "TITLE": "Informations and rules",
+    "MATCH_TIP_DEADLINE": "You can enter your vote for the final result at any time before the official start of the match.",
+    "MATCH_RESULT_WRITE": "We are trying to write the results as soon as possible. However, no later than 48 hours after the end of the match."
+  }
 }
