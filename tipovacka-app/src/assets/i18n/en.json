@@ -111,5 +111,13 @@
     "MATCH_TIP_DEADLINE": "You can enter your vote for the final result at any time before the official start of the match.",
     "MATCH_RESULT_WRITE": "We are trying to write the results as soon as possible. However, no later than 48 hours after the end of the match.",
     "MATCH_DEADLINE": "Matches are displayed 14 days into the future and 14 days into the past."
+  },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "LANG": {
+      "cs": "Česky",
+      "en": "English"
+    },
+    "SIGN_OUT": "Sign out"
   }
 }

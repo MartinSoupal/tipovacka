@@ -1,19 +1,13 @@
-<div class="flex py-4 mx-auto items-center justify-between">
-  <a routerLink="">
-    <div>Sportovsky</div>
+<div class="flex pt-4 pb-2 mx-auto items-center justify-between">
+  <a
+    routerLink="">
+    <img
+      alt="Sportovsky"
+      class="h-10 w-auto"
+      src="assets/images/logo.png"
+    >
   </a>
   <div class="flex gap-2 items-center">
-    <button
-      (click)="openInfoModal()"
-      class="flex"
-    >
-      <span class="material-icons">info</span>
-    </button>
-    <button
-      (click)="changeLang()"
-      class="flex">
-      <span class="material-icons">language</span>
-    </button>
     <button
       (click)="goToAdmin()"
       *ngIf="(authService.getUserData$ | async)?.email === 'm.soupal.06@gmail.com'"
@@ -21,23 +15,23 @@
     >
       <span class="material-icons">admin_panel_settings</span>
     </button>
-    <div *ngIf="authService.isSignIn$ | async">
+    <button
+      (click)="openSettingsModal()"
+      *ngIf="authService.isSignIn$ | async"
+      class="flex items-center gap-2 bg-gray-200 rounded-full p-1 pl-4"
+    >
+      <span>{{(authService.getUserData$ | async)?.displayName}}</span>
       <img
         [src]="(authService.getUserData$ | async)?.photoURL"
         alt="Rounded avatar"
-        class="w-8 h-8 rounded-full">
-    </div>
+        class="w-8 h-8 rounded-full"
+      >
+    </button>
     <button
       (click)="authService.signIn()"
       *ngIf="!(authService.isSignIn$ | async)"
       class="flex">
       <span class="material-icons">login</span>
-    </button>
-    <button
-      (click)="authService.signOut()"
-      *ngIf="authService.isSignIn$ | async"
-      class="flex">
-      <span class="material-icons">logout</span>
     </button>
   </div>
 </div>
