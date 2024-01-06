@@ -17,6 +17,7 @@
     <app-result-button
       [backgroundColor]="data.homeTeam.color"
       [hide]="data.datetime! < now ? data.result !== 1: votes[data.id]?.result !== null && votes[data.id]?.result !== 1"
+      [hover]="data.datetime! >= now"
       [label]="data.homeTeam.name"
       [size]="data.datetime! < now ? 'small' : 'normal'"
       [type]="
@@ -50,6 +51,7 @@
     <app-result-button
       [backgroundColor]="'#333'"
       [hide]="data.datetime! < now ? data.result !== 0: votes[data.id]?.result !== null && votes[data.id]?.result !== 0"
+      [hover]="data.datetime! >= now"
       [label]="'DRAW' | transloco"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
@@ -86,6 +88,7 @@
     <app-result-button
       [backgroundColor]="data.awayTeam.color"
       [hide]="data.datetime! < now ? data.result !== 2: votes[data.id]?.result !== null && votes[data.id]?.result !== 2"
+      [hover]="data.datetime! >= now"
       [label]="data.awayTeam.name"
       [size]="!!data && data.datetime < now ? 'small' : 'normal'"
       [type]="
