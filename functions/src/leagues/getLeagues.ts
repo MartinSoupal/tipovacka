@@ -2,10 +2,6 @@ import {db} from '../firebaseConfig';
 import {League} from './types';
 
 export async function getLeagues(req: any, res: any) {
-  if (!req.admin) {
-    res.status(403).send('Unauthorized');
-    return;
-  }
   const snapshot = await db.collection('leagues').get();
   const leagues: League[] = [];
   snapshot.forEach((doc) => {
