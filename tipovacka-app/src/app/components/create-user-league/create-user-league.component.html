@@ -54,6 +54,10 @@
           type="checkbox">
         <label class="input-checkbox-label">{{league.name}}</label>
       </div>
+      <ng-container *ngIf="isLeaguesLoading">
+        <div class="animate-pulse rounded-full w-64 h-5 bg-gray-200"></div>
+        <div class="animate-pulse rounded-full w-64 h-5 bg-gray-200"></div>
+      </ng-container>
     </div>
     <p
       *ngIf="formGroup.touched && formGroup.controls['leagues'].invalid"

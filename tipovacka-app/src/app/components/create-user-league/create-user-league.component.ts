@@ -47,6 +47,7 @@ export class CreateUserLeagueComponent implements OnInit {
     startedDate: new FormControl<string>(''),
     leagues: new FormGroup({}, atLeastOneTrueValidator()),
   })
+  isLeaguesLoading = true;
   private apiService = inject(ApiService);
   private dataService = inject(DataService);
 
@@ -55,6 +56,7 @@ export class CreateUserLeagueComponent implements OnInit {
       .subscribe({
         next: leagues => {
           this.leagues = leagues;
+          this.isLeaguesLoading = false;
           leagues.forEach(
             (league) => {
               (this.formGroup.get('leagues') as FormGroup).addControl(league.name, new FormControl<boolean>(false));
