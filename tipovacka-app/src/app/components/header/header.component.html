@@ -18,7 +18,7 @@
     <button
       (click)="openSettingsModal()"
       *ngIf="authService.isSignIn$ | async"
-      class="flex items-center gap-2 bg-gray-200 rounded-full p-1 pl-4"
+      class="flex items-center gap-2 bg-gray-100 rounded-full p-1 pl-4"
     >
       <span>{{(authService.getUserData$ | async)?.displayName}}</span>
       <img

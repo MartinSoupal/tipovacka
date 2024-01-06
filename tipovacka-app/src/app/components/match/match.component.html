@@ -11,7 +11,7 @@
   </div>
   <button
     (click)="chooseResult(1)"
-    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
@@ -44,7 +44,7 @@
   </button>
   <button
     (click)="chooseResult(0)"
-    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
@@ -80,7 +80,7 @@
   </button>
   <button
     (click)="chooseResult(2)"
-    [disabled]="data.datetime! < now || !(authService.isSignIn$ | async) || sendingVote !== undefined"
+    [disabled]="data.datetime! < now || sendingVote !== undefined"
     class="flex justify-center"
   >
     <app-result-button
