@@ -44,5 +44,6 @@ export class SettingsComponent implements OnInit {
         this.translocoService.setActiveLang('cs');
         this.actualLang = 'cs';
     }
+    localStorage.setItem('lang', this.actualLang);
   }
 }
