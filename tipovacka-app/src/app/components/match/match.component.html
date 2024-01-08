@@ -82,8 +82,11 @@
       class="btn w-[72px] flex justify-center"
     >
       <span
-        [style.color]="states['0'] === 'highlight' ? '#fff' : ''"
-        class="material-icons text-gray-600 md-24">close</span>
+        [ngClass]="{
+          'text-white': states['0'] === 'highlight' || states['0'] === 'correct' || states['0'] === 'incorrect',
+          'text-gray-600': states['0'] === 'normal'
+        }"
+        class="material-icons md-24">close</span>
     </button>
     <button
       (click)="chooseResult(2)"

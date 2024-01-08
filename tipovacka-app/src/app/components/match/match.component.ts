@@ -5,7 +5,6 @@ import {Vote, VoteResult} from '../../models/vote.model';
 import {DataService} from '../../services/data.service';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {AsyncPipe, NgClass, NgIf} from '@angular/common';
-import {ResultButtonComponent} from '../result-button/result-button.component';
 import {first} from 'rxjs';
 import {DialogService} from '@ngneat/dialog';
 import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
@@ -27,7 +26,6 @@ type TeamState =
     NgIf,
     TranslocoPipe,
     AsyncPipe,
-    ResultButtonComponent,
     NgClass,
     DatetimeFormatPipe,
     ImageSrcErrorDirective
