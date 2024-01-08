@@ -20,38 +20,12 @@
       class="material-icons md-12">close</span>
   </button>
 </div>
-<div class="grid grid-cols-1 w-full gap-y-8 mt-8">
+<div class="grid grid-cols-1 w-full gap-y-4 mt-8">
   <ng-container *ngFor="let match of matches; let i = index">
-    <div
+    <app-match
       *ngIf="!leaguesFilter.length || isLeagueInFilter[match.league]"
-      class="grid grid-cols-1 w-full gap-y-8"
-    >
-      <div
-        *ngIf="i === 0 ||
-        (match.datetime | dateToNumber) !== (matches[i-1].datetime | dateToNumber) ||
-        match.league !== matches[i-1].league ||
-        match.stage !== matches[i-1].stage ||
-        match.round !== matches[i-1].round"
-        [ngClass]="{
-          'mt-8': i > 0
-        }"
-        class="grid grid-cols-3 gap-2 text-xs text-gray-500 justify-items-center place-items-center"
-      >
-        <div class="text-gray-950 font-medium">{{('ROUND.' + match.round) | transloco}}</div>
-        <div class="grid grid-cols-1 gap-1 justify-items-center">
-          <img
-            [alt]="match.league"
-            class="h-8 w-auto"
-            src="assets/images/{{match.league}}.png"
-            srcset="assets/images/{{match.league}}.png">
-          <div class="text-xxs">{{match.stage ? (('STAGE.' + match.stage) | transloco) : ''}}</div>
-        </div>
-        <div>{{match.datetime | datetimeFormatBy}}</div>
-      </div>
-      <app-match
-        [data]="match"
-        [votes]="votes"
-      />
-    </div>
+      [data]="match"
+      [votes]="votes"
+    />
   </ng-container>
 </div>

@@ -26,7 +26,7 @@ import {MatchComponent} from '../match/match.component';
 export class MatchesOverviewComponent {
   @Input() matches: MatchWithTeamName[] = [];
   @Input() leagues: string[] = [];
-  @Input() votes: Record<string, Vote | undefined> = {};
+  @Input() votes?: Record<string, Vote | undefined>;
   leaguesFilter: string[] = [];
   isLeagueInFilter: Record<string, boolean> = {};
 

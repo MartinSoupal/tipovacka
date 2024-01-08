@@ -1,117 +1,112 @@
-<div class="w-full grid grid-cols-3 gap-4 content-start relative">
-  <div
-    *ngIf="data.result === null && data.datetime! < now && !data.postponed"
-    class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
-    <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'WAITING_TO_SET_RESULT' | transloco }}</div>
+<div class="flex flex-col w-full items-center rounded-xl relative overflow-hidden py-4 bg-gray-50 transition-all">
+  <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
+    <img
+      [appImgSrcError]="'assets/images/players/default.png'"
+      [ngClass]="{
+        'opacity-30': hides['1']
+      }"
+      [src]="'assets/images/players/' + data.home + '.png'"
+      class="h-[90%] w-auto"
+    >
   </div>
-  <div
-    *ngIf="data.postponed"
-    class="absolute w-full h-full bg-white/80 top-0 left-0 flex items-center justify-center z-50">
-    <div class="font-medium py-2 px-4 bg-gray-800 text-white rounded-lg">{{ 'POSTPONED' | transloco }}</div>
+  <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end">
+    <img
+      [appImgSrcError]="'assets/images/players/default.png'"
+      [ngClass]="{
+        'opacity-30': hides['2']
+      }"
+      [src]="'assets/images/players/' + data.away + '.png'"
+      class="h-[90%] w-auto"
+    >
   </div>
-  <button
-    (click)="chooseResult(1)"
-    [disabled]="data.datetime! < now || sendingVote !== undefined"
-    class="flex justify-center"
-  >
-    <app-result-button
-      [backgroundColor]="data.homeTeam.color"
-      [hide]="data.datetime! < now ? data.result !== 1: votes[data.id]?.result !== null && votes[data.id]?.result !== 1"
-      [hover]="data.datetime! >= now"
-      [label]="data.homeTeam.name"
-      [size]="data.datetime! < now ? 'small' : 'normal'"
-      [type]="
-      data.datetime! < now ?
-        data.result === null ?
-          votes[data.id]?.result === 1 ?
-            'highlight':
-            'normal':
-          votes[data.id]?.result === 1 ?
-            data.result === 1 ?
-              'correct':
-              'incorrect':
-            'normal':
-        votes[data.id]?.result === 1 ?
-          'highlight':
-          'normal'
-      "
-      [votesRatio]="data && data.totalVotes ? ((data![1] || 0) / data.totalVotes) : 0"
+  <div class="z-10 flex items-center gap-4">
+    <img
+      [alt]="data.league"
+      class="h-6 w-auto"
+      src="assets/images/{{data.league}}.png"
+      srcset="assets/images/{{data.league}}.png"
+    >
+    <div class="flex flex-col text-xxs text-gray-950/70">
+      <div>{{('ROUND.' + data.round) | transloco}}</div>
+      <div>{{data.datetime | datetimeFormatBy}}</div>
+    </div>
+  </div>
+  <div class="z-10 flex mt-6 gap-2 font-bold text-lg md:text-3xl w-full">
+    <div class="flex-1 flex justify-end">
+      <div class="drop-shadow-md">
+        {{data.homeTeam.name}}
+      </div>
+    </div>
+    <div class="opacity-30 text-center font-normal">vs</div>
+    <div class="flex-1 flex">
+      <div class="drop-shadow-md">
+        {{data.awayTeam.name}}
+      </div>
+    </div>
+  </div>
+  <div class="z-10 flex gap-2 mt-2 w-full justify-center">
+    <button
+      (click)="chooseResult(1)"
+      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [ngClass]="{
+        'opacity-50': hides['1'],
+        'bg-green-600': states['1'] === 'correct',
+        'bg-red-600': states['1'] === 'incorrect',
+        'btn-secondary': states['1'] === 'normal'
+      }"
+      [style.background-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
+      [style.border-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
+      class="btn"
     >
       <img
+        *ngIf="states['1'] !== 'normal'"
         [src]="'assets/images/' + data.home + '.png'"
-        alt="Rounded avatar"
-        class="w-auto h-full drop-shadow-2xl"/>
-    </app-result-button>
-  </button>
-  <button
-    (click)="chooseResult(0)"
-    [disabled]="data.datetime! < now || sendingVote !== undefined"
-    class="flex justify-center"
-  >
-    <app-result-button
-      [backgroundColor]="'#333'"
-      [hide]="data.datetime! < now ? data.result !== 0: votes[data.id]?.result !== null && votes[data.id]?.result !== 0"
-      [hover]="data.datetime! >= now"
-      [label]="'DRAW' | transloco"
-      [size]="!!data && data.datetime < now ? 'small' : 'normal'"
-      [type]="
-      data.datetime! < now ?
-        data.result === null ?
-          votes[data.id]?.result === 0 ?
-            'highlight':
-            'normal':
-          votes[data.id]?.result === 0 ?
-            data.result === 0 ?
-              'correct':
-              'incorrect':
-            'normal':
-        votes[data.id]?.result === 0 ?
-          'highlight':
-          'normal'
-      "
-      [votesRatio]="data && data.totalVotes ? ((data![0] || 0) / data.totalVotes) : 0"
+        class="h-8">
+      <img
+        *ngIf="states['1'] === 'normal'"
+        [appImgSrcError]="'assets/images/' + data.home + '.png'"
+        [src]="'assets/images/' + data.home + '_for_white_bg.png'"
+        class="h-8">
+    </button>
+    <button
+      (click)="chooseResult(0)"
+      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [ngClass]="{
+        'opacity-50': hides['0'],
+        'bg-green-600': states['0'] === 'correct',
+        'bg-red-600': states['0'] === 'incorrect',
+        'btn-secondary': states['0'] === 'normal'
+      }"
+      [style.background-color]="states['0'] === 'highlight' ? '#333' : ''"
+      [style.border-color]="states['0'] === 'highlight' ? '#333' : ''"
+      class="btn w-[72px] flex justify-center"
     >
       <span
-        [ngClass]="{
-          'md-36': !!data && data.datetime >= now,
-          'md-18': !!data && data.datetime < now
-          }"
-        class="material-icons text-gray-100"
-      >close</span>
-    </app-result-button>
-  </button>
-  <button
-    (click)="chooseResult(2)"
-    [disabled]="data.datetime! < now || sendingVote !== undefined"
-    class="flex justify-center"
-  >
-    <app-result-button
-      [backgroundColor]="data.awayTeam.color"
-      [hide]="data.datetime! < now ? data.result !== 2: votes[data.id]?.result !== null && votes[data.id]?.result !== 2"
-      [hover]="data.datetime! >= now"
-      [label]="data.awayTeam.name"
-      [size]="!!data && data.datetime < now ? 'small' : 'normal'"
-      [type]="
-      data.datetime! < now ?
-        data.result === null ?
-          votes[data.id]?.result === 2 ?
-            'highlight':
-            'normal':
-          votes[data.id]?.result === 2 ?
-            data.result === 2 ?
-              'correct':
-              'incorrect':
-            'normal':
-        votes[data.id]?.result === 2 ?
-          'highlight':
-          'normal'
-      "
-      [votesRatio]="data && data.totalVotes ? ((data![2] || 0) / data.totalVotes) : 0"
+        [style.color]="states['0'] === 'highlight' ? '#fff' : ''"
+        class="material-icons text-gray-600 md-24">close</span>
+    </button>
+    <button
+      (click)="chooseResult(2)"
+      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [ngClass]="{
+        'opacity-50': hides['2'],
+        'bg-green-600': states['2'] === 'correct',
+        'bg-red-600': states['2'] === 'incorrect',
+        'btn-secondary': states['2'] === 'normal'
+      }"
+      [style.background-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
+      [style.border-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
+      class="btn btn-secondary"
     >
       <img
+        *ngIf="states['2'] !== 'normal'"
         [src]="'assets/images/' + data.away + '.png'"
-        alt="Rounded avatar"
-        class="w-auto h-full drop-shadow-2xl">
-    </app-result-button>
-  </button>
+        class="h-8">
+      <img
+        *ngIf="states['2'] === 'normal'"
+        [appImgSrcError]="'assets/images/' + data.away + '.png'"
+        [src]="'assets/images/' + data.away + '_for_white_bg.png'"
+        class="h-8">
+    </button>
+  </div>
 </div>

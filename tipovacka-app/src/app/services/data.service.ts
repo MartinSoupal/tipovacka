@@ -30,7 +30,7 @@ export class DataService {
   votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote | undefined>>({});
   nextMatches$ = new BehaviorSubject<MatchWithTeamName[] | undefined>(undefined);
   leaguesOfNextMatches$ = new BehaviorSubject<string[]>([]);
-  votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote>>({});
+  votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
@@ -105,19 +105,23 @@ export class DataService {
             R.ascend(R.prop('stage')),
             R.ascend(R.prop('round')),
           ])(
-            matches.map(
-              (match): MatchWithTeamName => {
-                if (!R.includes(match.league, leaguesOfPrevMatches)) {
-                  leaguesOfPrevMatches.push(match.league);
-                }
-                return {
-                  ...match,
-                  homeTeam: teamsInHashMap[match.home],
-                  awayTeam: teamsInHashMap[match.away],
-                  daysTill: this.daysDifferenceTillNow(match.datetime),
-                }
-              },
-            ))
+            R.filter(
+              (match) => match.result !== null,
+              matches
+            )
+              .map(
+                (match): MatchWithTeamName => {
+                  if (!R.includes(match.league, leaguesOfPrevMatches)) {
+                    leaguesOfPrevMatches.push(match.league);
+                  }
+                  return {
+                    ...match,
+                    homeTeam: teamsInHashMap[match.home],
+                    awayTeam: teamsInHashMap[match.away],
+                    daysTill: this.daysDifferenceTillNow(match.datetime),
+                  }
+                },
+              ))
           this.leaguesOfPrevMatches$.next(leaguesOfPrevMatches);
           this.prevMatches$.next(prevMatches);
           resolve();
@@ -323,7 +327,7 @@ export class DataService {
         first(),
         switchMap(
           ([votes, matches]) => {
-            const previousVote: Vote | undefined = votes[matchId];
+            const previousVote: Vote | undefined = votes && votes[matchId];
             this.votesOfNextMatches$.next({
               ...votes,
               [matchId]: {
@@ -376,13 +380,13 @@ export class DataService {
         first(),
         switchMap(
           ([votes, matches]) => {
-            const previousVote: Vote | undefined = votes[matchId];
+            const previousVote: Vote | undefined = votes && votes[matchId];
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
             this.nextMatches$.next(
               R.map(
                 (match) => {
                   if (match.id === matchId) {
-                    match[previousVote.result]--;
+                    match[previousVote!.result]--;
                     match.totalVotes--;
                   }
                   return match;
