@@ -120,5 +120,6 @@
     },
     "SIGN_OUT": "Odhlásit se"
   },
-  "SIGN_IN": "Přihlásit se"
+  "SIGN_IN": "Přihlásit se",
+  "VOTE_LOADING": "Tvůj tip se načítá..."
 }

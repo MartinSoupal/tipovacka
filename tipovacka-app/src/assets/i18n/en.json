@@ -120,5 +120,6 @@
     },
     "SIGN_OUT": "Sign out"
   },
-  "SIGN_IN": "Sign in"
+  "SIGN_IN": "Sign in",
+  "VOTE_LOADING": "Your vote is loading..."
 }

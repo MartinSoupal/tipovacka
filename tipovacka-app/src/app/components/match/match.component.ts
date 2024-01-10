@@ -50,6 +50,7 @@ export class MatchComponent implements OnChanges, OnInit {
     0: false,
     2: false,
   }
+  protected readonly undefined = undefined;
   private dataService = inject(DataService);
   private dialogService = inject(DialogService);
 
@@ -96,8 +97,11 @@ export class MatchComponent implements OnChanges, OnInit {
     this.states['1'] = 'normal';
     this.states['0'] = 'normal';
     this.states['2'] = 'normal';
+    this.hides['1'] = false;
+    this.hides['0'] = false;
+    this.hides['2'] = false;
     if (this.data.datetime > this.now) {
-      if (!this.votes || !this.votes[this.data.id] || this.votes[this.data.id]?.result === null) {
+      if (!this.votes || !this.votes[this.data.id]) {
         return;
       }
       this.hides['1'] = true;
