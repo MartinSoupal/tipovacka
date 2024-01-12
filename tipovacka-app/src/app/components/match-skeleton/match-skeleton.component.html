@@ -1,18 +1,31 @@
-<div class="w-full grid grid-cols-3 gap-4 content-start">
-  <div
-    *ngFor="let item of array"
-    class="flex items-center flex-col"
-  >
-    <div
-      [ngClass]="{
-        'w-20 h-20': !small,
-        'w-14 h-14': small
-      }"
-      class="w-20 h-20 rounded-full border-2 border-gray-100 flex justify-center items-center p-2"
+<div class="flex flex-col w-full h-[196px] items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-gray-50 transition-all max-w-2xl mx-auto animate-pulse">
+  <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
+    <img
+      class="h-[90%] w-auto"
+      src="assets/images/players/default.png"
     >
-      <div class="rounded-full w-full h-full bg-gray-200"></div>
+  </div>
+  <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end justify-end">
+    <img
+      class="h-[90%] w-auto"
+      src="assets/images/players/default.png"
+    >
+  </div>
+  <div class="z-20 flex items-center gap-4 h-7 w-32 rounded-xl bg-gray-200">
+  </div>
+  <div class="z-20 flex justify-center mt-6 gap-2 font-bold text-lg md:text-3xl w-full">
+    <div class="h-9 w-32 rounded-xl bg-gray-200">
     </div>
-    <div class="mt-2 bg-gray-200 w-full rounded h-4"></div>
-    <div class="mt-1 w-full bg-gray-100 rounded h-4"></div>
+    <div class="opacity-30 text-center font-normal">vs</div>
+    <div class="h-9 w-32 rounded-xl bg-gray-200">
+    </div>
+  </div>
+  <div
+    class="z-20 flex gap-2 mt-2 w-full justify-center"
+  >
+    <div class="h-[54px] w-[72px] rounded-xl bg-gray-200"></div>
+    <div class="h-[54px] w-[72px] rounded-xl bg-gray-200"></div>
+    <div class="h-[54px] w-[72px] rounded-xl bg-gray-200"></div>
   </div>
 </div>
+

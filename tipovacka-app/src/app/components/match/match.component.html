@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-gray-50 transition-all max-w-2xl mx-auto">
+<div class="flex flex-col w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-gray-50 transition-all max-w-2xl mx-auto max-h-[196px]">
   <div
     [ngClass]="{
       'opacity-30': !hides['1'],
@@ -17,6 +17,7 @@
   ></div>
   <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
     <img
+      [alt]="'Player of ' + data.homeTeam.name"
       [appImgSrcError]="'assets/images/players/default.png'"
       [ngClass]="{
         'opacity-30': hides['1']
@@ -25,8 +26,9 @@
       class="h-[90%] w-auto"
     >
   </div>
-  <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end">
+  <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end justify-end">
     <img
+      [alt]="'Player of ' + data.awayTeam.name"
       [appImgSrcError]="'assets/images/players/default.png'"
       [ngClass]="{
         'opacity-30': hides['2']
@@ -61,7 +63,7 @@
     </div>
   </div>
   <div
-    *ngIf="!(authService.isSignIn$ | async) || !votes"
+    *ngIf="(authService.isSignIn$ | async) && !votes"
     class="z-20 flex gap-2 mt-2 w-full h-[54px] justify-center items-center text-xs text-gray-600"
   >
     {{ 'VOTE_LOADING' | transloco }}
@@ -92,12 +94,13 @@
         [src]="'assets/images/' + data.home + '.png'"
         class="h-8">
       <img
-        [appImgSrcError]="'assets/images/' + data.home + '.png'"
+        [alt]="'Logo of ' + data.homeTeam.name"
         [ngClass]="{
             'hidden': states['1'] !== 'normal'
           }"
         [src]="'assets/images/' + data.home + '_for_white_bg.png'"
-        class="h-8">
+        class="h-8"
+      >
     </button>
     <button
       (click)="chooseResult(0)"
@@ -133,13 +136,14 @@
       class="btn"
     >
       <img
+        [alt]="'Logo of ' + data.awayTeam.name"
         [ngClass]="{
             'hidden': states['2'] === 'normal'
           }"
         [src]="'assets/images/' + data.away + '.png'"
-        class="h-8">
+        class="h-8"
+      >
       <img
-        [appImgSrcError]="'assets/images/' + data.away + '.png'"
         [ngClass]="{
             'hidden': states['2'] !== 'normal'
           }"

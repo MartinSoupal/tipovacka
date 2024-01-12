@@ -1,6 +1,6 @@
 <ng-container *ngIf="(dataService.nextMatches$ | async) as nextMatches">
   <div
-    class="grid grid-cols-1 w-full gap-y-8">
+    class="flex flex-col w-full mt-8">
     <app-matches-overview
       [leagues]="(dataService.leaguesOfNextMatches$ | async) || []"
       [matches]="nextMatches"
@@ -17,17 +17,9 @@
 
 <div
   *ngIf="!(dataService.nextMatches$ | async)"
-  class="grid grid-cols-1 w-full gap-y-8 mt-8 animate-pulse"
+  class="flex flex-col gap-y-8 mt-8"
 >
-  <div class="flex">
-    <div class="w-20 h-5 badge bg-gray-100"></div>
-    <div class="w-20 h-5 badge bg-gray-100"></div>
-    <div class="w-20 h-5 badge bg-gray-100"></div>
-  </div>
-  <div class="grid grid-cols-1 w-full gap-y-8">
-    <div class="mb-2 w-1/3 h-4 bg-gray-100 justify-self-center"></div>
-    <app-match-skeleton/>
-    <app-match-skeleton/>
-    <app-match-skeleton/>
-  </div>
+  <app-match-skeleton/>
+  <app-match-skeleton/>
+  <app-match-skeleton/>
 </div>

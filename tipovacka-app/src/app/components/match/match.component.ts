@@ -29,7 +29,7 @@ type TeamState =
     NgClass,
     DatetimeFormatPipe,
     ImageSrcErrorDirective,
-    DecimalPipe
+    DecimalPipe,
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {
