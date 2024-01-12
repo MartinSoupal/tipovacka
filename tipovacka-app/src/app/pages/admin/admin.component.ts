@@ -1,14 +1,21 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Team} from '../../models/team.model';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Match, MatchResult, NewMatch} from '../../models/match.model';
+import {
+  Match,
+  MatchResult,
+  MatchWithTeamName,
+  NewMatch
+} from '../../models/match.model';
 import {combineLatest} from 'rxjs';
 import {arrayToHashMap} from '../../utils/arrayToHashMap.fnc';
 import * as R from 'ramda';
+import {clone} from 'ramda';
 import {League, LeagueStage} from '../../models/league.model';
 import {ApiService} from '../../services/api.service';
-import {NgForOf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {AdminDatetimeFormatPipe} from '../../pipes/admin-datetime-format.pipe';
+import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
 
 type NewMatchFormGroupModel = {
   stage: FormControl<LeagueStage | undefined>;
@@ -27,7 +34,10 @@ type NewMatchFormGroupModel = {
   imports: [
     ReactiveFormsModule,
     NgForOf,
-    AdminDatetimeFormatPipe
+    AdminDatetimeFormatPipe,
+    FilterMatchesByPipe,
+    NgIf,
+    NgClass
   ]
 })
 export class AdminComponent implements OnInit {
@@ -41,10 +51,14 @@ export class AdminComponent implements OnInit {
     away: new FormControl<string>(''),
     league: new FormControl<League | undefined>(undefined),
   })
-  matches: Match[] = [];
+  matches: MatchWithTeamName[] = [];
   leagues: League[] = [];
   stages: LeagueStage[] = [];
   rounds: string[] = [];
+  leaguesFilter: string[] = [];
+  isLeagueInFilter: Record<string, boolean> = {};
+  onlyWithoutResult = false;
+  now = new Date();
   private apiService = inject(ApiService);
 
   ngOnInit() {
@@ -59,10 +73,11 @@ export class AdminComponent implements OnInit {
           this.matches = R.sort(
             (a, b) => a.datetime.getTime() - b.datetime.getTime(),
             matches.map(
-              (match): Match => ({
+              (match): MatchWithTeamName => ({
                 ...match,
-                home: this.teamsInHashMap[match.home].name,
-                away: this.teamsInHashMap[match.away].name,
+                homeTeam: this.teamsInHashMap[match.home],
+                awayTeam: this.teamsInHashMap[match.away],
+                daysTill: 0,
               })
             )
           )
@@ -119,8 +134,10 @@ export class AdminComponent implements OnInit {
             stage: match.stage,
             round: match.round,
             datetime: match.datetime,
-            home: this.teamsInHashMap[match.home].name,
-            away: this.teamsInHashMap[match.away].name,
+            home: match.home,
+            away: match.away,
+            homeTeam: this.teamsInHashMap[match.home],
+            awayTeam: this.teamsInHashMap[match.away],
             result: null,
             league: match.league,
             0: 0,
@@ -128,6 +145,7 @@ export class AdminComponent implements OnInit {
             2: 0,
             totalVotes: 0,
             postponed: false,
+            daysTill: 0,
           })
           this.newMatchFormGroup.get('home')?.reset();
           this.newMatchFormGroup.get('away')?.reset();
@@ -174,5 +192,16 @@ export class AdminComponent implements OnInit {
           match.datetime = datetime;
         }
       })
+  }
+
+  addLeagueToFilter = (league: string) => {
+    if (this.isLeagueInFilter[league]) {
+      this.isLeagueInFilter[league] = false;
+      this.leaguesFilter.splice(this.leaguesFilter.indexOf(league), 1);
+    } else {
+      this.isLeagueInFilter[league] = true;
+      this.leaguesFilter.push(league);
+    }
+    this.leaguesFilter = clone(this.leaguesFilter);
   }
 }

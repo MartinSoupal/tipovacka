@@ -7,6 +7,7 @@ import {DateToNumberPipe} from '../../pipes/date-to-number.pipe';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {MatchComponent} from '../match/match.component';
+import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
 
 @Component({
   selector: 'app-matches-overview',
@@ -20,7 +21,8 @@ import {MatchComponent} from '../match/match.component';
     DateToNumberPipe,
     TranslocoPipe,
     DatetimeFormatPipe,
-    MatchComponent
+    MatchComponent,
+    FilterMatchesByPipe
   ]
 })
 export class MatchesOverviewComponent {
