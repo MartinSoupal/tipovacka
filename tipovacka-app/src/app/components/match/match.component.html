@@ -18,22 +18,22 @@
   <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
     <img
       [alt]="'Player of ' + data.homeTeam.name"
-      [appImgSrcError]="'assets/images/players/default.png'"
+      [appImgSrcError]="'assets/images/players/default.webp'"
       [ngClass]="{
         'opacity-30': hides['1']
       }"
-      [src]="'assets/images/players/' + data.home + '.png'"
+      [src]="'assets/images/players/' + data.home + '.webp'"
       class="h-[90%] w-auto"
     >
   </div>
   <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end justify-end">
     <img
       [alt]="'Player of ' + data.awayTeam.name"
-      [appImgSrcError]="'assets/images/players/default.png'"
+      [appImgSrcError]="'assets/images/players/default.webp'"
       [ngClass]="{
         'opacity-30': hides['2']
       }"
-      [src]="'assets/images/players/' + data.away + '.png'"
+      [src]="'assets/images/players/' + data.away + '.webp'"
       class="h-[90%] w-auto"
     >
   </div>
@@ -41,8 +41,7 @@
     <img
       [alt]="data.league"
       class="h-6 w-auto"
-      src="assets/images/{{data.league}}.png"
-      srcset="assets/images/{{data.league}}.png"
+      src="assets/images/{{data.league}}.webp"
     >
     <div class="flex flex-col text-xxs text-gray-950/70">
       <div>{{('ROUND.' + data.round) | transloco}}</div>
@@ -91,14 +90,14 @@
         [ngClass]="{
             'hidden': states['1'] === 'normal'
           }"
-        [src]="'assets/images/' + data.home + '.png'"
+        [src]="'assets/images/' + data.home + '.webp'"
         class="h-8">
       <img
         [alt]="'Logo of ' + data.homeTeam.name"
         [ngClass]="{
             'hidden': states['1'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.home + '_for_white_bg.png'"
+        [src]="'assets/images/' + data.home + '_for_white_bg.webp'"
         class="h-8"
       >
     </button>
@@ -140,14 +139,14 @@
         [ngClass]="{
             'hidden': states['2'] === 'normal'
           }"
-        [src]="'assets/images/' + data.away + '.png'"
+        [src]="'assets/images/' + data.away + '.webp'"
         class="h-8"
       >
       <img
         [ngClass]="{
             'hidden': states['2'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.away + '_for_white_bg.png'"
+        [src]="'assets/images/' + data.away + '_for_white_bg.webp'"
         class="h-8">
     </button>
   </div>

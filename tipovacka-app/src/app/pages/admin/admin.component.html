@@ -13,7 +13,7 @@
     <img
       [alt]="league.name"
       class="h-4 w-auto"
-      src="assets/images/{{league.name}}.png"
+      src="assets/images/{{league.name}}.webp"
     >
     <span
       *ngIf="isLeagueInFilter[league.name]"
@@ -34,9 +34,9 @@
   </button>
 </div>
 
-<div class="flex flex-col gap-y-8">
+<div class="flex flex-col gap-y-8 mt-4">
   <ng-container *ngFor="let match of matches | filterMatchesBy: leaguesFilter">
-    <ng-container *ngIf="onlyWithoutResult ? match.result === null : true">
+    <ng-container *ngIf="onlyWithoutResult ? match.result === null && match.datetime < now : true">
       <div
         class="flex"
       >
@@ -149,6 +149,6 @@
 </div>
 <button
   (click)="addMatch()"
-  class="btn btn-primary"
+  class="btn btn-primary mt-2"
 >Přidat
 </button>
