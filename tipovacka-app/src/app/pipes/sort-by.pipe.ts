@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class SortByPipe implements PipeTransform {
 
-  transform(array: any[], property: string, order: 'asc' | 'desc' = 'asc'): any[] {
+  transform(array: any[], properties: string[], order: 'asc' | 'desc' = 'asc'): any[] {
     if (!Array.isArray(array)) {
       return array;
     }
@@ -14,13 +14,14 @@ export class SortByPipe implements PipeTransform {
     const direction = order && order.toLowerCase() === 'desc' ? -1 : 1;
 
     return array.sort((a: any, b: any) => {
-      if (a[property] < b[property]) {
-        return -1 * direction;
-      } else if (a[property] > b[property]) {
-        return 1 * direction;
-      } else {
-        return 0;
+      for (const prop of properties) {
+        if (a[prop] < b[prop]) {
+          return -1 * direction;
+        } else if (a[prop] > b[prop]) {
+          return 1 * direction;
+        }
       }
+      return 0;
     });
   }
 }

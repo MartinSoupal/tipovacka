@@ -23,9 +23,8 @@ export class AppComponent {
   private translocoService = inject(TranslocoService);
 
   constructor() {
+    const browserLang = navigator.language;
     const lang = localStorage.getItem('lang');
-    if (lang) {
-      this.translocoService.setActiveLang(lang);
-    }
+    this.translocoService.setActiveLang(lang || browserLang);
   }
 }

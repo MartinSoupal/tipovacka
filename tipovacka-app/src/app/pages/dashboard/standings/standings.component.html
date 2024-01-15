@@ -41,10 +41,10 @@
         class="btn btn-secondary">
         <span class="material-icons md-18">sort</span>
         <span
-          *ngIf="sortBy === 'correctRatio'"
+          *ngIf="sortBy[0] === 'correctRatio'"
           class="md:hidden block material-icons md-18">percent</span>
         <span class="hidden md:block">
-            {{(sortBy === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_RATE') | transloco}}
+            {{(sortBy[0] === 'correctVotes' ? 'STANDINGS.FILTER.SUCCESSFUL_TIPS' : 'STANDINGS.FILTER.SUCCESSFUL_RATE') | transloco}}
           </span>
       </button>
     </div>

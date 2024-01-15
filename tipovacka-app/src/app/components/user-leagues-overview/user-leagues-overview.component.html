@@ -3,7 +3,7 @@
 </header>
 <div class="flex flex-col gap-12">
   <div
-    *ngFor="let userLeague of ((dataService.userLeagues$ | async) || []) | sortBy: 'name'"
+    *ngFor="let userLeague of ((dataService.userLeagues$ | async) || []) | sortBy: ['name']"
     class="flex flex-col gap-2"
   >
     <div>
