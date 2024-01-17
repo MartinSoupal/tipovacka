@@ -1,10 +1,10 @@
-name: Build and Deploy Angular App to FTP
+name: ESLint
 
 on:
   pull_request:
 
 jobs:
-  build-and-deploy:
+  ESLint:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,6 +18,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18' # Set this to your Node.js version
+
+      - name: Install ESLint
+        run: yarn add eslint
 
       - name: Run ESLint
         run: yarn lint
