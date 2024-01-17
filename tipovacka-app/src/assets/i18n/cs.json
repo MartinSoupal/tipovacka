@@ -1,0 +1,125 @@
+{
+  "ROUND": {
+    "ROUND_1": "1. kolo",
+    "ROUND_2": "2. kolo",
+    "ROUND_3": "3. kolo",
+    "ROUND_4": "4. kolo",
+    "ROUND_5": "5. kolo",
+    "ROUND_6": "6. kolo",
+    "ROUND_7": "7. kolo",
+    "ROUND_8": "8. kolo",
+    "ROUND_9": "9. kolo",
+    "ROUND_10": "10. kolo",
+    "ROUND_11": "11. kolo",
+    "ROUND_12": "12. kolo",
+    "ROUND_13": "13. kolo",
+    "ROUND_14": "14. kolo",
+    "ROUND_15": "15. kolo",
+    "ROUND_16": "16. kolo",
+    "ROUND_17": "17. kolo",
+    "ROUND_18": "18. kolo",
+    "ROUND_19": "19. kolo",
+    "ROUND_20": "20. kolo",
+    "ROUND_21": "21. kolo",
+    "ROUND_22": "22. kolo",
+    "ROUND_23": "23. kolo",
+    "ROUND_24": "24. kolo",
+    "ROUND_25": "25. kolo",
+    "ROUND_26": "26. kolo",
+    "ROUND_27": "27. kolo",
+    "ROUND_28": "28. kolo",
+    "ROUND_29": "29. kolo",
+    "ROUND_30": "30. kolo",
+    "ROUND_31": "31. kolo",
+    "ROUND_32": "32. kolo",
+    "ROUND_33": "33. kolo",
+    "ROUND_34": "34. kolo",
+    "ROUND_35": "35. kolo",
+    "ROUND_36": "36. kolo",
+    "ROUND_37": "37. kolo",
+    "ROUND_38": "38. kolo"
+  },
+  "STAGE": {
+    "MAIN_STAGE": "Základní část",
+    "CHAMPIONSHIP_STAGE": "Nadstavba"
+  },
+  "DRAW": "Remíza",
+  "MENU": {
+    "SCHEDULE": "Program",
+    "RESULTS": "Výsledky",
+    "STANDINGS": "Pořadí"
+  },
+  "TO_SAVE_NEED_TO_LOGIN": "Pro uložení tipů, je třeba se přihlásit.",
+  "NO_SCHEDULE_MATCHES": "Žádné zápasy v následujících 14 dnech.",
+  "NO_MATCH_RESULTS": "Žádné zápasy v předchozích 14 dnech.",
+  "WAITING_TO_SET_RESULT": "Čeká se na zapsání výsledku.",
+  "STANDINGS": {
+    "EMPTY": "Zatím nebyl vyhodnocen žádný tip.",
+    "FILTER": {
+      "SUCCESSFUL_TIPS": "Úspěšné tipy",
+      "SUCCESSFUL_RATE": "Úspěšnost"
+    }
+  },
+  "POSTPONED": "Zápas odložen.",
+  "CREATE_USER_LEAGUE_BUTTON": "Vytvořit ligu přátel",
+  "CREATE_USER_LEAGUE": {
+    "TITLE": "Vytvořit ligu přátel",
+    "SUBMIT_BUTTON": "Vytvořit",
+    "NAME": "Název",
+    "STARTED_DATE": "Datum začátku",
+    "STARTED_DATE_INFO": "Datum od kdy se začínají počítat body. Nezadané datum se rovná všechny body.",
+    "CHOSEN_LEAGUES": "Vybrané ligy"
+  },
+  "USER_LEAGUES_OVERVIEW_BUTTON": "Ligy přátel ({{count}})",
+  "USER_LEAGUES_OVERVIEW": {
+    "TITLE": "Přehled lig přátel",
+    "SHOW_ALL": "Zrušit výběr ligy přátel",
+    "SELECT": "Vybrat",
+    "DELETE": "Smazat",
+    "INVITE": "Pozvat",
+    "LEAVE": "Opustit",
+    "USERS": "Přátelé"
+  },
+  "REQUIRED": "Povinný údaj",
+  "AT_LEAST_ONE": "Alespoň jedna z možností musí být vybrána.",
+  "MAX_LENGTH": "Přesáhl jsi maximální délku {{maxlength}} znaků. ({{actuallength}}/{{maxlength}})",
+  "USER_LEAGUE_USERS": {
+    "TITLE": "Přátelé ligy {{userLeagueName}}",
+    "REMOVE": "Vyřadit z ligy"
+  },
+  "CANCEL_BUTTON": "Zavřít",
+  "VOTE_SAVING": "Tip se ukládá...",
+  "VOTE_SAVED": "Tip uložen.",
+  "VOTE_COULD_NOT_SAVE": "Nepodařilo se uložit tip.",
+  "VOTE_REMOVING": "Tip se odstraňuje...",
+  "VOTE_REMOVED": "Tip odstraněn.",
+  "VOTE_COULD_NOT_REMOVED": "Nepodařilo se odstranit tip.",
+  "USER_LEAGUE_CREATING": "Liga přátel se vytváří...",
+  "USER_LEAGUE_CREATED": "Liga přátel vytvořena.",
+  "USER_LEAGUE_COULD_NOT_CREATE": "Nepodařilo se vytvořit ligu přátel.",
+  "USER_LEAGUE_DELETING": "Liga přátel se odstraňuje...",
+  "USER_LEAGUE_DELETED": "Liga přátel odstraněna.",
+  "USER_LEAGUE_COULD_NOT_DELETE": "Nepodařilo se smazat ligu přátel.",
+  "USER_LEAGUE_LEAVING": "Opouštíš ligu přátel...",
+  "USER_LEAGUE_LEAVED": "Opustil jsi ligu přátel.",
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Nepodařilo se opustit ligu přátel.",
+  "USER_REMOVING": "Přítel se odstraňuje z ligy přátel...",
+  "USER_REMOVED": "Přítel odstraněn z ligy přátel.",
+  "USER_COULD_NOT_REMOVE": "Nepodařilo se odstranit přítele z ligy přátel.",
+  "INFO": {
+    "TITLE": "Informace a pravidla",
+    "MATCH_TIP_DEADLINE": "Tip na konečný výsledek lze zadat kdykoliv před oficiálním startem zápasu.",
+    "MATCH_RESULT_WRITE": "Výsledky se snažíme zapsat co nejdříve. Nejpozději však do 48 hodin po konci zápasu.",
+    "MATCH_DEADLINE": "Zápasy se zobrazují v rozmezí 14 dnů do budoucna a 14 dnů do minulosti."
+  },
+  "SETTINGS": {
+    "TITLE": "Nastavení",
+    "LANG": {
+      "cs": "Česky",
+      "en": "English"
+    },
+    "SIGN_OUT": "Odhlásit se"
+  },
+  "SIGN_IN": "Přihlásit se",
+  "VOTE_LOADING": "Tvůj tip se načítá..."
+}

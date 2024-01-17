@@ -1,0 +1,37 @@
+<div class="flex pt-4 pb-2 mx-auto items-center justify-between">
+  <a
+    routerLink="">
+    <img
+      alt="Sportovsky"
+      class="h-10 w-auto"
+      src="assets/images/logo.webp"
+    >
+  </a>
+  <div class="flex gap-2 items-center">
+    <button
+      (click)="goToAdmin()"
+      *ngIf="(authService.getUserData$ | async)?.email === 'm.soupal.06@gmail.com'"
+      class="flex"
+    >
+      <span class="material-icons">admin_panel_settings</span>
+    </button>
+    <button
+      (click)="openSettingsModal()"
+      *ngIf="authService.isSignIn$ | async"
+      class="flex items-center gap-2 bg-gray-50 rounded-full p-1 pl-4"
+    >
+      <span>{{(authService.getUserData$ | async)?.displayName}}</span>
+      <img
+        [src]="(authService.getUserData$ | async)?.photoURL"
+        alt="Rounded avatar"
+        class="w-8 h-8 rounded-full"
+      >
+    </button>
+    <button
+      (click)="authService.signIn()"
+      *ngIf="!(authService.isSignIn$ | async)"
+      class="flex">
+      <span class="material-icons">login</span>
+    </button>
+  </div>
+</div>

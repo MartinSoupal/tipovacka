@@ -1,0 +1,19 @@
+<header></header>
+<div class="flex">
+  <div
+    class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 flex items-center justify-center gap-2"
+    role="alert">
+    {{ 'TO_SAVE_NEED_TO_LOGIN' | transloco }}
+    <span class="material-icons md-18">login</span>
+  </div>
+</div>
+<footer>
+  <button
+    (click)="ref.close()"
+    class="btn btn-secondary">{{ 'CANCEL_BUTTON' | transloco }}
+  </button>
+  <button
+    (click)="signIn()"
+    class="btn btn-primary">{{ 'SIGN_IN' | transloco }}
+  </button>
+</footer>

@@ -1,0 +1,39 @@
+name: Build and Deploy Angular App to FTP
+
+on:
+  push:
+    branches:
+      - main # Trigger on push to the main branch, change as needed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18' # Set this to your Node.js version
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./tipovacka-app
+
+      - name: Build Angular App
+        run: ng build --prod
+        working-directory: ./tipovacka-app
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          ftp-server: http://336374.w74.wedos.net/
+          ftp-username: w336374
+          ftp-password: nrvRUPG3
+          local-dir: ./tipovacka-app/dist/ # Adjust if your build output path is different
+          remote-dir: /subdom/football/

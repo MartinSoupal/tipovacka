@@ -1,0 +1,125 @@
+{
+  "ROUND": {
+    "ROUND_1": "Round 1",
+    "ROUND_2": "Round 2",
+    "ROUND_3": "Round 3",
+    "ROUND_4": "Round 4",
+    "ROUND_5": "Round 5",
+    "ROUND_6": "Round 6",
+    "ROUND_7": "Round 7",
+    "ROUND_8": "Round 8",
+    "ROUND_9": "Round 9",
+    "ROUND_10": "Round 10",
+    "ROUND_11": "Round 11",
+    "ROUND_12": "Round 12",
+    "ROUND_13": "Round 13",
+    "ROUND_14": "Round 14",
+    "ROUND_15": "Round 15",
+    "ROUND_16": "Round 16",
+    "ROUND_17": "Round 17",
+    "ROUND_18": "Round 18",
+    "ROUND_19": "Round 19",
+    "ROUND_20": "Round 20",
+    "ROUND_21": "Round 21",
+    "ROUND_22": "Round 22",
+    "ROUND_23": "Round 23",
+    "ROUND_24": "Round 24",
+    "ROUND_25": "Round 25",
+    "ROUND_26": "Round 26",
+    "ROUND_27": "Round 27",
+    "ROUND_28": "Round 28",
+    "ROUND_29": "Round 29",
+    "ROUND_30": "Round 30",
+    "ROUND_31": "Round 31",
+    "ROUND_32": "Round 32",
+    "ROUND_33": "Round 33",
+    "ROUND_34": "Round 34",
+    "ROUND_35": "Round 35",
+    "ROUND_36": "Round 36",
+    "ROUND_37": "Round 37",
+    "ROUND_38": "Round 38"
+  },
+  "STAGE": {
+    "MAIN_STAGE": "Main stage",
+    "CHAMPIONSHIP_STAGE": "Championship stage"
+  },
+  "DRAW": "Draw",
+  "MENU": {
+    "SCHEDULE": "Schedule",
+    "RESULTS": "Results",
+    "STANDINGS": "Standings"
+  },
+  "TO_SAVE_NEED_TO_LOGIN": "To save tips, you need to sign in.",
+  "NO_SCHEDULE_MATCHES": "No matches in the next 14 days.",
+  "NO_MATCH_RESULTS": "No matches in the previous 14 days.",
+  "WAITING_TO_SET_RESULT": "Waiting for the result to be written.",
+  "STANDINGS": {
+    "EMPTY": "No tips have been evaluated yet.",
+    "FILTER": {
+      "SUCCESSFUL_TIPS": "Successful tips",
+      "SUCCESSFUL_RATE": "Successful rate"
+    }
+  },
+  "POSTPONED": "Match postponed.",
+  "CREATE_USER_LEAGUE_BUTTON": "Create league of friends",
+  "CREATE_USER_LEAGUE": {
+    "TITLE": "Create league of friends",
+    "SUBMIT_BUTTON": "Create",
+    "NAME": "Name",
+    "STARTED_DATE": "Start date",
+    "STARTED_DATE_INFO": "The date from which points are counted. An unspecified date equals all points.",
+    "CHOSEN_LEAGUES": "Chosen leagues"
+  },
+  "USER_LEAGUES_OVERVIEW_BUTTON": "Leagues of friends ({{count}})",
+  "USER_LEAGUES_OVERVIEW": {
+    "TITLE": "Leagues of friends",
+    "SHOW_ALL": "Cancel filter for league of friends",
+    "SELECT": "Select",
+    "DELETE": "Delete",
+    "INVITE": "Invite",
+    "LEAVE": "Leave",
+    "USERS": "Friends"
+  },
+  "REQUIRED": "Required",
+  "AT_LEAST_ONE": "At least one of the options must be selected.",
+  "MAX_LENGTH": "You have exceeded the maximum length of {{maxlength}} characters. ({{actuallength}}/{{maxlength}})",
+  "USER_LEAGUE_USERS": {
+    "TITLE": "Friends of the league {{userLeagueName}}",
+    "REMOVE": "Remove from league of friends"
+  },
+  "CANCEL_BUTTON": "Close",
+  "VOTE_SAVING": "Vote saving...",
+  "VOTE_SAVED": "Vote saved.",
+  "VOTE_COULD_NOT_SAVE": "Could not save vote.",
+  "VOTE_REMOVING": "Vote removing...",
+  "VOTE_REMOVED": "Vote removed.",
+  "VOTE_COULD_NOT_REMOVED": "Could not remove vote.",
+  "USER_LEAGUE_CREATING": "League of friends creating...",
+  "USER_LEAGUE_CREATED": "League of friends created.",
+  "USER_LEAGUE_COULD_NOT_CREATE": "Could not create league of friends.",
+  "USER_LEAGUE_DELETING": "League of friends deleting...",
+  "USER_LEAGUE_DELETED": "League of friends deleted.",
+  "USER_LEAGUE_COULD_NOT_DELETE": "Could not delete league of friends.",
+  "USER_LEAGUE_LEAVING": "League of friends leaving...",
+  "USER_LEAGUE_LEAVED": "League of friends leaved.",
+  "USER_LEAGUE_COULD_NOT_LEAVE": "Could not leave league of friends.",
+  "USER_REMOVING": "Friend removing from league of friends...",
+  "USER_REMOVED": "Friend removed from league of friends.",
+  "USER_COULD_NOT_REMOVE": "Could not remove friend from league of friends..",
+  "INFO": {
+    "TITLE": "Informations and rules",
+    "MATCH_TIP_DEADLINE": "You can enter your vote for the final result at any time before the official start of the match.",
+    "MATCH_RESULT_WRITE": "We are trying to write the results as soon as possible. However, no later than 48 hours after the end of the match.",
+    "MATCH_DEADLINE": "Matches are displayed 14 days into the future and 14 days into the past."
+  },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "LANG": {
+      "cs": "Česky",
+      "en": "English"
+    },
+    "SIGN_OUT": "Sign out"
+  },
+  "SIGN_IN": "Sign in",
+  "VOTE_LOADING": "Your vote is loading..."
+}
