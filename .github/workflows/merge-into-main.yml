@@ -35,7 +35,7 @@ jobs:
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: 336374.w74.wedos.net/
+          server: 336374.w74.wedos.net
           username: w336374
           password: nrvRUPG3
           local-dir: ./tipovacka-app/dist/ # Adjust if your build output path is different
