@@ -33,7 +33,7 @@ jobs:
         run: yarn ng build
 
       - name: Upload to FTP
-        uses: genietim/ftp-action@releases/v4
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: 336374.w74.wedos.net/
           username: w336374
