@@ -1,0 +1,23 @@
+name: Build and Deploy Angular App to FTP
+
+on:
+  pull_request:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'tipovacka-app'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18' # Set this to your Node.js version
+
+      - name: Run ESLint
+        run: yarn lint
