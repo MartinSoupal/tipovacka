@@ -19,11 +19,17 @@ import {DataService} from '../../services/data.service';
 function atLeastOneTrueValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (control instanceof FormGroup) {
-      let hasTrue = Object.values(control.controls).some(c => c.value === true);
+      const hasTrue = Object.values(control.controls).some(c => c.value === true);
       return hasTrue ? null : {'atLeastOneTrue': true};
     }
     return null;
   };
+}
+
+type FormGroupType = {
+  name: FormControl<string | null>;
+  startedDate: FormControl<string | null>;
+  leagues: FormGroup<Record<string, FormControl<boolean>>>;
 }
 
 @Component({
@@ -42,7 +48,7 @@ function atLeastOneTrueValidator(): ValidatorFn {
 export class CreateUserLeagueComponent implements OnInit {
   ref: DialogRef<void, undefined> = inject(DialogRef);
   leagues: League[] = [];
-  formGroup = new FormGroup<any>({
+  formGroup = new FormGroup<FormGroupType>({
     name: new FormControl<string>('', [Validators.required, Validators.maxLength(20)]),
     startedDate: new FormControl<string>(''),
     leagues: new FormGroup({}, atLeastOneTrueValidator()),
@@ -71,10 +77,10 @@ export class CreateUserLeagueComponent implements OnInit {
     if (this.formGroup.valid) {
       const name = this.formGroup.get('name')!.value;
       const startedDate = new Date(`${this.formGroup.get('startedDate')!.value}T00:00+01:00`);
-      const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key] === true);
+      const leagues = Object.keys(this.formGroup.get('leagues')!.value).filter(key => this.formGroup.get('leagues')!.value[key]);
       this.ref.close();
       this.dataService.addUserLeague({
-        name,
+        name: name as string,
         startedDate,
         leagues,
       });

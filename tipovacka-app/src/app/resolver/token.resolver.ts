@@ -16,7 +16,7 @@ export class UserTokenResolver {
       .pipe(
         take(1),
         tap(this.apiService.setToken),
-        map(_ => true)
+        map(() => true)
       )
   }
 }
