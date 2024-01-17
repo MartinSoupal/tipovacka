@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
 
     steps:
       - name: Checkout Repository
@@ -18,17 +21,16 @@ jobs:
         with:
           node-version: '18' # Set this to your Node.js version
           cache: 'yarn'  # Enable Yarn caching
+          cache-dependency-path: ./tipovacka-app/yarn.lock
 
       - name: Install Angular CLI
         run: yarn global add @angular/cli
 
       - name: Install Dependencies
         run: yarn install
-        working-directory: './tipovacka-app'
 
       - name: Build Angular App
         run: yarn ng build --prod
-        working-directory: './tipovacka-app'
 
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
