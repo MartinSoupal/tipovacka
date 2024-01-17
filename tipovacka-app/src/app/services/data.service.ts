@@ -19,6 +19,7 @@ import {AuthService} from './auth.service';
 import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,9 @@ export class DataService {
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private teamsInHashMap?: Record<string, Team>;
-
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
   private toastService = inject(HotToastService);
@@ -86,7 +88,6 @@ export class DataService {
         }
       });
   }
-
 
   loadPrevMatches = (): Promise<void> => new Promise((resolve) => {
     combineLatest([
@@ -425,6 +426,13 @@ export class DataService {
       .subscribe({
         next: ([actualSelectedUserLeague, newSelectedUserLeague]) => {
           if (actualSelectedUserLeague?.id !== newSelectedUserLeague?.id) {
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: {
+                ul: newSelectedUserLeague!.id,
+              },
+              queryParamsHandling: 'merge',
+            });
             this.selectedUserLeague$.next(newSelectedUserLeague);
             this.loadStandings();
           }
