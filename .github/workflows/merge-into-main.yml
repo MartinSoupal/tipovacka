@@ -33,10 +33,10 @@ jobs:
         run: yarn ng build
 
       - name: Upload to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: genietim/ftp-action@releases/v4
         with:
-          server: http://336374.w74.wedos.net/
-          username: w336374
+          host: http://336374.w74.wedos.net/
+          user: w336374
           password: nrvRUPG3
-          local-dir: ./tipovacka-app/dist/ # Adjust if your build output path is different
-          server-dir: /subdom/football/
+          localDir: ./tipovacka-app/dist/
+          remoteDir: /subdom/football/
