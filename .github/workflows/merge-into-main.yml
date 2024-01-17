@@ -35,8 +35,8 @@ jobs:
       - name: Upload to FTP
         uses: genietim/ftp-action@releases/v4
         with:
-          host: http://336374.w74.wedos.net/
-          user: w336374
+          server: 336374.w74.wedos.net/
+          username: w336374
           password: nrvRUPG3
-          localDir: ./tipovacka-app/dist/
-          remoteDir: /subdom/football/
+          local-dir: ./tipovacka-app/dist/ # Adjust if your build output path is different
+          server-dir: /subdom/football/
