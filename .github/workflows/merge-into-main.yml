@@ -24,11 +24,11 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
-        working-directory: ./tipovacka-app
+        working-directory: './tipovacka-app'
 
       - name: Build Angular App
         run: yarn ng build --prod
-        working-directory: ./tipovacka-app
+        working-directory: './tipovacka-app'
 
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
