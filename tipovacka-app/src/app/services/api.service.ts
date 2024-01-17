@@ -291,7 +291,7 @@ export class ApiService {
 
   getUserLeague = (userLeagueId: string) =>
     this.http.get<UserLeague>(
-      `${this.privateUrl}/user-league/${userLeagueId}`,
+      `${this.publicUrl}/user-league/${userLeagueId}`,
       {
         headers: {
           'Content-Type': 'application/json',

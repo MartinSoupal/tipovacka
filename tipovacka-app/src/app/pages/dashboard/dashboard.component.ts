@@ -53,10 +53,6 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: ([token, queryParams]) => {
           if (token) {
-            const userLeagueId = queryParams['ul'] as string;
-            if (userLeagueId) {
-              this.dataService.setSelectedUserLeague(userLeagueId);
-            }
             this.dataService.loadPrevMatches()
               .then(
                 () => {
@@ -72,7 +68,13 @@ export class DashboardComponent implements OnInit {
           }
           void this.dataService.loadPrevMatches();
           void this.dataService.loadNextMatches();
-          this.dataService.loadStandings();
+          const userLeagueId = queryParams['ul'] as string;
+          if (userLeagueId) {
+            this.dataService.setSelectedUserLeague(userLeagueId);
+          }
+          if (!userLeagueId) {
+            this.dataService.loadStandings();
+          }
           this.dataService.loadUserLeagues();
         }
       })

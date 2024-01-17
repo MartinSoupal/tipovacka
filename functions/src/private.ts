@@ -16,7 +16,6 @@ import {deleteUserLeague} from './userLeagues/deleteUserLeague';
 import {joinUserLeague} from './userLeagues/joinUserLeague';
 import {leaveUserLeague} from './userLeagues/leaveUserLeague';
 import {removeUserFromUserLeague} from './userLeagues/removeUserFromUserLeague';
-import {getUserLeague} from './userLeagues/getUserLeague';
 import {getUserLeagueUsers} from './userLeagues/getUserLeagueUsers';
 
 const app = express();
@@ -37,7 +36,6 @@ app.delete('/vote/:matchId', deleteVote);
 app.post('/votes', getVotes);
 app.post('/user-league', addUserLeague);
 app.get('/user-league/all', getUserLeagues);
-app.get('/user-league/:userLeagueId', getUserLeague);
 app.delete('/user-league/:userLeagueId', deleteUserLeague);
 app.post('/user-league/:userLeagueId/join', joinUserLeague);
 app.post('/user-league/:userLeagueId/leave', leaveUserLeague);

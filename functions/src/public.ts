@@ -7,6 +7,7 @@ import {
   getStandings,
   getStandingsForUserLeague,
 } from './standings/getStandings';
+import {getUserLeague} from './userLeagues/getUserLeague';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -17,5 +18,6 @@ app.get('/matches/prev', getPrevMatches);
 app.get('/matches/next', getNextMatches);
 app.get('/standings', getStandings);
 app.get('/standings/:userLeague', getStandingsForUserLeague);
+app.get('/user-league/:userLeagueId', getUserLeague);
 
 export const publicApi = functions.https.onRequest(app);
