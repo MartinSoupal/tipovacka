@@ -429,7 +429,7 @@ export class DataService {
             this.router.navigate([], {
               relativeTo: this.route,
               queryParams: {
-                ul: newSelectedUserLeague!.id,
+                ul: newSelectedUserLeague?.id,
               },
               queryParamsHandling: 'merge',
             });
