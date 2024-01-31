@@ -6,7 +6,16 @@ import {DialogService} from '@ngneat/dialog';
 import {DataService} from '../../../services/data.service';
 import {AuthService} from '../../../services/auth.service';
 import {SortByPipe} from '../../../pipes/sort-by.pipe';
-import {AsyncPipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {
+  AsyncPipe,
+  DecimalPipe,
+  NgClass,
+  NgForOf,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault
+} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {
   UserLeaguesOverviewComponent
@@ -24,7 +33,10 @@ import {
     TranslocoPipe,
     NgIf,
     NgClass,
-    DecimalPipe
+    DecimalPipe,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault
   ],
 })
 export class StandingsComponent {

@@ -195,6 +195,7 @@ export class ApiService {
             (user) => ({
               ...user,
               correctRatio: (user.correctVotes / user.totalVotes) || 0,
+              points: user.correctVotes - (user.totalVotes - user.correctVotes),
             })
           )
         )
@@ -215,6 +216,7 @@ export class ApiService {
             (user) => ({
               ...user,
               correctRatio: (user.correctVotes / user.totalVotes) || 0,
+              points: user.correctVotes - (user.totalVotes - user.correctVotes),
             })
           )
         )
