@@ -42,7 +42,7 @@
     <table
       class="w-full">
       <tr
-        *ngFor="let user of standings | sortBy: ['correctRatio', 'correctVotes']: 'desc'; let i = index"
+        *ngFor="let user of standings | sortBy: ['points', 'correctVotes']: 'desc'; let i = index"
         [ngClass]="{
           'font-bold': (authService.getUserData$ | async)?.uid === user.uid
         }"
@@ -50,8 +50,10 @@
       >
         <td class="text-gray-700 text-right">{{i + 1}}.</td>
         <td class="w-full">{{user.name}}</td>
-        <td class="text-xxs text-gray-600 italic text-right whitespace-nowrap">{{user.correctVotes}}
-          / {{user.totalVotes}}</td>
+        <td class="font-bold">{{user.points}}</td>
+        <td class="text-xxs text-gray-600 italic text-right whitespace-nowrap">
+          {{user.correctVotes}} / {{user.totalVotes}}
+        </td>
         <td>
         <span
           [ngClass]="{
@@ -59,7 +61,7 @@
             'bg-orange-100 text-orange-800': user.correctVotes / user.totalVotes > 0.33 && user.correctVotes / user.totalVotes < 0.67,
             'bg-green-100 text-green-800': user.correctVotes / user.totalVotes > 0.66
           }"
-          class="badge font-bold"
+          class="badge font-medium"
         >
           {{(user.correctRatio * 100) | number: '2.1-1':'cs-CZ'}}%
         </span>
