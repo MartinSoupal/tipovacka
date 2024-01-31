@@ -11,7 +11,6 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {
   UserLeaguesOverviewComponent
 } from '../../../components/user-leagues-overview/user-leagues-overview.component';
-import * as R from 'ramda';
 
 @Component({
   selector: 'app-standings',
@@ -30,14 +29,9 @@ import * as R from 'ramda';
 })
 export class StandingsComponent {
   loadingArray = [0, 1, 2, 3, 4];
-  sortBy: ('correctVotes' | 'correctRatio')[] = ['correctVotes', 'correctRatio'];
   dataService = inject(DataService);
   authService = inject(AuthService);
   private dialog = inject(DialogService);
-
-  toggleSort = () => {
-    this.sortBy = R.reverse(this.sortBy);
-  }
 
   openCreateUserLeagueModal() {
     this.dialog.open(CreateUserLeagueComponent, {id: 'create-user-league'});
