@@ -1,5 +1,4 @@
 import {Component, inject, Input, OnChanges, OnInit} from '@angular/core';
-import {MatchWithTeamName} from '../../models/match.model';
 import {AuthService} from '../../services/auth.service';
 import {Vote, VoteResult} from '../../models/vote.model';
 import {DataService} from '../../services/data.service';
@@ -10,6 +9,7 @@ import {DialogService} from '@ngneat/dialog';
 import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {ImageSrcErrorDirective} from '../../directives/imgSrcError.directive';
+import {Fixture} from '../../models/fixture.model';
 
 type TeamState =
   'normal'
@@ -33,7 +33,7 @@ type TeamState =
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {
-  @Input({required: true}) data!: MatchWithTeamName;
+  @Input({required: true}) data!: Fixture;
   @Input() votes?: Record<string, Vote | undefined>;
 
   now = new Date();
@@ -100,7 +100,7 @@ export class MatchComponent implements OnChanges, OnInit {
     this.hides['1'] = false;
     this.hides['0'] = false;
     this.hides['2'] = false;
-    if (this.data.datetime > this.now) {
+    if (this.data.date > this.now) {
       if (!this.votes || !this.votes[this.data.id]) {
         return;
       }

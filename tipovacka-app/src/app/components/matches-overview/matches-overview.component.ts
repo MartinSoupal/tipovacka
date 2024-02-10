@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {MatchWithTeamName} from '../../models/match.model';
 import {clone} from 'ramda';
 import {Vote} from '../../models/vote.model';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
@@ -8,6 +7,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {MatchComponent} from '../match/match.component';
 import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
+import {Fixture} from '../../models/fixture.model';
 
 @Component({
   selector: 'app-matches-overview',
@@ -26,7 +26,7 @@ import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
   ]
 })
 export class MatchesOverviewComponent {
-  @Input() matches: MatchWithTeamName[] = [];
+  @Input() matches: Fixture[] = [];
   @Input() leagues: string[] = [];
   @Input() votes?: Record<string, Vote | undefined>;
   leaguesFilter: string[] = [];

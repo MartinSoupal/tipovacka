@@ -1,6 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {Team} from '../models/team.model';
-import {MatchWithTeamName} from '../models/match.model';
 import {
   BehaviorSubject,
   combineLatest,
@@ -20,16 +18,17 @@ import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Fixture} from '../models/fixture.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  prevMatches$ = new BehaviorSubject<MatchWithTeamName[] | undefined>(undefined);
+  prevMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfPrevMatches$ = new BehaviorSubject<string[]>([]);
   votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote | undefined>>({});
-  nextMatches$ = new BehaviorSubject<MatchWithTeamName[] | undefined>(undefined);
+  nextMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfNextMatches$ = new BehaviorSubject<string[]>([]);
   votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
@@ -37,7 +36,6 @@ export class DataService {
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private teamsInHashMap?: Record<string, Team>;
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
   private toastService = inject(HotToastService);
@@ -85,83 +83,52 @@ export class DataService {
       .subscribe({
         next: (votes) => {
           this.votesOfNextMatches$.next(arrayToHashMap('matchId', votes));
+        },
+        error: () => {
+          this.votesOfNextMatches$.next({});
         }
       });
   }
 
   loadPrevMatches = (): Promise<void> => new Promise((resolve) => {
-    combineLatest([
-      this.loadAllTeams(),
-      this.apiService.getPrevMatches(),
-    ])
-      .pipe(
-        first()
-      )
+    this.apiService.getPrevFixtures()
       .subscribe({
-        next: ([teamsInHashMap, matches]) => {
-          const leaguesOfPrevMatches: string[] = [];
-          const prevMatches = R.sortWith<MatchWithTeamName>([
-            R.descend(R.prop('datetime')),
-            R.ascend(R.prop('league')),
-            R.ascend(R.prop('stage')),
-            R.ascend(R.prop('round')),
-          ])(
-            R.filter(
-              (match) => match.result !== null,
-              matches
+        next: (fixtures) => {
+          const leaguesOfPrevMatches: string[] = R.uniq(
+            R.map(
+              (fixture) => fixture.leagueName,
+              fixtures,
             )
-              .map(
-                (match): MatchWithTeamName => {
-                  if (!R.includes(match.league, leaguesOfPrevMatches)) {
-                    leaguesOfPrevMatches.push(match.league);
-                  }
-                  return {
-                    ...match,
-                    homeTeam: teamsInHashMap[match.home],
-                    awayTeam: teamsInHashMap[match.away],
-                    daysTill: this.daysDifferenceTillNow(match.datetime),
-                  }
-                },
-              ))
+          );
           this.leaguesOfPrevMatches$.next(leaguesOfPrevMatches);
-          this.prevMatches$.next(prevMatches);
+          this.prevMatches$.next(
+            R.sortWith<Fixture>([
+              R.ascend(R.prop('date')),
+              R.ascend(R.prop('round')),
+            ], fixtures)
+          );
           resolve();
         }
       })
   })
 
   loadNextMatches = (): Promise<void> => new Promise((resolve) => {
-    combineLatest([
-      this.loadAllTeams(),
-      this.apiService.getNextMatches(),
-    ])
-      .pipe(
-        first()
-      )
+    this.apiService.getNextFixtures()
       .subscribe({
-        next: ([teamsInHashMap, matches]) => {
-          const leaguesOfNextMatches: string[] = [];
-          const nextMatches = R.sortWith<MatchWithTeamName>([
-            R.ascend(R.prop('datetime')),
-            R.ascend(R.prop('league')),
-            R.ascend(R.prop('stage')),
-            R.ascend(R.prop('round')),
-          ])(
-            matches.map(
-              (match): MatchWithTeamName => {
-                if (!R.includes(match.league, leaguesOfNextMatches)) {
-                  leaguesOfNextMatches.push(match.league);
-                }
-                return {
-                  ...match,
-                  homeTeam: teamsInHashMap[match.home],
-                  awayTeam: teamsInHashMap[match.away],
-                  daysTill: this.daysDifferenceTillNow(match.datetime),
-                }
-              },
-            ))
+        next: (fixtures) => {
+          const leaguesOfNextMatches: string[] = R.uniq(
+            R.map(
+              (fixture) => fixture.leagueName,
+              fixtures,
+            )
+          );
           this.leaguesOfNextMatches$.next(leaguesOfNextMatches);
-          this.nextMatches$.next(nextMatches);
+          this.nextMatches$.next(
+            R.sortWith<Fixture>([
+              R.ascend(R.prop('date')),
+              R.ascend(R.prop('round')),
+            ], fixtures)
+          );
           resolve();
         }
       })
@@ -336,6 +303,7 @@ export class DataService {
                 result,
               }
             });
+            /*
             this.nextMatches$.next(
               R.map(
                 (match) => {
@@ -354,6 +322,7 @@ export class DataService {
                 matches!,
               )
             );
+             */
             return this.apiService.addVote(matchId, result)
               .pipe(
                 this.toastService.observe({
@@ -383,6 +352,7 @@ export class DataService {
           ([votes, matches]) => {
             const previousVote: Vote | undefined = votes && votes[matchId];
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
+            /*
             this.nextMatches$.next(
               R.map(
                 (match) => {
@@ -395,6 +365,7 @@ export class DataService {
                 matches!,
               )
             )
+             */
             return this.apiService.deleteVote(matchId)
               .pipe(
                 this.toastService.observe({
@@ -438,28 +409,5 @@ export class DataService {
           }
         }
       })
-  }
-
-  private loadAllTeams = () => new Promise<Record<string, Team>>((resolve) => {
-    if (this.teamsInHashMap) {
-      resolve(this.teamsInHashMap);
-    } else {
-      this.apiService.getTeams()
-        .subscribe({
-          next: teams => {
-            this.teamsInHashMap = arrayToHashMap('id', teams);
-            resolve(this.teamsInHashMap);
-          }
-        })
-    }
-  })
-
-  private daysDifferenceTillNow = (date1: Date): number => {
-
-    // Get the difference in milliseconds
-    const differenceInMs: number = date1.getTime() - new Date().getTime();
-
-    // Convert the difference from milliseconds to days
-    return Math.round(differenceInMs / (1000 * 60 * 60 * 24));
   }
 }

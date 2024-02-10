@@ -22,7 +22,7 @@
       [ngClass]="{
         'opacity-30': hides['1']
       }"
-      [src]="'assets/images/players/' + data.home + '.webp'"
+      [src]="'assets/images/players/' + data.homeTeam.id + '.webp'"
       class="h-[90%] w-auto"
     >
   </div>
@@ -33,30 +33,30 @@
       [ngClass]="{
         'opacity-30': hides['2']
       }"
-      [src]="'assets/images/players/' + data.away + '.webp'"
+      [src]="'assets/images/players/' + data.awayTeam.id + '.webp'"
       class="h-[90%] w-auto"
     >
   </div>
   <div class="z-20 flex items-center gap-4">
     <img
-      [alt]="data.league"
+      [alt]="data.leagueName"
       class="h-6 w-auto"
-      src="assets/images/{{data.league}}.webp"
+      src="assets/images/{{data.leagueName}}.webp"
     >
     <div class="flex flex-col text-xxs text-gray-950/70">
       <div>{{('ROUND.' + data.round) | transloco}}</div>
-      <div>{{data.datetime | datetimeFormatBy}}</div>
+      <div>{{data.date | datetimeFormatBy}}</div>
     </div>
   </div>
-  <div class="z-20 flex mt-6 gap-2 font-bold text-lg md:text-3xl w-full">
+  <div class="z-20 flex mt-6 gap-2 font-medium text-xs md:text-xl w-full">
     <div class="flex-1 flex justify-end">
-      <div class="drop-shadow-md">
+      <div class="drop-shadow-md text-right leading-tight md:max-w-none max-w-[120px]">
         {{data.homeTeam.name}}
       </div>
     </div>
-    <div class="opacity-30 text-center font-normal">vs</div>
+    <div class="opacity-30 text-center font-normal leading-tight">vs</div>
     <div class="flex-1 flex">
-      <div class="drop-shadow-md">
+      <div class="drop-shadow-md leading-tight md:max-w-none max-w-[120px]">
         {{data.awayTeam.name}}
       </div>
     </div>
@@ -75,7 +75,7 @@
   >
     <button
       (click)="chooseResult(1)"
-      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['1'],
         'bg-green-600': states['1'] === 'correct',
@@ -90,20 +90,20 @@
         [ngClass]="{
             'hidden': states['1'] === 'normal'
           }"
-        [src]="'assets/images/' + data.home + '.webp'"
+        [src]="'assets/images/' + data.homeTeam.id + '.webp'"
         class="h-8">
       <img
         [alt]="'Logo of ' + data.homeTeam.name"
         [ngClass]="{
             'hidden': states['1'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.home + '_for_white_bg.webp'"
+        [src]="'assets/images/' + data.homeTeam.id + '_for_white_bg.webp'"
         class="h-8"
       >
     </button>
     <button
       (click)="chooseResult(0)"
-      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['0'],
         'bg-green-600': states['0'] === 'correct',
@@ -123,7 +123,7 @@
     </button>
     <button
       (click)="chooseResult(2)"
-      [disabled]="data.datetime! < now || sendingVote !== undefined"
+      [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['2'],
         'bg-green-600': states['2'] === 'correct',
@@ -139,17 +139,18 @@
         [ngClass]="{
             'hidden': states['2'] === 'normal'
           }"
-        [src]="'assets/images/' + data.away + '.webp'"
+        [src]="'assets/images/' + data.awayTeam.id + '.webp'"
         class="h-8"
       >
       <img
         [ngClass]="{
             'hidden': states['2'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.away + '_for_white_bg.webp'"
+        [src]="'assets/images/' + data.awayTeam.id + '_for_white_bg.webp'"
         class="h-8">
     </button>
   </div>
+  <!--
   <div class="z-20 flex text-xxs mt-2 gap-1">
     <div>
       {{((data && data.totalVotes ? ((data![1] || 0) / data.totalVotes) : 0) * 100) | number: '1.0-0'}}%
@@ -166,4 +167,5 @@
       <span class="opacity-50">({{data![2]}})</span>
     </div>
   </div>
+  -->
 </div>

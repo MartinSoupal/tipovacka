@@ -14,7 +14,6 @@ import {TranslocoRootModule} from './app/transloco-root.module';
 import {HotToastModule} from '@ngneat/hot-toast';
 import {DashboardComponent} from './app/pages/dashboard/dashboard.component';
 import {UserTokenResolver} from './app/resolver/token.resolver';
-import {AdminComponent} from './app/pages/admin/admin.component';
 import {
   JoinUserLeagueComponent
 } from './app/pages/joinUserLeague/joinUserLeague.component';
@@ -23,11 +22,6 @@ const routes: Routes = [
   {
     path: 'dashboard/:activeTab',
     component: DashboardComponent,
-    resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
-  },
-  {
-    path: 'admin',
-    component: AdminComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {

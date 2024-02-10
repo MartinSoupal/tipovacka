@@ -18,26 +18,12 @@ export async function addVote(req: Request, res: any) {
     res.status(400).send();
     return;
   }
-  const matchSnapshot =
-    await db.collection('matches').doc(matchId).get();
-  if (!matchSnapshot.exists) {
-    res.status(404).send();
-    return;
-  }
-  const match = matchSnapshot.data();
-  if (!match || match.datetime.toDate() < new Date()) {
-    res.status(400).send();
-    return;
-  }
   const voteSnapshot =
     await db.collection('votes')
       .where('matchId', '==', matchId)
       .where('userUid', '==', userUid)
       .get();
   if (voteSnapshot.empty) {
-    await matchSnapshot.ref.update({
-      [result]: (match[result] || 0) + 1,
-    });
     const ress = await db.collection('votes').add({
       ...req.body,
       userUid: userUid,
@@ -49,10 +35,6 @@ export async function addVote(req: Request, res: any) {
     if (vote.result === result) {
       return;
     }
-    await matchSnapshot.ref.update({
-      [vote.result]: match[vote.result] - 1,
-      [result]: (match[result] || 0) + 1,
-    });
     await voteDoc.ref.update({result});
     res.status(200).send();
   }
