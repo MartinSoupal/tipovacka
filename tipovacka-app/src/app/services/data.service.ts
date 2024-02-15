@@ -103,7 +103,7 @@ export class DataService {
           this.leaguesOfPrevMatches$.next(leaguesOfPrevMatches);
           this.prevMatches$.next(
             R.sortWith<Fixture>([
-              R.ascend(R.prop('date')),
+              R.descend(R.prop('date')),
               R.ascend(R.prop('round')),
             ], fixtures)
           );
@@ -116,6 +116,12 @@ export class DataService {
     this.apiService.getNextFixtures()
       .subscribe({
         next: (fixtures) => {
+          fixtures = R.filter(
+            (fixture) => {
+              return fixture.date > new Date();
+            },
+            fixtures,
+          );
           const leaguesOfNextMatches: string[] = R.uniq(
             R.map(
               (fixture) => fixture.leagueName,
@@ -136,20 +142,10 @@ export class DataService {
 
   loadStandings = () => {
     this.standings$.next(undefined);
-    this.selectedUserLeague$
-      .pipe(
-        first()
-      )
+    this.apiService.getStandings()
       .subscribe({
-        next: (selectedUserLeague) => {
-          (selectedUserLeague ?
-            this.apiService.getStandingsForUserLeague(selectedUserLeague.id) :
-            this.apiService.getStandings())
-            .subscribe({
-              next: (users) => {
-                this.standings$.next(users);
-              }
-            })
+        next: (users) => {
+          this.standings$.next(users);
         }
       })
   }

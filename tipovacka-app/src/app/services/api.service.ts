@@ -96,29 +96,7 @@ export class ApiService {
           R.map(
             (user) => ({
               ...user,
-              correctRatio: (user.correctVotes / user.totalVotes) || 0,
-              points: user.correctVotes - (user.totalVotes - user.correctVotes),
-            })
-          )
-        )
-      )
-
-  getStandingsForUserLeague = (userLeagueId: string) =>
-    this.http.get<User[]>(
-      `${this.publicUrl}/standings/${userLeagueId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            (user) => ({
-              ...user,
-              correctRatio: (user.correctVotes / user.totalVotes) || 0,
-              points: user.correctVotes - (user.totalVotes - user.correctVotes),
+              points: user.correctVotes - user.incorrectVotes,
             })
           )
         )

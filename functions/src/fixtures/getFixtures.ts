@@ -1,6 +1,6 @@
 import {db} from '../firebaseConfig';
 import {CustomRequest} from '../types';
-import axios from 'axios';
+import {getFixturesFromTo} from '../helpers';
 
 export async function getNextFixtures(req: CustomRequest, res: any) {
   const now = new Date();
@@ -15,7 +15,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
     .toISOString()
     .substring(0, 10);
-  const responses = await getFixtures(today, twoWeeksFromNow);
+  const responses = await getFixturesFromTo(today, twoWeeksFromNow);
   const teams = await db.collection('teams').get();
   const teamsColorInHashMap: Record<string, string> = {};
   teams.forEach(
@@ -28,7 +28,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   responses.forEach(
     (response) => {
       response.data.response.forEach(
-        (fixture: any) => {
+        (fixture) => {
           fixtures.push(fixtureDto2Fixture(fixture, teamsColorInHashMap));
         }
       );
@@ -50,7 +50,7 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
   const twoWeeksBeforeNow = new Date(Date.now() - (15 * 24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
-  const responses = await getFixtures(twoWeeksBeforeNow, yesterday);
+  const responses = await getFixturesFromTo(twoWeeksBeforeNow, yesterday);
   const teams = await db.collection('teams').get();
   const teamsColorInHashMap: Record<string, string> = {};
   teams.forEach(
@@ -70,29 +70,6 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
     },
   );
   res.status(200).send(JSON.stringify(fixtures));
-}
-
-function getFixtures(from: string, to: string) {
-  return Promise.all([
-    axios.get(
-      `https://v3.football.api-sports.io/fixtures?from=${from}&to=${to}&league=39&season=2023`,
-      {
-        headers: {
-          'x-rapidapi-key': '2fc16db4f9181866ca4b0acea6ea6ca8',
-          'x-rapidapi-host': 'v3.football.api-sports.io',
-        },
-      }
-    ),
-    axios.get(
-      `https://v3.football.api-sports.io/fixtures?from=${from}&to=${to}&league=345&season=2023`,
-      {
-        headers: {
-          'x-rapidapi-key': '2fc16db4f9181866ca4b0acea6ea6ca8',
-          'x-rapidapi-host': 'v3.football.api-sports.io',
-        },
-      }
-    ),
-  ]);
 }
 
 interface Fixture {

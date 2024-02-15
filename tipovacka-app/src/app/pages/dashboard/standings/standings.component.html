@@ -15,6 +15,7 @@
       </div>
     </div>
     <div class="flex gap-2">
+      <!--
       <ng-container *ngIf="(authService.isSignIn$ | async)">
         <ng-container *ngIf="(dataService.userLeagues$ | async) as userLeagues; else btnLoading">
           <button
@@ -36,6 +37,7 @@
           </button>
         </ng-container>
       </ng-container>
+      -->
     </div>
   </div>
   <ng-container *ngIf="(dataService.standings$ | async) as standings">
@@ -59,19 +61,7 @@
         <td class="w-full">{{user.name}}</td>
         <td class="font-bold">{{user.points}}</td>
         <td class="text-xxs text-gray-600 italic text-right whitespace-nowrap">
-          {{user.correctVotes}} / {{user.totalVotes}}
-        </td>
-        <td>
-        <span
-          [ngClass]="{
-            'bg-red-100 text-red-800': !user.totalVotes || user.correctVotes / user.totalVotes < 0.34,
-            'bg-orange-100 text-orange-800': user.correctVotes / user.totalVotes > 0.33 && user.correctVotes / user.totalVotes < 0.67,
-            'bg-green-100 text-green-800': user.correctVotes / user.totalVotes > 0.66
-          }"
-          class="badge font-medium"
-        >
-          {{(user.correctRatio * 100) | number: '2.1-1':'cs-CZ'}}%
-        </span>
+          {{user.correctVotes}} / {{user.correctVotes + user.incorrectVotes}}
         </td>
       </tr>
     </table>
