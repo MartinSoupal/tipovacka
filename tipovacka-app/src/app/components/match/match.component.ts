@@ -100,7 +100,7 @@ export class MatchComponent implements OnChanges, OnInit {
     this.hides['1'] = false;
     this.hides['0'] = false;
     this.hides['2'] = false;
-    if (this.data.date > this.now) {
+    if (this.data.result === null) {
       if (!this.votes || !this.votes[this.data.id]) {
         return;
       }

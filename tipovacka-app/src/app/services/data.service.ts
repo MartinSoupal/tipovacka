@@ -116,12 +116,7 @@ export class DataService {
     this.apiService.getNextFixtures()
       .subscribe({
         next: (fixtures) => {
-          fixtures = R.filter(
-            (fixture) => {
-              return fixture.date > new Date();
-            },
-            fixtures,
-          );
+          const now = new Date();
           const leaguesOfNextMatches: string[] = R.uniq(
             R.map(
               (fixture) => fixture.leagueName,
@@ -131,6 +126,7 @@ export class DataService {
           this.leaguesOfNextMatches$.next(leaguesOfNextMatches);
           this.nextMatches$.next(
             R.sortWith<Fixture>([
+              R.descend((fixture) => fixture.date < now ? -1 : 1),
               R.ascend(R.prop('date')),
               R.ascend(R.prop('round')),
             ], fixtures)
