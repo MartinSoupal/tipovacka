@@ -4,7 +4,6 @@
   <app-matches-overview
     [leagues]="(dataService.leaguesOfPrevMatches$ | async) || []"
     [matches]="prevMatches"
-    [selectedFilterLeagues]="(dataService.selectedUserLeague$ | async)?.leagues || undefined"
     [votes]="(dataService.votesOfPrevMatches$ | async) || {}"
   />
   <div

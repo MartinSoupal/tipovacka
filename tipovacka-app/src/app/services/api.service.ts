@@ -94,10 +94,26 @@ export class ApiService {
       .pipe(
         map(
           R.map(
-            (user) => ({
-              ...user,
-              points: user.correctVotes - user.incorrectVotes,
-            })
+            (user) => {
+              user.points = 0;
+              user.correctVotes = 0;
+              user.incorrectVotes = 0;
+              for (const seasonKey in user.seasons) {
+                const season = user.seasons[seasonKey];
+
+                // Iterate through each userBase within the season
+                for (const userKey in season) {
+                  const userBase = season[userKey];
+
+                  // Sum up correct and incorrect votes
+                  user.correctVotes += userBase.correctVotes;
+                  user.incorrectVotes += userBase.incorrectVotes;
+                }
+              }
+              user.points = user.correctVotes - user.incorrectVotes;
+              console.log(user);
+              return user;
+            }
           )
         )
       )
@@ -207,7 +223,7 @@ export class ApiService {
 
   getNextFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/next`,
+      `${this.publicUrl}/fixtures/next3`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +244,7 @@ export class ApiService {
 
   getPrevFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/prev`,
+      `${this.publicUrl}/fixtures/prev3`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -246,4 +262,15 @@ export class ApiService {
           )
         )
       )
+
+  getLeagues = () =>
+    this.http.get<any[]>(
+      `${this.publicUrl}/leagues`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
 }

@@ -21,7 +21,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   teams.forEach(
     (team) => {
       const teamData = team.data();
-      teamsColorInHashMap[teamData.id] = teamData.color;
+      teamsColorInHashMap[team.id] = teamData.color;
     }
   );
   const fixtures: Fixture[] = [];
@@ -56,7 +56,7 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
   teams.forEach(
     (team) => {
       const teamData = team.data();
-      teamsColorInHashMap[teamData.id] = teamData.color;
+      teamsColorInHashMap[team.id] = teamData.color;
     }
   );
   const fixtures: Fixture[] = [];
@@ -87,6 +87,7 @@ interface Team {
   id: string;
   name: string;
   color: string;
+  goals: number;
 }
 
 function fixtureDto2Fixture(
@@ -112,11 +113,13 @@ function fixtureDto2Fixture(
       id: dto.teams.home.id,
       name: dto.teams.home.name,
       color: teamsColor[dto.teams.home.id],
+      goals: dto.goals.home,
     },
     awayTeam: {
       id: dto.teams.away.id,
       name: dto.teams.away.name,
       color: teamsColor[dto.teams.away.id],
+      goals: dto.goals.away,
     },
   };
 }

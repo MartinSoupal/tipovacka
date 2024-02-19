@@ -1,5 +1,6 @@
 import {db} from '../firebaseConfig';
 import {CustomRequest} from '../types';
+import admin = require('firebase-admin');
 
 interface Request extends CustomRequest {
   body: {
@@ -27,6 +28,7 @@ export async function addVote(req: Request, res: any) {
     const ress = await db.collection('votes').add({
       ...req.body,
       userUid: userUid,
+      datetime: admin.firestore.Timestamp.now(),
     });
     res.status(200).send({id: ress.id});
   } else {
@@ -35,7 +37,10 @@ export async function addVote(req: Request, res: any) {
     if (vote.result === result) {
       return;
     }
-    await voteDoc.ref.update({result});
+    await voteDoc.ref.update({
+      result,
+      datetime: admin.firestore.Timestamp.now(),
+    });
     res.status(200).send();
   }
 }

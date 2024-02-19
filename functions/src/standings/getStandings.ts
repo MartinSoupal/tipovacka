@@ -3,6 +3,13 @@ import {db} from '../firebaseConfig';
 import {getDisplayName, getFixturesForDate} from '../helpers';
 
 export async function getStandings(req: CustomRequest, res: any) {
+  const now = new Date();
+  const nextDay5AM = new Date(now);
+  nextDay5AM.setDate(now.getDate() + 1);
+  nextDay5AM.setHours(5, 0, 0, 0);
+  const diffInSeconds =
+    Math.round((nextDay5AM.getTime() - now.getTime()) / 1000);
+  res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
   const standing =
     ((await db.collection('standings').doc('all').get()).data() as Standing)
       .data;
@@ -11,7 +18,7 @@ export async function getStandings(req: CustomRequest, res: any) {
     Object.keys(standing).map(
       async (key) => ({
         uid: key,
-        ...standing[key],
+        seasons: standing[key],
         name: await getDisplayName(key),
       })
     )
@@ -24,9 +31,7 @@ interface Standing {
   data: Record<string, StandingData>;
 }
 
-interface StandingData extends StandingDataBase {
-  leagues: Record<string, StandingDataBase>
-}
+type StandingData = Record<string, Record<string, StandingDataBase>>;
 
 interface StandingDataBase {
   correctVotes: number;
@@ -43,7 +48,7 @@ export async function calculateStanding(req: CustomRequest, res: any) {
     res.status(200).send();
     return;
   }
-  const standingData: Record<string, StandingData> = standing.data;
+  const SD: Record<string, StandingData> = standing.data;
   const apiResponses = await getFixturesForDate(yesterday);
   const fixtureIds: number[] = [];
   const fixturesInHasMap: Record<string, FixtureResponse> = {};
@@ -72,8 +77,8 @@ export async function calculateStanding(req: CustomRequest, res: any) {
     (votes) => {
       votes.forEach(
         (vote) => {
-          const data = vote.data();
-          const fixture = fixturesInHasMap[data.matchId];
+          const voteData = vote.data();
+          const fixture = fixturesInHasMap[voteData.matchId];
           if (
             ['FT', 'AET', 'PEN'].indexOf(fixture.fixture.status.short) === -1
           ) {
@@ -81,25 +86,30 @@ export async function calculateStanding(req: CustomRequest, res: any) {
           }
           if (
             !Object.prototype.hasOwnProperty
-              .call(standingData, data.userUid)
+              .call(SD, voteData.userUid)
           ) {
-            standingData[data.userUid] = {
-              correctVotes: 0,
-              incorrectVotes: 0,
-              leagues: {},
-            };
+            SD[voteData.userUid] = {};
           }
           if (
             !Object.prototype.hasOwnProperty
-              .call(standingData[data.userUid].leagues, fixture.league.name)
+              .call(SD[voteData.userUid], fixture.league.season)
           ) {
-            standingData[data.userUid].leagues[fixture.league.name] = {
+            SD[voteData.userUid][fixture.league.season] = {};
+          }
+          if (
+            !Object.prototype.hasOwnProperty
+              .call(
+                SD[voteData.userUid][fixture.league.season],
+                fixture.league.name
+              )
+          ) {
+            SD[voteData.userUid][fixture.league.season][fixture.league.name] = {
               correctVotes: 0,
               incorrectVotes: 0,
             };
           }
           let correct = false;
-          switch (data.result) {
+          switch (voteData.result) {
             case 1:
               if (fixture.teams.home.winner) {
                 correct = true;
@@ -120,14 +130,10 @@ export async function calculateStanding(req: CustomRequest, res: any) {
               break;
           }
           if (correct) {
-            standingData[data.userUid].correctVotes += 1;
-            standingData[data.userUid]
-              .leagues[fixture.league.name]
+            SD[voteData.userUid][fixture.league.season][fixture.league.name]
               .correctVotes += 1;
           } else {
-            standingData[data.userUid].incorrectVotes += 1;
-            standingData[data.userUid]
-              .leagues[fixture.league.name]
+            SD[voteData.userUid][fixture.league.season][fixture.league.name]
               .incorrectVotes += 1;
           }
         }
@@ -135,7 +141,7 @@ export async function calculateStanding(req: CustomRequest, res: any) {
     }
   );
   await standingRef.ref.update({
-    data: standingData,
+    data: SD,
     lastCalculationDate: yesterday,
   });
   res.status(200).send();

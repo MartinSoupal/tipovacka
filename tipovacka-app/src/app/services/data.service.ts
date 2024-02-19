@@ -34,6 +34,7 @@ export class DataService {
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
+  leagues$ = new BehaviorSubject<any[] | undefined>(undefined);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private apiService = inject(ApiService);
@@ -402,4 +403,17 @@ export class DataService {
         }
       })
   }
+
+  loadLeagues = (): Promise<void> => new Promise((resolve, reject) => {
+    this.apiService.getLeagues()
+      .subscribe({
+        next: (leagues) => {
+          this.leagues$.next(leagues);
+          resolve();
+        },
+        error: () => {
+          reject();
+        }
+      })
+  })
 }

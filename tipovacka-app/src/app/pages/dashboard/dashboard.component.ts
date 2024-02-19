@@ -6,6 +6,7 @@ import {combineLatest} from 'rxjs';
 import {
   AsyncPipe,
   NgClass,
+  NgForOf,
   NgIf,
   NgSwitch,
   NgSwitchCase,
@@ -17,6 +18,7 @@ import {
   PreviousMatchesComponent
 } from './previous-matches/previous-matches.component';
 import {StandingsComponent} from './standings/standings.component';
+import {clone} from 'ramda';
 
 type Tabs = 'results' | 'next' | 'standings';
 
@@ -36,16 +38,31 @@ type Tabs = 'results' | 'next' | 'standings';
     NextMatchesComponent,
     PreviousMatchesComponent,
     StandingsComponent,
-    NgIf
+    NgIf,
+    NgForOf
   ]
 })
 export class DashboardComponent implements OnInit {
   activeTab: Tabs = 'next';
   authService = inject(AuthService);
-  private dataService = inject(DataService);
+  dataService = inject(DataService);
+  leaguesFilter: string[] = [];
+  isLeagueInFilter: Record<string, boolean> = {};
   private route = inject(ActivatedRoute);
 
+  addLeagueToFilter = (league: string) => {
+    if (this.isLeagueInFilter[league]) {
+      this.isLeagueInFilter[league] = false;
+      this.leaguesFilter.splice(this.leaguesFilter.indexOf(league), 1);
+    } else {
+      this.isLeagueInFilter[league] = true;
+      this.leaguesFilter.push(league);
+    }
+    this.leaguesFilter = clone(this.leaguesFilter);
+  }
+
   ngOnInit() {
+    void this.dataService.loadLeagues();
     combineLatest([
       this.authService.isSignIn$,
       this.route.queryParams,

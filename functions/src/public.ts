@@ -3,13 +3,15 @@ import * as express from 'express';
 import * as cors from 'cors';
 import {calculateStanding, getStandings} from './standings/getStandings';
 import {getNextFixtures, getPrevFixtures} from './fixtures/getFixtures';
+import {getLeagues} from './leagues/getLeagues';
 
 const app = express();
 app.use(cors({origin: true}));
 app.use(express.json());
 app.get('/standings', getStandings);
-app.get('/fixtures/next', getNextFixtures);
-app.get('/fixtures/prev', getPrevFixtures);
+app.get('/fixtures/next3', getNextFixtures);
+app.get('/fixtures/prev3', getPrevFixtures);
+app.get('/leagues', getLeagues);
 
 app.post('/standings/calculate', calculateStanding);
 

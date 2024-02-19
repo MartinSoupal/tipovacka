@@ -2,7 +2,7 @@ export interface User extends UserBase {
   uid: string;
   name: string;
   points: number;
-  leagues: Record<string, UserBase>;
+  seasons: Record<string, Record<string, UserBase>>;
 }
 
 interface UserBase {

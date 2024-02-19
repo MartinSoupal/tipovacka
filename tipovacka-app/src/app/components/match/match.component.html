@@ -48,15 +48,35 @@
       <div>{{data.date | datetimeFormatBy}}</div>
     </div>
   </div>
-  <div class="z-20 flex mt-6 gap-2 font-medium text-xs md:text-xl w-full">
+  <div class="z-20 flex mt-6 gap-2 text-xs md:text-base w-full">
     <div class="flex-1 flex justify-end">
-      <div class="drop-shadow-md text-right leading-tight md:max-w-none max-w-[120px]">
+      <div
+        [ngClass]="{
+          'font-medium': !hides[1],
+          'font-normal': hides[1]
+        }"
+        class="drop-shadow-md text-right leading-tight md:max-w-none max-w-[120px]"
+      >
         {{data.homeTeam.name}}
       </div>
     </div>
-    <div class="opacity-30 text-center font-normal leading-tight">vs</div>
+    <div
+      *ngIf="data.result === null"
+      class="opacity-30 text-center font-normal leading-tight">vs
+    </div>
+    <div
+      *ngIf="data.result !== null"
+      class="opacity-30 text-center font-normal leading-tight">
+      {{data.homeTeam.goals}}-{{data.awayTeam.goals}}
+    </div>
     <div class="flex-1 flex">
-      <div class="drop-shadow-md leading-tight md:max-w-none max-w-[120px]">
+      <div
+        [ngClass]="{
+          'font-medium': !hides[2],
+          'font-normal': hides[2]
+        }"
+        class="drop-shadow-md leading-tight md:max-w-none max-w-[120px]"
+      >
         {{data.awayTeam.name}}
       </div>
     </div>
@@ -84,21 +104,22 @@
       }"
       [style.background-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
       [style.border-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
-      class="btn"
+      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
     >
       <img
         [ngClass]="{
             'hidden': states['1'] === 'normal'
           }"
-        [src]="'assets/images/' + data.homeTeam.id + '.webp'"
-        class="h-8">
+        [src]="'assets/images/club_logos/' + data.homeTeam.id + '.webp'"
+        class="max-h-full drop-shadow-xl"
+      >
       <img
         [alt]="'Logo of ' + data.homeTeam.name"
         [ngClass]="{
             'hidden': states['1'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.homeTeam.id + '_for_white_bg.webp'"
-        class="h-8"
+        [src]="'assets/images/club_logos/for_white_bg/' + data.homeTeam.id + '.webp'"
+        class="max-h-full drop-shadow-xl"
       >
     </button>
     <button
@@ -112,7 +133,7 @@
       }"
       [style.background-color]="states['0'] === 'highlight' ? '#333' : ''"
       [style.border-color]="states['0'] === 'highlight' ? '#333' : ''"
-      class="btn w-[72px] flex justify-center"
+      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
     >
       <span
         [ngClass]="{
@@ -132,22 +153,23 @@
       }"
       [style.background-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
       [style.border-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
-      class="btn"
+      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
     >
       <img
         [alt]="'Logo of ' + data.awayTeam.name"
         [ngClass]="{
             'hidden': states['2'] === 'normal'
           }"
-        [src]="'assets/images/' + data.awayTeam.id + '.webp'"
-        class="h-8"
+        [src]="'assets/images/club_logos/' + data.awayTeam.id + '.webp'"
+        class="max-h-full drop-shadow-xl"
       >
       <img
         [ngClass]="{
             'hidden': states['2'] !== 'normal'
           }"
-        [src]="'assets/images/' + data.awayTeam.id + '_for_white_bg.webp'"
-        class="h-8">
+        [src]="'assets/images/club_logos/for_white_bg/' + data.awayTeam.id + '.webp'"
+        class="max-h-full drop-shadow-xl"
+      >
     </button>
   </div>
   <!--

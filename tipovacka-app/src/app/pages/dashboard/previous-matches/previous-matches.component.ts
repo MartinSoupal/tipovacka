@@ -1,6 +1,5 @@
 import {Component, inject} from '@angular/core';
 import {DataService} from '../../../services/data.service';
-import {UserLeague} from '../../../models/user-league.model';
 import {AsyncPipe, NgIf} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {
@@ -25,8 +24,4 @@ import {
 })
 export class PreviousMatchesComponent {
   dataService = inject(DataService);
-
-  processLeagues(userLeague: UserLeague | undefined): string[] | undefined {
-    return userLeague?.leagues;
-  }
 }

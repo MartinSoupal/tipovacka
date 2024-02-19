@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {clone} from 'ramda';
 import {Vote} from '../../models/vote.model';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {DateToNumberPipe} from '../../pipes/date-to-number.pipe';
@@ -31,23 +30,4 @@ export class MatchesOverviewComponent {
   @Input() votes?: Record<string, Vote | undefined>;
   leaguesFilter: string[] = [];
   isLeagueInFilter: Record<string, boolean> = {};
-
-  @Input()
-  set selectedFilterLeagues(leagues: string[] | undefined) {
-    if (!leagues?.length) {
-      return;
-    }
-    leagues.forEach(this.addLeagueToFilter);
-  }
-
-  addLeagueToFilter = (league: string) => {
-    if (this.isLeagueInFilter[league]) {
-      this.isLeagueInFilter[league] = false;
-      this.leaguesFilter.splice(this.leaguesFilter.indexOf(league), 1);
-    } else {
-      this.isLeagueInFilter[league] = true;
-      this.leaguesFilter.push(league);
-    }
-    this.leaguesFilter = clone(this.leaguesFilter);
-  }
 }

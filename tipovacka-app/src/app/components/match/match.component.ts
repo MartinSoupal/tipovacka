@@ -50,7 +50,6 @@ export class MatchComponent implements OnChanges, OnInit {
     0: false,
     2: false,
   }
-  protected readonly undefined = undefined;
   private dataService = inject(DataService);
   private dialogService = inject(DialogService);
 
@@ -111,14 +110,16 @@ export class MatchComponent implements OnChanges, OnInit {
       this.hides[this.votes[this.data.id]!.result] = false;
       return;
     }
-
     this.hides['1'] = true;
     this.hides['0'] = true;
     this.hides['2'] = true;
     if (this.votes && this.votes[this.data.id]) {
-      this.states[this.votes[this.data.id]!.result] = 'incorrect';
-      this.hides[this.votes[this.data.id]!.result] = false;
+      if (this.votes[this.data.id]!.result === this.data.result!) {
+        this.states[this.votes[this.data.id]!.result] = 'correct';
+      } else {
+        this.states[this.votes[this.data.id]!.result] = 'incorrect';
+      }
+      this.hides[this.data.result] = false;
     }
-    this.states[this.data.result!] = 'correct';
   }
 }
