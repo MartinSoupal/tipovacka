@@ -37,7 +37,15 @@
 }
 
 .btn-secondary {
-  @apply text-gray-900 bg-white border border-gray-200;
+  @apply text-gray-900 bg-white border-2 border-gray-200;
+
+  &:not(:disabled) {
+    @apply hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+  }
+}
+
+.btn-white {
+  @apply text-gray-900 bg-white border-2;
 
   &:not(:disabled) {
     @apply hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200

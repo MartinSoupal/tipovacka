@@ -50,6 +50,7 @@ export class MatchComponent implements OnChanges, OnInit {
     0: false,
     2: false,
   }
+  protected readonly undefined = undefined;
   private dataService = inject(DataService);
   private dialogService = inject(DialogService);
 
