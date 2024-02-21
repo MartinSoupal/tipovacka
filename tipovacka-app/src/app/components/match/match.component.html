@@ -17,8 +17,8 @@
   ></div>
   <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
     <img
+      (error)="imageError($event)"
       [alt]="'Player of ' + data.homeTeam.name"
-      [appImgSrcError]="'assets/images/players/default.webp'"
       [ngClass]="{
         'opacity-30': hides['1']
       }"
@@ -28,8 +28,8 @@
   </div>
   <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end justify-end">
     <img
+      (error)="imageError($event)"
       [alt]="'Player of ' + data.awayTeam.name"
-      [appImgSrcError]="'assets/images/players/default.webp'"
       [ngClass]="{
         'opacity-30': hides['2']
       }"
@@ -40,6 +40,7 @@
   <div class="z-20 flex items-center gap-4">
     <img
       [alt]="data.leagueName"
+      [title]="data.leagueName"
       class="h-6 w-auto"
       src="assets/images/{{data.leagueName}}.webp"
     >
@@ -98,28 +99,25 @@
       [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['1'],
-        'bg-green-600': states['1'] === 'correct',
-        'bg-red-600': states['1'] === 'incorrect',
-        'btn-secondary': states['1'] === 'normal'
+        'border-green-600': states['1'] === 'correct',
+        'border-red-600': states['1'] === 'incorrect',
+        'btn-secondary border-white': states['1'] === 'normal'
       }"
-      [style.background-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
       [style.border-color]="states['1'] === 'highlight' ? data.homeTeam.color : ''"
-      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
+      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl border-2 relative bg-white"
     >
-      <img
+      <div
         [ngClass]="{
-            'hidden': states['1'] === 'normal'
-          }"
-        [src]="'assets/images/club_logos/' + data.homeTeam.id + '.webp'"
-        class="max-h-full drop-shadow-xl"
-      >
+          'bg-green-600/25': states['1'] === 'correct',
+          'bg-red-600/25': states['1'] === 'incorrect',
+        }"
+        [style.background-color]="states['1'] === 'highlight' ? data.homeTeam.color + '40' : ''"
+        class="absolute w-full h-full -z-10"
+      ></div>
       <img
         [alt]="'Logo of ' + data.homeTeam.name"
-        [ngClass]="{
-            'hidden': states['1'] !== 'normal'
-          }"
         [src]="'assets/images/club_logos/for_white_bg/' + data.homeTeam.id + '.webp'"
-        class="max-h-full drop-shadow-xl"
+        class="max-h-full"
       >
     </button>
     <button
@@ -127,13 +125,13 @@
       [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['0'],
-        'bg-green-600': states['0'] === 'correct',
-        'bg-red-600': states['0'] === 'incorrect',
-        'btn-secondary': states['0'] === 'normal'
+        'bg-green-600/25 border-green-600': states['0'] === 'correct',
+        'bg-red-600/25 border-red-600': states['0'] === 'incorrect',
+        'btn-secondary border-white': states['0'] === 'normal'
       }"
-      [style.background-color]="states['0'] === 'highlight' ? '#333' : ''"
-      [style.border-color]="states['0'] === 'highlight' ? '#333' : ''"
-      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
+      [style.background-color]="states['0'] === 'highlight' ? '#33333340' : ''"
+      [style.border-color]="states['0'] === 'highlight' ? '#333333' : ''"
+      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl border-2"
     >
       <span
         [ngClass]="{
@@ -147,28 +145,24 @@
       [disabled]="data.date! < now || sendingVote !== undefined"
       [ngClass]="{
         'opacity-50': hides['2'],
-        'bg-green-600': states['2'] === 'correct',
-        'bg-red-600': states['2'] === 'incorrect',
-        'btn-secondary': states['2'] === 'normal'
+        'border-green-600': states['2'] === 'correct',
+        'border-red-600': states['2'] === 'incorrect',
+        'btn-secondary border-white': states['2'] === 'normal'
       }"
-      [style.background-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
       [style.border-color]="states['2'] === 'highlight' ? data.awayTeam.color : ''"
-      class="btn w-[72px] h-[52px] flex justify-center drop-shadow-xl"
+      class="btn bg-white w-[72px] h-[52px] flex justify-center drop-shadow-xl border-2 relative"
     >
-      <img
-        [alt]="'Logo of ' + data.awayTeam.name"
+      <div
         [ngClass]="{
-            'hidden': states['2'] === 'normal'
-          }"
-        [src]="'assets/images/club_logos/' + data.awayTeam.id + '.webp'"
-        class="max-h-full drop-shadow-xl"
-      >
+          'bg-green-600/25': states['2'] === 'correct',
+          'bg-red-600/25': states['2'] === 'incorrect',
+        }"
+        [style.background-color]="states['2'] === 'highlight' ? data.awayTeam.color + '40' : ''"
+        class="absolute w-full h-full -z-10"
+      ></div>
       <img
-        [ngClass]="{
-            'hidden': states['2'] !== 'normal'
-          }"
         [src]="'assets/images/club_logos/for_white_bg/' + data.awayTeam.id + '.webp'"
-        class="max-h-full drop-shadow-xl"
+        class="max-h-full"
       >
     </button>
   </div>

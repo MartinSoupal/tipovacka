@@ -111,7 +111,6 @@ export class ApiService {
                 }
               }
               user.points = user.correctVotes - user.incorrectVotes;
-              console.log(user);
               return user;
             }
           )
@@ -223,7 +222,7 @@ export class ApiService {
 
   getNextFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/next3`,
+      `${this.publicUrl}/fixtures/next2`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -244,7 +243,7 @@ export class ApiService {
 
   getPrevFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/prev3`,
+      `${this.publicUrl}/fixtures/prev2`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -265,7 +264,7 @@ export class ApiService {
 
   getLeagues = () =>
     this.http.get<any[]>(
-      `${this.publicUrl}/leagues`,
+      `${this.publicUrl}/leagues2`,
       {
         headers: {
           'Content-Type': 'application/json',

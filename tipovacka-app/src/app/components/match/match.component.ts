@@ -122,4 +122,8 @@ export class MatchComponent implements OnChanges, OnInit {
       this.hides[this.data.result] = false;
     }
   }
+
+  imageError(event: ErrorEvent) {
+    (event.target as HTMLInputElement).remove();
+  }
 }

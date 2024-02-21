@@ -53,7 +53,7 @@
   </ul>
 </div>
 
-<div class="flex gap-2 mt-4">
+<div class="gap-2 mt-4 grid grid-cols-4 md:grid-cols-8">
   <button
     (click)="addLeagueToFilter(league.name)"
     *ngFor="let league of (dataService.leagues$ | async)"
@@ -61,7 +61,7 @@
         'border-transparent': !isLeagueInFilter[league.name],
         'border-gray-950': isLeagueInFilter[league.name]
       }"
-    class="badge flex items-center gap-2 bg-gray-100 border-[1px]"
+    class="badge flex items-center justify-center gap-2 bg-gray-100 border-[1px]"
   >
     <img
       [alt]="league.name"

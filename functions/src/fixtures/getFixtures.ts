@@ -12,7 +12,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   const today = new Date()
     .toISOString()
     .substring(0, 10);
-  const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+  const twoWeeksFromNow = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(today, twoWeeksFromNow);
@@ -47,7 +47,7 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
   const yesterday = new Date(Date.now() - (24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
-  const twoWeeksBeforeNow = new Date(Date.now() - (15 * 24 * 60 * 60 * 1000))
+  const twoWeeksBeforeNow = new Date(Date.now() - (11 * 24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(twoWeeksBeforeNow, yesterday);
