@@ -92,7 +92,6 @@ export class DashboardComponent implements OnInit {
           if (!userLeagueId) {
             this.dataService.loadStandings();
           }
-          this.dataService.loadUserLeagues();
         }
       })
     this.route.paramMap

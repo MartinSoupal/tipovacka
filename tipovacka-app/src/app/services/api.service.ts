@@ -91,42 +91,6 @@ export class ApiService {
         },
       }
     )
-      .pipe(
-        map(
-          R.map(
-            (user) => {
-              user.points = 0;
-              user.correctVotes = 0;
-              user.incorrectVotes = 0;
-              for (const seasonKey in user.seasons) {
-                const season = user.seasons[seasonKey];
-
-                // Iterate through each userBase within the season
-                for (const userKey in season) {
-                  const userBase = season[userKey];
-
-                  // Sum up correct and incorrect votes
-                  user.correctVotes += userBase.correctVotes;
-                  user.incorrectVotes += userBase.incorrectVotes;
-                }
-              }
-              user.points = user.correctVotes - user.incorrectVotes;
-              return user;
-            }
-          )
-        )
-      )
-
-  getAllLeagues = () =>
-    this.http.get<League[]>(
-      `${this.privateUrl}/leagues/all`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : '',
-        },
-      }
-    )
 
   addUserLeague = (newUserLeague: NewUserLeague) =>
     this.http.post<returnIdValue>(
@@ -222,7 +186,7 @@ export class ApiService {
 
   getNextFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/next2`,
+      `${this.publicUrl}/fixtures/next`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -243,7 +207,7 @@ export class ApiService {
 
   getPrevFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/prev2`,
+      `${this.publicUrl}/fixtures/prev`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -263,8 +227,8 @@ export class ApiService {
       )
 
   getLeagues = () =>
-    this.http.get<any[]>(
-      `${this.publicUrl}/leagues2`,
+    this.http.get<League[]>(
+      `${this.publicUrl}/leagues`,
       {
         headers: {
           'Content-Type': 'application/json',

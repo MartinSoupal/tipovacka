@@ -2,7 +2,6 @@
   *ngIf="(dataService.prevMatches$ | async) as prevMatches"
   class="flex flex-col mt-8">
   <app-matches-overview
-    [leagues]="(dataService.leaguesOfPrevMatches$ | async) || []"
     [matches]="prevMatches"
     [votes]="(dataService.votesOfPrevMatches$ | async) || {}"
   />

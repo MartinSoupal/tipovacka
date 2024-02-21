@@ -53,27 +53,6 @@
   </ul>
 </div>
 
-<div class="gap-2 mt-4 grid grid-cols-4 md:grid-cols-8">
-  <button
-    (click)="addLeagueToFilter(league.name)"
-    *ngFor="let league of (dataService.leagues$ | async)"
-    [ngClass]="{
-        'border-transparent': !isLeagueInFilter[league.name],
-        'border-gray-950': isLeagueInFilter[league.name]
-      }"
-    class="badge flex items-center justify-center gap-2 bg-gray-100 border-[1px]"
-  >
-    <img
-      [alt]="league.name"
-      class="h-4 w-auto"
-      src="assets/images/{{league.name}}.webp"
-    >
-    <span
-      *ngIf="isLeagueInFilter[league.name]"
-      class="material-icons md-12">close</span>
-  </button>
-</div>
-
 <ng-container [ngSwitch]="activeTab">
   <app-next-matches
     *ngSwitchCase="'next'"

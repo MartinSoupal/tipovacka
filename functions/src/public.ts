@@ -9,9 +9,9 @@ const app = express();
 app.use(cors({origin: true}));
 app.use(express.json());
 app.get('/standings', getStandings);
-app.get('/fixtures/next2', getNextFixtures);
-app.get('/fixtures/prev2', getPrevFixtures);
-app.get('/leagues2', getLeagues);
+app.get('/fixtures/next', getNextFixtures);
+app.get('/fixtures/prev', getPrevFixtures);
+app.get('/leagues', getLeagues);
 
 app.post('/standings/calculate', calculateStanding);
 

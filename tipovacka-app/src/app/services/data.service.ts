@@ -1,16 +1,8 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  first,
-  map,
-  Observable,
-  of,
-  switchMap
-} from 'rxjs';
+import {BehaviorSubject, combineLatest, first, of, switchMap} from 'rxjs';
 import * as R from 'ramda';
 import {User} from '../models/user.model';
-import {NewUserLeague, UserLeague} from '../models/user-league.model';
+import {UserLeague} from '../models/user-league.model';
 import {arrayToHashMap} from '../utils/arrayToHashMap.fnc';
 import {ApiService} from './api.service';
 import {AuthService} from './auth.service';
@@ -19,6 +11,7 @@ import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Fixture} from '../models/fixture.model';
+import {League} from '../models/league.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +27,8 @@ export class DataService {
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
-  leagues$ = new BehaviorSubject<any[] | undefined>(undefined);
+  leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
+  selectedLeagues$ = new BehaviorSubject<string[] | undefined>(undefined);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private apiService = inject(ApiService);
@@ -146,138 +140,6 @@ export class DataService {
         }
       })
   }
-
-  loadUserLeagues = () => {
-    this.authService.isSignIn$
-      .pipe(
-        first(),
-      )
-      .subscribe({
-        next: (token) => {
-          if (!token) {
-            return;
-          }
-          this.apiService.getAllUserLeagues()
-            .pipe(
-              first(),
-            )
-            .subscribe({
-              next: (userLeagues) => {
-                this.userLeagues$.next(userLeagues);
-              }
-            })
-        }
-      })
-  }
-
-  addUserLeague = (newUserLeague: NewUserLeague): void => {
-    combineLatest([
-      this.apiService.addUserLeague(newUserLeague),
-      this.userLeagues$,
-    ])
-      .pipe(
-        first(),
-        this.toastService.observe({
-          loading: this.translocoService.translate('USER_LEAGUE_CREATING'),
-          success: this.translocoService.translate('USER_LEAGUE_CREATED'),
-          error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_CREATE'),
-        }),
-        map(
-          ([{id}, userLeagues]) => {
-            this.userLeagues$.next([
-              ...(userLeagues || []),
-              {
-                id,
-                isAdmin: true,
-                isUser: true,
-                ...newUserLeague,
-              }
-            ]);
-            return {id};
-          }
-        )
-      )
-      .subscribe()
-  }
-
-  deleteUserLeague = (userLeagueId: string): void => {
-    combineLatest([
-      this.userLeagues$,
-      this.selectedUserLeague$
-    ])
-      .pipe(
-        first(),
-        switchMap(
-          ([userLeagues, selectedUserLeague]) => {
-            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues!);
-            this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues!));
-            if (selectedUserLeague?.id === userLeagueId) {
-              this.selectedUserLeague$.next(undefined);
-            }
-            if (selectedUserLeague?.id === userLeagueId) {
-              this.loadStandings()
-            }
-            return this.apiService.deleteUserLeague(userLeagueId)
-              .pipe(
-                this.toastService.observe({
-                  loading: this.translocoService.translate('USER_LEAGUE_DELETING'),
-                  success: this.translocoService.translate('USER_LEAGUE_DELETED'),
-                  error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_DELETE'),
-                })
-              );
-          }
-        )
-      )
-      .subscribe()
-  }
-
-  leaveUserLeague = (userLeagueId: string): void => {
-    combineLatest([
-      this.userLeagues$,
-      this.selectedUserLeague$
-    ])
-      .pipe(
-        first(),
-        switchMap(
-          ([userLeagues, selectedUserLeague,]) => {
-            const userLeagueIndex = R.findIndex(R.propEq(userLeagueId, 'id'), userLeagues!);
-            if (!userLeagues![userLeagueIndex].isAdmin) {
-              this.userLeagues$.next(R.remove(userLeagueIndex, 1, userLeagues!));
-              if (selectedUserLeague?.id === userLeagueId) {
-                this.selectedUserLeague$.next(undefined);
-              }
-            }
-            if (userLeagues![userLeagueIndex].isAdmin) {
-              userLeagues![userLeagueIndex].isUser = false;
-              this.userLeagues$.next(userLeagues);
-            }
-            if (userLeagues![userLeagueIndex].isAdmin && selectedUserLeague?.id === userLeagueId) {
-              this.loadStandings()
-            }
-            return this.apiService.leaveUserLeague(userLeagueId)
-              .pipe(
-                this.toastService.observe({
-                  loading: this.translocoService.translate('USER_LEAGUE_LEAVING'),
-                  success: this.translocoService.translate('USER_LEAGUE_LEAVED'),
-                  error: this.translocoService.translate('USER_LEAGUE_COULD_NOT_LEAVE'),
-                }),
-              );
-          }
-        )
-      )
-      .subscribe()
-  }
-
-  joinUserLeague = (userLeagueId: string): Observable<void> =>
-    this.apiService.joinUserLeague(userLeagueId)
-      .pipe(
-        first(),
-        map(
-          () => {
-            return;
-          }
-        )
-      )
 
   addVote = (matchId: string, result: VoteResult): Promise<void> => new Promise((resolve) => {
     combineLatest([
@@ -416,4 +278,9 @@ export class DataService {
         }
       })
   })
+
+  setSelectedLeagues = (selectedLeagues?: string[] | undefined) => {
+    this.selectedLeagues$.next(selectedLeagues);
+    localStorage.setItem('selectedLeagues', JSON.stringify(selectedLeagues));
+  }
 }

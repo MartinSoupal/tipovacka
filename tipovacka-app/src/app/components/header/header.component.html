@@ -9,11 +9,9 @@
   </a>
   <div class="flex gap-2 items-center">
     <button
-      (click)="goToAdmin()"
-      *ngIf="(authService.getUserData$ | async)?.email === 'm.soupal.06@gmail.com'"
-      class="flex"
-    >
-      <span class="material-icons">admin_panel_settings</span>
+      (click)="openLeagueFilterModal()"
+      class="flex">
+      <span class="material-icons">filter_alt</span>
     </button>
     <button
       (click)="openSettingsModal()"

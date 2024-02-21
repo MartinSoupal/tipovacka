@@ -1,9 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {Router, RouterLink} from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {AsyncPipe, NgIf} from '@angular/common';
 import {DialogService} from '@ngneat/dialog';
 import {SettingsComponent} from '../settings/settings.component';
+import {
+  LeaguesFilterComponent
+} from '../leagues-filter/leagues-filter.component';
 
 @Component({
   selector: 'app-header',
@@ -19,14 +22,13 @@ import {SettingsComponent} from '../settings/settings.component';
 export class HeaderComponent {
 
   authService = inject(AuthService);
-  private router = inject(Router);
   private dialogService = inject(DialogService);
-
-  goToAdmin = () => {
-    void this.router.navigate(['admin']);
-  }
 
   openSettingsModal = () => {
     this.dialogService.open(SettingsComponent);
+  }
+
+  openLeagueFilterModal = () => {
+    this.dialogService.open(LeaguesFilterComponent);
   }
 }

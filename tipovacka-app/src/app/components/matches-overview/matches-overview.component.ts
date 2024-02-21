@@ -1,12 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {Vote} from '../../models/vote.model';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {DateToNumberPipe} from '../../pipes/date-to-number.pipe';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {MatchComponent} from '../match/match.component';
 import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
 import {Fixture} from '../../models/fixture.model';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-matches-overview',
@@ -21,13 +22,12 @@ import {Fixture} from '../../models/fixture.model';
     TranslocoPipe,
     DatetimeFormatPipe,
     MatchComponent,
-    FilterMatchesByPipe
+    FilterMatchesByPipe,
+    AsyncPipe
   ]
 })
 export class MatchesOverviewComponent {
   @Input() matches: Fixture[] = [];
-  @Input() leagues: string[] = [];
   @Input() votes?: Record<string, Vote | undefined>;
-  leaguesFilter: string[] = [];
-  isLeagueInFilter: Record<string, boolean> = {};
+  dataService = inject(DataService);
 }
