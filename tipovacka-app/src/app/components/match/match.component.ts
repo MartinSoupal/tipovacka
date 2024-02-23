@@ -10,6 +10,7 @@ import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {ImageSrcErrorDirective} from '../../directives/imgSrcError.directive';
 import {Fixture} from '../../models/fixture.model';
+import {FormComponent} from '../form/form.component';
 
 type TeamState =
   'normal'
@@ -30,6 +31,7 @@ type TeamState =
     DatetimeFormatPipe,
     ImageSrcErrorDirective,
     DecimalPipe,
+    FormComponent,
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {

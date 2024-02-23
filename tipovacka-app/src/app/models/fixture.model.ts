@@ -14,4 +14,6 @@ interface Team {
   name: string;
   color: string;
   goals: number;
+  form: string;
+  rank: number;
 }

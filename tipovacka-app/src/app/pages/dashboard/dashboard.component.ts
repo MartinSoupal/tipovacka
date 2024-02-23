@@ -82,16 +82,11 @@ export class DashboardComponent implements OnInit {
                   this.dataService.loadNextMatchesVotes();
                 }
               )
+          } else {
+            void this.dataService.loadPrevMatches();
+            void this.dataService.loadNextMatches();
           }
-          void this.dataService.loadPrevMatches();
-          void this.dataService.loadNextMatches();
-          const userLeagueId = queryParams['ul'] as string;
-          if (userLeagueId) {
-            this.dataService.setSelectedUserLeague(userLeagueId);
-          }
-          if (!userLeagueId) {
-            this.dataService.loadStandings();
-          }
+          this.dataService.loadStandings();
         }
       })
     this.route.paramMap

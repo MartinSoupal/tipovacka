@@ -1,14 +1,16 @@
 import {db} from '../firebaseConfig';
-import {CustomRequest} from '../types';
-import {getFixturesFromTo} from '../helpers';
+import {CustomRequest, FixtureResponse, Standing} from '../types';
+import {getFixturesFromTo, getLeaguesStanding} from '../helpers';
 
 export async function getNextFixtures(req: CustomRequest, res: any) {
+  /*
   const now = new Date();
   const endOfDay = new Date(now);
   endOfDay.setHours(23, 59, 59, 999);
   const diffInSeconds =
     Math.round((endOfDay.getTime() - now.getTime()) / 1000) + 1;
   res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
+   */
   const today = new Date()
     .toISOString()
     .substring(0, 10);
@@ -16,6 +18,29 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(today, twoWeeksFromNow);
+  const standingsResponses = await getLeaguesStanding();
+  const standingsHashMap: Record<
+    string,
+    Record<string, Standing>
+  > = {};
+  standingsResponses.forEach(
+    (standingsResponse) => {
+      standingsResponse.data.response.forEach(
+        (response) => {
+          response.league.standings.forEach(
+            (standing) => {
+              standingsHashMap[response.league.id] = {};
+              standing.forEach(
+                (team) => {
+                  standingsHashMap[response.league.id][team.team.id] = team;
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  );
   const teams = await db.collection('teams').get();
   const teamsColorInHashMap: Record<string, string> = {};
   teams.forEach(
@@ -29,7 +54,13 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
     (response) => {
       response.data.response.forEach(
         (fixture) => {
-          fixtures.push(fixtureDto2Fixture(fixture, teamsColorInHashMap));
+          fixtures.push(
+            fixtureDto2Fixture(
+              fixture,
+              teamsColorInHashMap,
+              standingsHashMap,
+            )
+          );
         }
       );
     },
@@ -38,12 +69,14 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
 }
 
 export async function getPrevFixtures(req: CustomRequest, res: any) {
+  /*
   const now = new Date();
   const endOfDay = new Date(now);
   endOfDay.setHours(23, 59, 59, 999);
   const diffInSeconds =
     Math.round((endOfDay.getTime() - now.getTime()) / 1000) + 1;
   res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
+   */
   const yesterday = new Date(Date.now() - (24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
@@ -51,6 +84,29 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(twoWeeksBeforeNow, yesterday);
+  const standingsResponses = await getLeaguesStanding();
+  const standingsHashMap: Record<
+    string,
+    Record<string, Standing>
+  > = {};
+  standingsResponses.forEach(
+    (standingsResponse) => {
+      standingsResponse.data.response.forEach(
+        (response) => {
+          response.league.standings.forEach(
+            (standing) => {
+              standingsHashMap[response.league.id] = {};
+              standing.forEach(
+                (team) => {
+                  standingsHashMap[response.league.id][team.team.id] = team;
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  );
   const teams = await db.collection('teams').get();
   const teamsColorInHashMap: Record<string, string> = {};
   teams.forEach(
@@ -63,8 +119,14 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
   responses.forEach(
     (response) => {
       response.data.response.forEach(
-        (fixture: any) => {
-          fixtures.push(fixtureDto2Fixture(fixture, teamsColorInHashMap));
+        (fixture) => {
+          fixtures.push(
+            fixtureDto2Fixture(
+              fixture,
+              teamsColorInHashMap,
+              standingsHashMap,
+            )
+          );
         }
       );
     },
@@ -73,7 +135,7 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
 }
 
 interface Fixture {
-  id: string;
+  id: number;
   date: Date;
   leagueName: string;
   round: string;
@@ -84,15 +146,18 @@ interface Fixture {
 }
 
 interface Team {
-  id: string;
+  id: number;
   name: string;
   color: string;
   goals: number;
+  form: string;
+  rank: number;
 }
 
 function fixtureDto2Fixture(
-  dto: any,
-  teamsColor: Record<string, string>
+  dto: FixtureResponse,
+  teamsColor: Record<string, string>,
+  standingsHashMap: Record<string, Record<string, Standing>>
 ): Fixture {
   const now = new Date();
   return {
@@ -114,12 +179,16 @@ function fixtureDto2Fixture(
       name: dto.teams.home.name,
       color: teamsColor[dto.teams.home.id],
       goals: dto.goals.home,
+      form: standingsHashMap[dto.league.id][dto.teams.home.id]?.form,
+      rank: standingsHashMap[dto.league.id][dto.teams.home.id]?.rank,
     },
     awayTeam: {
       id: dto.teams.away.id,
       name: dto.teams.away.name,
       color: teamsColor[dto.teams.away.id],
       goals: dto.goals.away,
+      form: standingsHashMap[dto.league.id][dto.teams.away.id]?.form,
+      rank: standingsHashMap[dto.league.id][dto.teams.away.id]?.rank,
     },
   };
 }

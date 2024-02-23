@@ -3,7 +3,7 @@ import {CustomRequest} from '../types';
 import axios from 'axios';
 
 export async function getLeagues(req: CustomRequest, res: any) {
-  res.set('Cache-Control', 'public, max-age=86400');
+  // res.set('Cache-Control', 'public, max-age=86400');
   const leagues = await Promise.all(
     (await db.collection('leagues').get())
       .docs

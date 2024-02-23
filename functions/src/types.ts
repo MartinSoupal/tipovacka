@@ -8,7 +8,7 @@ export interface CustomRequest extends Request {
   };
 }
 
-export interface ApiResponse {
+export interface FixtureApiResponse {
   get: string;
   parameters: {
     live: string;
@@ -101,4 +101,64 @@ interface Score {
     away: number | null;
   };
 }
+
+export interface StaningsApiResponse {
+  get: string;
+  parameters: {
+    league: string;
+    season: string;
+  };
+  errors: any[];
+  results: number;
+  paging: {
+    current: number;
+    total: number;
+  };
+  response: LeagueResponse[];
+}
+
+interface LeagueResponse {
+  league: {
+    id: number;
+    name: string;
+    country: string;
+    logo: string;
+    flag: string;
+    season: number;
+    standings: Standing[][];
+  };
+}
+
+export interface Standing {
+  rank: number;
+  team: Team;
+  points: number;
+  goalsDiff: number;
+  group: string;
+  form: string;
+  status: string;
+  description: string;
+  all: MatchStats;
+  home: MatchStats;
+  away: MatchStats;
+  update: string;
+}
+
+interface Team {
+  id: number;
+  name: string;
+  logo: string;
+}
+
+interface MatchStats {
+  played: number;
+  win: number;
+  draw: number;
+  lose: number;
+  goals: {
+    for: number;
+    against: number;
+  };
+}
+
 

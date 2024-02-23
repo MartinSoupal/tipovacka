@@ -1,0 +1,10 @@
+<div class="flex gap-1">
+  <div
+    *ngFor="let item of form"
+    [ngClass]="{
+      'bg-green-600': item === 'W',
+      'bg-red-600': item === 'L',
+      'bg-yellow-600': item === 'D'
+    }"
+    class="w-1 h-1 rounded"></div>
+</div>
