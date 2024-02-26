@@ -78,63 +78,68 @@ export async function calculateStanding(req: CustomRequest, res: any) {
       votes.forEach(
         (vote) => {
           const voteData = vote.data();
-          const fixture = fixturesInHasMap[voteData.matchId];
+          const fix = fixturesInHasMap[voteData.matchId];
           if (
-            ['FT', 'AET', 'PEN'].indexOf(fixture.fixture.status.short) === -1
+            ['FT', 'AET', 'PEN'].indexOf(fix.fixture.status.short) !== -1
           ) {
-            return;
-          }
-          if (
-            !Object.prototype.hasOwnProperty
-              .call(SD, voteData.userUid)
-          ) {
-            SD[voteData.userUid] = {};
-          }
-          if (
-            !Object.prototype.hasOwnProperty
-              .call(SD[voteData.userUid], fixture.league.season)
-          ) {
-            SD[voteData.userUid][fixture.league.season] = {};
-          }
-          if (
-            !Object.prototype.hasOwnProperty
-              .call(
-                SD[voteData.userUid][fixture.league.season],
-                fixture.league.name
-              )
-          ) {
-            SD[voteData.userUid][fixture.league.season][fixture.league.name] = {
-              correctVotes: 0,
-              incorrectVotes: 0,
-            };
-          }
-          let correct = false;
-          switch (voteData.result) {
-            case 1:
-              if (fixture.teams.home.winner) {
-                correct = true;
-              }
-              break;
-            case 2:
-              if (fixture.teams.away.winner) {
-                correct = true;
-              }
-              break;
-            case 0:
-              if (
-                !fixture.teams.home.winner &&
-                !fixture.teams.away.winner
-              ) {
-                correct = true;
-              }
-              break;
-          }
-          if (correct) {
-            SD[voteData.userUid][fixture.league.season][fixture.league.name]
-              .correctVotes += 1;
-          } else {
-            SD[voteData.userUid][fixture.league.season][fixture.league.name]
-              .incorrectVotes += 1;
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(SD, voteData.userUid)
+            ) {
+              SD[voteData.userUid] = {};
+            }
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(SD[voteData.userUid], fix.league.season)
+            ) {
+              SD[voteData.userUid][fix.league.season] = {};
+            }
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(
+                  SD[voteData.userUid][fix.league.season],
+                  fix.league.name
+                )
+            ) {
+              SD[voteData.userUid][fix.league.season][fix.league.name] = {
+                correctVotes: 0,
+                incorrectVotes: 0,
+              };
+            }
+            let correct = false;
+            switch (voteData.result) {
+              case 1:
+                if (
+                  Number(fix.score.fulltime.home) >
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+              case 2:
+                if (
+                  Number(fix.score.fulltime.home) <
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+              case 0:
+                if (
+                  Number(fix.score.fulltime.home) ===
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+            }
+            if (correct) {
+              SD[voteData.userUid][fix.league.season][fix.league.name]
+                .correctVotes += 1;
+            } else {
+              SD[voteData.userUid][fix.league.season][fix.league.name]
+                .incorrectVotes += 1;
+            }
           }
         }
       );
@@ -145,4 +150,16 @@ export async function calculateStanding(req: CustomRequest, res: any) {
     lastCalculationDate: yesterday,
   });
   res.status(200).send();
+}
+
+export async function getLastStandingCalculationDate(
+  req: CustomRequest,
+  res: any
+) {
+  const standingRef =
+    await db.collection('standings').doc('all').get();
+  const standing: Standing = standingRef.data()! as Standing;
+  res.status(200).send(JSON.stringify({
+    lastCalculationDate: standing.lastCalculationDate,
+  }));
 }

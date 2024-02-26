@@ -3,7 +3,7 @@
     [ngClass]="{
       'opacity-10': hides['1'],
       'opacity-50': !hides['1'],
-      'w-2/3': states['1'] === 'highlight',
+      'w-2/3': states['1'] === 'highlight' || states['1'] === 'correct',
       'w-1/3': hides['1'],
       'w-1/2': states['1'] === 'normal' && !hides['1']
     }"
@@ -14,7 +14,7 @@
     [ngClass]="{
       'opacity-10': hides['2'],
       'opacity-50': !hides['2'],
-      'w-2/3': states['2'] === 'highlight',
+      'w-2/3': states['2'] === 'highlight' || states['2'] === 'correct',
       'w-1/3': hides['2'],
       'w-1/2': states['2'] === 'normal' && !hides['2']
     }"
@@ -43,31 +43,27 @@
       class="h-[90%] w-auto"
     >
   </div>
-  <div class="z-20 flex items-center gap-4">
+  <div class="z-20 flex items-center gap-4 text-xxs text-gray-950/70">
+    <div>{{('ROUND.' + data.round) | transloco}}</div>
     <img
       [alt]="data.leagueName"
       [title]="data.leagueName"
-      class="h-6 w-auto"
+      class="h-4 w-auto opacity-70"
       src="assets/images/{{data.leagueName}}.webp"
     >
-    <div class="flex flex-col text-xxs text-gray-950/70">
-      <div>{{('ROUND.' + data.round) | transloco}}</div>
-      <div>{{data.date | datetimeFormatBy}}</div>
-    </div>
+    <div>{{data.date | datetimeFormatBy}}</div>
   </div>
-  <div class="z-20 flex items-end mt-6 gap-2 text-xs md:text-base w-full">
-    <div class="flex-1 flex flex-col items-end">
-      <app-form [data]="data.homeTeam.form"/>
-      <div
-        [ngClass]="{
-          'font-medium': !hides[1],
-          'font-normal': hides[1]
-        }"
-        class="drop-shadow-md text-right leading-tight md:max-w-none max-w-[120px]"
-      >
+  <div class="z-20 flex items-end mt-8 gap-1 text-xs md:text-base w-full">
+    <div class="flex-1 gap-1 flex flex-col items-end">
+      <div class="flex gap-2 items-baseline">
         <span
           *ngIf="data.homeTeam.rank"
-          class="text-gray-600 text-xxs">{{data.homeTeam.rank}}</span>
+          class="text-gray-600 font-light text-xxs">{{data.homeTeam.rank}}</span>
+        <app-form [data]="data.homeTeam.form"/>
+      </div>
+      <div
+        class="drop-shadow-md text-right font-bold leading-tight md:max-w-none max-w-[120px] truncate"
+      >
         {{data.homeTeam.name}}
       </div>
     </div>
@@ -80,19 +76,17 @@
       class="opacity-30 text-center font-normal leading-tight">
       {{data.homeTeam.goals}}-{{data.awayTeam.goals}}
     </div>
-    <div class="flex-1 flex flex-col">
-      <app-form [data]="data.awayTeam.form"/>
-      <div
-        [ngClass]="{
-          'font-medium': !hides[2],
-          'font-normal': hides[2]
-        }"
-        class="drop-shadow-md leading-tight md:max-w-none max-w-[120px]"
-      >
-        {{data.awayTeam.name}}
+    <div class="flex-1 gap-1 flex flex-col">
+      <div class="flex items-baseline gap-2">
+        <app-form [data]="data.awayTeam.form"/>
         <span
           *ngIf="data.awayTeam.rank"
-          class="text-gray-600 text-xxs">{{data.awayTeam.rank}}</span>
+          class="text-gray-600 font-light text-xxs">{{data.awayTeam.rank}}</span>
+      </div>
+      <div
+        class="drop-shadow-md font-bold leading-tight md:max-w-none max-w-[120px] truncate"
+      >
+        {{data.awayTeam.name}}
       </div>
     </div>
   </div>
@@ -151,22 +145,4 @@
       >
     </button>
   </div>
-  <!--
-  <div class="z-20 flex text-xxs mt-2 gap-1">
-    <div>
-      {{((data && data.totalVotes ? ((data![1] || 0) / data.totalVotes) : 0) * 100) | number: '1.0-0'}}%
-      <span class="opacity-50">({{data![1]}})</span>
-    </div>
-    -
-    <div>
-      {{((data && data.totalVotes ? ((data![0] || 0) / data.totalVotes) : 0) * 100) | number: '1.0-0'}}%
-      <span class="opacity-50">({{data![0]}})</span>
-    </div>
-    -
-    <div>
-      {{((data && data.totalVotes ? ((data![2] || 0) / data.totalVotes) : 0) * 100) | number: '1.0-0'}}%
-      <span class="opacity-50">({{data![2]}})</span>
-    </div>
-  </div>
-  -->
 </div>

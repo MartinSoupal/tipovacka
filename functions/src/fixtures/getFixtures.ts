@@ -14,7 +14,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   const today = new Date()
     .toISOString()
     .substring(0, 10);
-  const twoWeeksFromNow = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
+  const twoWeeksFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(today, twoWeeksFromNow);
@@ -49,18 +49,32 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
       teamsColorInHashMap[team.id] = teamData.color;
     }
   );
+  const allowTeamDetail: Record<string, boolean> = {};
+  (await db.collection('leagues').get())
+    .docs
+    .forEach(
+      (league) => {
+        const data = league.data();
+        allowTeamDetail[league.id] = data.allowTeamDetail;
+      }
+    );
   const fixtures: Fixture[] = [];
   responses.forEach(
     (response) => {
       response.data.response.forEach(
         (fixture) => {
-          fixtures.push(
-            fixtureDto2Fixture(
-              fixture,
-              teamsColorInHashMap,
-              standingsHashMap,
-            )
-          );
+          if (
+            ['TBD', 'NS'].indexOf(fixture.fixture.status.short) !== -1
+          ) {
+            fixtures.push(
+              fixtureDto2Fixture(
+                fixture,
+                teamsColorInHashMap,
+                standingsHashMap,
+                allowTeamDetail,
+              )
+            );
+          }
         }
       );
     },
@@ -80,7 +94,7 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
   const yesterday = new Date(Date.now() - (24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
-  const twoWeeksBeforeNow = new Date(Date.now() - (11 * 24 * 60 * 60 * 1000))
+  const twoWeeksBeforeNow = new Date(Date.now() - (8 * 24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(twoWeeksBeforeNow, yesterday);
@@ -115,18 +129,32 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
       teamsColorInHashMap[team.id] = teamData.color;
     }
   );
+  const allowTeamDetail: Record<string, boolean> = {};
+  (await db.collection('leagues').get())
+    .docs
+    .forEach(
+      (league) => {
+        const data = league.data();
+        allowTeamDetail[league.id] = data.allowTeamDetail;
+      }
+    );
   const fixtures: Fixture[] = [];
   responses.forEach(
     (response) => {
       response.data.response.forEach(
         (fixture) => {
-          fixtures.push(
-            fixtureDto2Fixture(
-              fixture,
-              teamsColorInHashMap,
-              standingsHashMap,
-            )
-          );
+          if (
+            ['FT', 'AET', 'PEN'].indexOf(fixture.fixture.status.short) !== -1
+          ) {
+            fixtures.push(
+              fixtureDto2Fixture(
+                fixture,
+                teamsColorInHashMap,
+                standingsHashMap,
+                allowTeamDetail,
+              )
+            );
+          }
         }
       );
     },
@@ -150,14 +178,15 @@ interface Team {
   name: string;
   color: string;
   goals: number;
-  form: string;
-  rank: number;
+  form?: string;
+  rank?: number;
 }
 
 function fixtureDto2Fixture(
   dto: FixtureResponse,
   teamsColor: Record<string, string>,
-  standingsHashMap: Record<string, Record<string, Standing>>
+  standingsHashMap: Record<string, Record<string, Standing>>,
+  allowTeamDetail: Record<string, boolean>,
 ): Fixture {
   const now = new Date();
   return {
@@ -169,9 +198,9 @@ function fixtureDto2Fixture(
     result:
       now < new Date(dto.fixture.date) ?
         null :
-        dto.teams.home.winner ?
+        Number(dto.score.fulltime.home) > Number(dto.score.fulltime.away) ?
           1 :
-          dto.teams.away.winner ?
+          Number(dto.score.fulltime.home) < Number(dto.score.fulltime.away) ?
             2 :
             0,
     homeTeam: {
@@ -179,16 +208,24 @@ function fixtureDto2Fixture(
       name: dto.teams.home.name,
       color: teamsColor[dto.teams.home.id],
       goals: dto.goals.home,
-      form: standingsHashMap[dto.league.id][dto.teams.home.id]?.form,
-      rank: standingsHashMap[dto.league.id][dto.teams.home.id]?.rank,
+      form: allowTeamDetail[dto.league.id] ?
+        standingsHashMap[dto.league.id][dto.teams.home.id]?.form :
+        undefined,
+      rank: allowTeamDetail[dto.league.id] ?
+        standingsHashMap[dto.league.id][dto.teams.home.id]?.rank :
+        undefined,
     },
     awayTeam: {
       id: dto.teams.away.id,
       name: dto.teams.away.name,
       color: teamsColor[dto.teams.away.id],
       goals: dto.goals.away,
-      form: standingsHashMap[dto.league.id][dto.teams.away.id]?.form,
-      rank: standingsHashMap[dto.league.id][dto.teams.away.id]?.rank,
+      form: allowTeamDetail[dto.league.id] ?
+        standingsHashMap[dto.league.id][dto.teams.away.id]?.form :
+        undefined,
+      rank: allowTeamDetail[dto.league.id] ?
+        standingsHashMap[dto.league.id][dto.teams.away.id]?.rank :
+        undefined,
     },
   };
 }

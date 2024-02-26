@@ -9,12 +9,16 @@
     class="flex items-center">
     <input
       [formControlName]="league.name"
+      [id]="league.name"
       class="input-checkbox"
-      type="checkbox">
-    <label class="input-checkbox-label">
+      type="checkbox"
+    >
+    <label
+      [for]="league.name"
+      class="input-checkbox-label">
       <img
         [alt]="league.name"
-        class="h-4 w-auto"
+        class="h-6 w-auto"
         src="assets/images/{{league.name}}.webp"
       >
     </label>

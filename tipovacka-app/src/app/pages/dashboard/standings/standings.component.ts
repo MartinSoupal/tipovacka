@@ -17,6 +17,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {combineLatest, map, Observable} from 'rxjs';
 import * as R from 'ramda';
 import {User} from '../../../models/user.model';
+import {DateFormatPipe} from '../../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-standings',
@@ -33,7 +34,8 @@ import {User} from '../../../models/user.model';
     DecimalPipe,
     NgSwitch,
     NgSwitchCase,
-    NgSwitchDefault
+    NgSwitchDefault,
+    DateFormatPipe
   ],
 })
 export class StandingsComponent {

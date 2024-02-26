@@ -15,7 +15,11 @@ export class FormComponent {
   form: string[] = [];
 
   @Input()
-  set data(value: string) {
+  set data(value: string | undefined) {
+    if (!value) {
+      this.form = [];
+      return;
+    }
     this.form = value.substring(0, 5).split('');
   }
 }

@@ -3,11 +3,11 @@ import {formatDate} from '@angular/common';
 import {TranslocoService} from '@ngneat/transloco';
 
 @Pipe({
-  name: 'datetimeFormatBy',
+  name: 'dateFormat',
   pure: false,
   standalone: true,
 })
-export class DatetimeFormatPipe implements PipeTransform {
+export class DateFormatPipe implements PipeTransform {
 
   constructor(
     private translocoSerice: TranslocoService,
@@ -18,11 +18,11 @@ export class DatetimeFormatPipe implements PipeTransform {
     const activeLang = this.translocoSerice.getActiveLang();
     switch (activeLang) {
       case 'cs':
-        return formatDate(date, "EEEE, d.M. 'v' H:mm", 'cs', undefined);
+        return formatDate(date, "EEEE, d.M.YYYY", 'cs', undefined);
       case 'en':
-        return formatDate(date, "EEEE, d/M 'at' H:mm", 'en', undefined);
+        return formatDate(date, "EEEE, d/M/YYYY", 'en', undefined);
       default:
-        return formatDate(date, "EEEE, d.M. 'v' H:mm", 'cs', undefined);
+        return formatDate(date, "EEEE, d.M.YYYY", 'cs', undefined);
     }
   }
 }

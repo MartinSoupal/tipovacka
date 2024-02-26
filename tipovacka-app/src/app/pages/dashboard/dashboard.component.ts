@@ -63,6 +63,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     void this.dataService.loadLeagues();
+    void this.dataService.loadLastCalculationDate();
     combineLatest([
       this.authService.isSignIn$,
       this.route.queryParams,

@@ -1,5 +1,9 @@
 <div class="relative overflow-x-auto sm:rounded-lg mt-8 w-full text-sm flex flex-col gap-4">
   <ng-container *ngIf="(data$ | async) as standings">
+    <div
+      *ngIf="(dataService.lastCalculationDate$ | async) as lastCalculationDate"
+      class="text-xxs text-gray-600 italic">
+      {{('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}</div>
     <table
       class="w-full">
       <tr
@@ -44,7 +48,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #btnLoading>
-  <div class="btn btn-secondary btn-loading"></div>
-</ng-template>

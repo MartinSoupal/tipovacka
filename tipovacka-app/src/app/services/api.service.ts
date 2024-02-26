@@ -236,4 +236,15 @@ export class ApiService {
         },
       }
     )
+
+  getLastCalculationDate = () =>
+    this.http.get<{ lastCalculationDate: string }>(
+      `${this.publicUrl}/standings/calculationDate`,
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
 }

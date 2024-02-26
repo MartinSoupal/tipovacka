@@ -60,7 +60,8 @@
     "FILTER": {
       "SUCCESSFUL_TIPS": "Úspěšné tipy",
       "SUCCESSFUL_RATE": "Úspěšnost"
-    }
+    },
+    "LAST_CALCULATION_DATE": "Body přiděleny ke dni: "
   },
   "POSTPONED": "Zápas odložen.",
   "CREATE_USER_LEAGUE_BUTTON": "Vytvořit ligu přátel",

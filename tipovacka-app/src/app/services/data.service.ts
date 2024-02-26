@@ -5,7 +5,6 @@ import {User} from '../models/user.model';
 import {UserLeague} from '../models/user-league.model';
 import {arrayToHashMap} from '../utils/arrayToHashMap.fnc';
 import {ApiService} from './api.service';
-import {AuthService} from './auth.service';
 import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
@@ -29,10 +28,10 @@ export class DataService {
   selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
   leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
   selectedLeagues$ = new BehaviorSubject<string[] | undefined>(undefined);
+  lastCalculationDate$ = new BehaviorSubject<Date | undefined>(undefined);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private apiService = inject(ApiService);
-  private authService = inject(AuthService);
   private toastService = inject(HotToastService);
   private translocoService = inject(TranslocoService);
 
@@ -282,5 +281,15 @@ export class DataService {
   setSelectedLeagues = (selectedLeagues?: string[] | undefined) => {
     this.selectedLeagues$.next(selectedLeagues);
     localStorage.setItem('selectedLeagues', JSON.stringify(selectedLeagues));
+  }
+
+  loadLastCalculationDate = () => {
+    this.apiService.getLastCalculationDate()
+      .subscribe({
+        next: ({lastCalculationDate}) => {
+          console.log(lastCalculationDate);
+          this.lastCalculationDate$.next(new Date(lastCalculationDate));
+        }
+      })
   }
 }

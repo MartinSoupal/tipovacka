@@ -60,7 +60,8 @@
     "FILTER": {
       "SUCCESSFUL_TIPS": "Successful tips",
       "SUCCESSFUL_RATE": "Successful rate"
-    }
+    },
+    "LAST_CALCULATION_DATE": "Points awarded to date: "
   },
   "POSTPONED": "Match postponed.",
   "CREATE_USER_LEAGUE_BUTTON": "Create league of friends",
