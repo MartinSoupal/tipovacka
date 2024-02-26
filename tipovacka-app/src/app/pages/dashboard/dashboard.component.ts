@@ -19,6 +19,7 @@ import {
 } from './previous-matches/previous-matches.component';
 import {StandingsComponent} from './standings/standings.component';
 import {clone} from 'ramda';
+import {HeaderComponent} from '../../components/header/header.component';
 
 type Tabs = 'results' | 'next' | 'standings';
 
@@ -39,7 +40,8 @@ type Tabs = 'results' | 'next' | 'standings';
     PreviousMatchesComponent,
     StandingsComponent,
     NgIf,
-    NgForOf
+    NgForOf,
+    HeaderComponent
   ]
 })
 export class DashboardComponent implements OnInit {

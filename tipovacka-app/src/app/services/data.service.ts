@@ -287,7 +287,6 @@ export class DataService {
     this.apiService.getLastCalculationDate()
       .subscribe({
         next: ({lastCalculationDate}) => {
-          console.log(lastCalculationDate);
           this.lastCalculationDate$.next(new Date(lastCalculationDate));
         }
       })

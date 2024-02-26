@@ -1,8 +1,5 @@
-<div class="container mx-auto px-4 pb-4 grid grid-cols-1">
-  <ng-container *ngIf="!isBrowserInApp">
-    <app-header></app-header>
-    <router-outlet/>
-  </ng-container>
+<div class="container mx-auto p-4">
+  <router-outlet *ngIf="!isBrowserInApp"/>
   <div
     *ngIf="isBrowserInApp"
     class="p-4 mt-4 text-sm text-gray-800 rounded-lg bg-gray-50 flex flex-col gap-2"

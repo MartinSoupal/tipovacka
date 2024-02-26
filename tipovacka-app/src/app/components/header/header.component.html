@@ -1,3 +1,4 @@
+<!--
 <div class="flex pt-4 pb-2 mx-auto items-center justify-between">
   <a
     routerLink="">
@@ -29,6 +30,67 @@
       (click)="authService.signIn()"
       *ngIf="!(authService.isSignIn$ | async)"
       class="flex">
+      <span class="material-icons">login</span>
+    </button>
+  </div>
+</div>
+-->
+
+<div class="fixed z-50 w-full h-16 max-w-md -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 drop-shadow-lg">
+  <div class="grid h-full max-w-lg grid-cols-5 mx-auto">
+    <a
+      [ngClass]="{
+        'text-blue-600': activeTab === 'next',
+      }"
+      [routerLink]="['/dashboard/next']"
+      class="bottom-navbar__item rounded-s-full group"
+    >
+      <span class="material-icons md-18">calendar_month</span>
+      <span class="text-xxs">{{ 'MENU.SCHEDULE' | transloco }}</span>
+    </a>
+    <a
+      [ngClass]="{
+        'text-blue-600': activeTab === 'results',
+      }"
+      [routerLink]="['/dashboard/results']"
+      class="bottom-navbar__item group"
+    >
+      <span class="material-icons md-18">rule</span>
+      <span class="text-xxs">{{ 'MENU.RESULTS' | transloco }}</span>
+    </a>
+    <a
+      [ngClass]="{
+        'text-blue-600': activeTab === 'standings',
+      }"
+      [routerLink]="['/dashboard/standings']"
+      class="bottom-navbar__item group"
+    >
+      <span class="material-icons md-18">leaderboard</span>
+      <span class="text-xxs">{{ 'MENU.STANDINGS' | transloco }}</span>
+    </a>
+    <button
+      (click)="openLeagueFilterModal()"
+      class="bottom-navbar__item group"
+    >
+      <span class="material-icons md-18">filter_alt</span>
+      <span class="text-xxs">{{ 'MENU.FILTER' | transloco }}</span>
+    </button>
+    <button
+      (click)="openSettingsModal()"
+      *ngIf="authService.isSignIn$ | async"
+      class="bottom-navbar__item rounded-e-full group"
+    >
+      <img
+        [src]="(authService.getUserData$ | async)?.photoURL"
+        alt="Rounded avatar"
+        class="w-8 h-8 rounded-full"
+      >
+    </button>
+    <button
+      (click)="authService.signIn()"
+      *ngIf="!(authService.isSignIn$ | async)"
+      class="bottom-navbar__item rounded-e-full group"
+    >
       <span class="material-icons">login</span>
     </button>
   </div>

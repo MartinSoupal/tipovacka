@@ -49,7 +49,8 @@
   "MENU": {
     "SCHEDULE": "Program",
     "RESULTS": "Výsledky",
-    "STANDINGS": "Pořadí"
+    "STANDINGS": "Pořadí",
+    "FILTER": "Soutěže"
   },
   "TO_SAVE_NEED_TO_LOGIN": "Pro uložení tipů, je třeba se přihlásit.",
   "NO_SCHEDULE_MATCHES": "Žádné zápasy v následujících 14 dnech.",

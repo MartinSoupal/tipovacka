@@ -49,7 +49,8 @@
   "MENU": {
     "SCHEDULE": "Schedule",
     "RESULTS": "Results",
-    "STANDINGS": "Standings"
+    "STANDINGS": "Standings",
+    "FILTER": "Leagues"
   },
   "TO_SAVE_NEED_TO_LOGIN": "To save tips, you need to sign in.",
   "NO_SCHEDULE_MATCHES": "No matches in the next 14 days.",
