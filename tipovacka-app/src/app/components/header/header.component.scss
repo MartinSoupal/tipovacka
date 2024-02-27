@@ -1,3 +1,3 @@
 .bottom-navbar__item {
-  @apply inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50;
+  @apply inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 first-of-type:pl-8 first-of-type:rounded-s-full;
 }

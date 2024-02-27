@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {DialogService} from '@ngneat/dialog';
-import {DataService} from '../../../services/data.service';
-import {AuthService} from '../../../services/auth.service';
-import {SortByPipe} from '../../../pipes/sort-by.pipe';
+import {DataService} from '../../services/data.service';
+import {AuthService} from '../../services/auth.service';
+import {SortByPipe} from '../../pipes/sort-by.pipe';
 import {
   AsyncPipe,
   DecimalPipe,
@@ -16,8 +16,8 @@ import {
 import {TranslocoPipe} from '@ngneat/transloco';
 import {combineLatest, map, Observable} from 'rxjs';
 import * as R from 'ramda';
-import {User} from '../../../models/user.model';
-import {DateFormatPipe} from '../../../pipes/date-format.pipe';
+import {User} from '../../models/user.model';
+import {DateFormatPipe} from '../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-standings',

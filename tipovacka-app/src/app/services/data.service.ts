@@ -19,7 +19,7 @@ export class DataService {
 
   prevMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfPrevMatches$ = new BehaviorSubject<string[]>([]);
-  votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote | undefined>>({});
+  votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>({});
   nextMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfNextMatches$ = new BehaviorSubject<string[]>([]);
   votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);

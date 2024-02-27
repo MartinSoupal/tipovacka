@@ -1,0 +1,4 @@
+<app-fixtures
+  [fixtures]="(dataService.prevMatches$ | async) || undefined"
+  [votes]="(dataService.votesOfPrevMatches$ | async) || undefined"
+/>
