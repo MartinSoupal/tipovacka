@@ -1,11 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterLink
-} from '@angular/router';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {DialogService} from '@ngneat/dialog';
 import {SettingsComponent} from '../settings/settings.component';
@@ -35,7 +30,6 @@ export class HeaderComponent implements OnInit {
   authService = inject(AuthService);
   activeTab: Tabs = '/schedule';
   private dialogService = inject(DialogService);
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
 
   openSettingsModal = () => {
@@ -53,7 +47,7 @@ export class HeaderComponent implements OnInit {
       )
       .subscribe({
         next: (data) => {
-          this.activeTab = (data as NavigationEnd).url as Tabs;
+          this.activeTab = (data as NavigationEnd).urlAfterRedirects as Tabs;
         }
       })
   }

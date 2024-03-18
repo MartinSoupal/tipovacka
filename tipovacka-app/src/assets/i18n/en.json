@@ -53,8 +53,8 @@
     "FILTER": "Leagues"
   },
   "TO_SAVE_NEED_TO_LOGIN": "To save tips, you need to sign in.",
-  "NO_SCHEDULE_MATCHES": "No matches in the next 14 days.",
-  "NO_MATCH_RESULTS": "No matches in the previous 14 days.",
+  "NO_SCHEDULE_MATCHES": "No matches in the next 7 days.",
+  "NO_MATCH_RESULTS": "No matches in the previous 7 days.",
   "WAITING_TO_SET_RESULT": "Waiting for the result to be written.",
   "STANDINGS": {
     "EMPTY": "No tips have been evaluated yet.",
@@ -75,14 +75,8 @@
     "CHOSEN_LEAGUES": "Chosen leagues"
   },
   "USER_LEAGUES_OVERVIEW_BUTTON": "Leagues of friends ({{count}})",
-  "USER_LEAGUES_OVERVIEW": {
-    "TITLE": "Leagues of friends",
-    "SHOW_ALL": "Cancel filter for league of friends",
-    "SELECT": "Select",
-    "DELETE": "Delete",
-    "INVITE": "Invite",
-    "LEAVE": "Leave",
-    "USERS": "Friends"
+  "LEAGUES_OVERVIEW": {
+    "TITLE": "Leagues"
   },
   "REQUIRED": "Required",
   "AT_LEAST_ONE": "At least one of the options must be selected.",
@@ -113,11 +107,11 @@
   "INFO": {
     "TITLE": "Informations and rules",
     "MATCH_TIP_DEADLINE": "You can enter your vote for the final result at any time before the official start of the match.",
-    "MATCH_RESULT_WRITE": "We are trying to write the results as soon as possible. However, no later than 48 hours after the end of the match.",
-    "MATCH_DEADLINE": "Matches are displayed 14 days into the future and 14 days into the past."
+    "MATCH_RESULT_WRITE": "The results for the playing day are evaluated at 4:00 a.m. the following day.",
+    "MATCH_DEADLINE": "Matches are displayed 7 days into the future and 7 days into the past."
   },
   "SETTINGS": {
-    "TITLE": "Settings",
+    "TITLE": "User settings",
     "LANG": {
       "cs": "Česky",
       "en": "English"
@@ -125,5 +119,11 @@
     "SIGN_OUT": "Sign out"
   },
   "SIGN_IN": "Sign in",
-  "VOTE_LOADING": "Your vote is loading..."
+  "VOTE_LOADING": "Your vote is loading...",
+  "FILTER": {
+    "TITLE": "Filters",
+    "LEAGUES": "Leagues",
+    "SEASONS": "Seasons",
+    "SEASONS_DESCRIPTION": "Seasons filter apply only on standings."
+  }
 }

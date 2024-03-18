@@ -3,14 +3,12 @@ import {CustomRequest, FixtureResponse, Standing} from '../types';
 import {getFixturesFromTo, getLeaguesStanding} from '../helpers';
 
 export async function getNextFixtures(req: CustomRequest, res: any) {
-  /*
   const now = new Date();
   const endOfDay = new Date(now);
   endOfDay.setHours(23, 59, 59, 999);
   const diffInSeconds =
     Math.round((endOfDay.getTime() - now.getTime()) / 1000) + 1;
   res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
-   */
   const today = new Date()
     .toISOString()
     .substring(0, 10);
@@ -83,14 +81,12 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
 }
 
 export async function getPrevFixtures(req: CustomRequest, res: any) {
-  /*
   const now = new Date();
   const endOfDay = new Date(now);
   endOfDay.setHours(23, 59, 59, 999);
   const diffInSeconds =
     Math.round((endOfDay.getTime() - now.getTime()) / 1000) + 1;
   res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
-   */
   const yesterday = new Date(Date.now() - (24 * 60 * 60 * 1000))
     .toISOString()
     .substring(0, 10);

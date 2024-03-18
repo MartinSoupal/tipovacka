@@ -6,7 +6,7 @@ export async function getStandings(req: CustomRequest, res: any) {
   const now = new Date();
   const nextDay5AM = new Date(now);
   nextDay5AM.setDate(now.getDate() + 1);
-  nextDay5AM.setHours(5, 0, 0, 0);
+  nextDay5AM.setHours(4, 20, 0, 0);
   const diffInSeconds =
     Math.round((nextDay5AM.getTime() - now.getTime()) / 1000);
   res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
@@ -26,7 +26,7 @@ export async function getStandings(req: CustomRequest, res: any) {
   res.status(200).send(JSON.stringify(standingWithUserName));
 }
 
-interface Standing {
+export interface Standing {
   lastCalculationDate: string;
   data: Record<string, StandingData>;
 }
@@ -73,6 +73,7 @@ export async function calculateStanding(req: CustomRequest, res: any) {
       .get()
   );
   const voteSnapshots = await Promise.all(votesPromises);
+  const seasons: number[] = [];
   voteSnapshots.forEach(
     (votes) => {
       votes.forEach(
@@ -133,6 +134,7 @@ export async function calculateStanding(req: CustomRequest, res: any) {
                 }
                 break;
             }
+            seasons.push(fix.league.season);
             if (correct) {
               SD[voteData.userUid][fix.league.season][fix.league.name]
                 .correctVotes += 1;
@@ -145,6 +147,8 @@ export async function calculateStanding(req: CustomRequest, res: any) {
       );
     }
   );
+  await db.collection('general').doc('all')
+    .update({seasons: [...new Set(seasons)]});
   await standingRef.ref.update({
     data: SD,
     lastCalculationDate: yesterday,

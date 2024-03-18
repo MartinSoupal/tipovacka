@@ -19,7 +19,6 @@ export async function getLeagues(req: CustomRequest, res: any) {
               },
             }
           )).data.response[0].league.name,
-          seasons: leagueRef.data(),
         })
       )
   );

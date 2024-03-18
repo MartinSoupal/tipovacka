@@ -1,5 +1,4 @@
 import {Component, inject} from '@angular/core';
-import {DialogService} from '@ngneat/dialog';
 import {DataService} from '../../services/data.service';
 import {AuthService} from '../../services/auth.service';
 import {SortByPipe} from '../../pipes/sort-by.pipe';
@@ -42,28 +41,32 @@ export class StandingsComponent {
   loadingArray = [0, 1, 2, 3, 4];
   dataService = inject(DataService);
   authService = inject(AuthService);
+  seasons: number[] = [];
   data$: Observable<User[]> = combineLatest([
     this.dataService.standings$,
     this.dataService.selectedLeagues$,
+    this.dataService.selectedSeasons$,
   ])
     .pipe(
       map(
-        ([users, selectedLeagues]) =>
+        ([users, selectedLeagues, selectedSeasons]) =>
           R.map(
             (user): User => {
               user.points = 0;
               user.correctVotes = 0;
               user.incorrectVotes = 0;
               for (const seasonKey in user.seasons) {
-                const season = user.seasons[seasonKey];
+                if (!selectedSeasons?.length || selectedSeasons.indexOf(Number(seasonKey)) !== -1) {
+                  const season = user.seasons[seasonKey];
 
-                // Iterate through each userBase within the season
-                for (const leagueKey in season) {
-                  const league = season[leagueKey];
-                  if (!selectedLeagues?.length || selectedLeagues.indexOf(leagueKey) !== -1) {
-                    // Sum up correct and incorrect votes
-                    user.correctVotes += league.correctVotes;
-                    user.incorrectVotes += league.incorrectVotes;
+                  // Iterate through each userBase within the season
+                  for (const leagueKey in season) {
+                    const league = season[leagueKey];
+                    if (!selectedLeagues?.length || selectedLeagues.indexOf(leagueKey) !== -1) {
+                      // Sum up correct and incorrect votes
+                      user.correctVotes += league.correctVotes;
+                      user.incorrectVotes += league.incorrectVotes;
+                    }
                   }
                 }
               }
@@ -74,6 +77,4 @@ export class StandingsComponent {
           )
       )
     )
-  private dialog = inject(DialogService);
-
 }

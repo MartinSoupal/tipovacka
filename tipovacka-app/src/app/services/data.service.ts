@@ -19,7 +19,7 @@ export class DataService {
 
   prevMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfPrevMatches$ = new BehaviorSubject<string[]>([]);
-  votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>({});
+  votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
   nextMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
   leaguesOfNextMatches$ = new BehaviorSubject<string[]>([]);
   votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
@@ -29,6 +29,8 @@ export class DataService {
   leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
   selectedLeagues$ = new BehaviorSubject<string[] | undefined>(undefined);
   lastCalculationDate$ = new BehaviorSubject<Date | undefined>(undefined);
+  seasons$ = new BehaviorSubject<number[] | undefined>(undefined);
+  selectedSeasons$ = new BehaviorSubject<number[] | undefined>(undefined);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private apiService = inject(ApiService);
@@ -59,6 +61,9 @@ export class DataService {
       .subscribe({
         next: (votes) => {
           this.votesOfPrevMatches$.next(arrayToHashMap('matchId', votes));
+        },
+        error: () => {
+          this.votesOfPrevMatches$.next({});
         }
       });
   }
@@ -102,6 +107,9 @@ export class DataService {
             ], fixtures)
           );
           resolve();
+        },
+        error: () => {
+          this.prevMatches$.next([]);
         }
       })
   })
@@ -126,6 +134,9 @@ export class DataService {
             ], fixtures)
           );
           resolve();
+        },
+        error: () => {
+          this.nextMatches$.next([]);
         }
       })
   })
@@ -136,6 +147,9 @@ export class DataService {
       .subscribe({
         next: (users) => {
           this.standings$.next(users);
+        },
+        error: () => {
+          this.standings$.next([]);
         }
       })
   }
@@ -149,7 +163,6 @@ export class DataService {
         first(),
         switchMap(
           ([votes, matches]) => {
-            const previousVote: Vote | undefined = votes && votes[matchId];
             this.votesOfNextMatches$.next({
               ...votes,
               [matchId]: {
@@ -157,26 +170,6 @@ export class DataService {
                 result,
               }
             });
-            /*
-            this.nextMatches$.next(
-              R.map(
-                (match) => {
-                  if (match.id === matchId) {
-                    if (previousVote === undefined) {
-                      match.totalVotes++;
-                      match[result]++;
-                    }
-                    if (previousVote !== undefined) {
-                      match[previousVote.result]--;
-                      match[result]++;
-                    }
-                  }
-                  return match;
-                },
-                matches!,
-              )
-            );
-             */
             return this.apiService.addVote(matchId, result)
               .pipe(
                 this.toastService.observe({
@@ -204,22 +197,7 @@ export class DataService {
         first(),
         switchMap(
           ([votes, matches]) => {
-            const previousVote: Vote | undefined = votes && votes[matchId];
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
-            /*
-            this.nextMatches$.next(
-              R.map(
-                (match) => {
-                  if (match.id === matchId) {
-                    match[previousVote!.result]--;
-                    match.totalVotes--;
-                  }
-                  return match;
-                },
-                matches!,
-              )
-            )
-             */
             return this.apiService.deleteVote(matchId)
               .pipe(
                 this.toastService.observe({
@@ -290,5 +268,19 @@ export class DataService {
           this.lastCalculationDate$.next(new Date(lastCalculationDate));
         }
       })
+  }
+
+  loadSeasons = () => {
+    this.apiService.getSeasons()
+      .subscribe({
+        next: (seasons) => {
+          this.seasons$.next(seasons);
+        }
+      })
+  }
+
+  setSelectedSeasons = (selectedSeasons?: number[] | undefined) => {
+    this.selectedSeasons$.next(selectedSeasons);
+    localStorage.setItem('selectedSeasons', JSON.stringify(selectedSeasons));
   }
 }

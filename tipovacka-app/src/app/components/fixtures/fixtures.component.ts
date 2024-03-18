@@ -41,5 +41,5 @@ export class FixturesComponent {
   authService = inject(AuthService);
 
   @Input({required: true}) fixtures?: Fixture[];
-  @Input({required: true}) votes?: Record<string, Vote>;
+  @Input({required: true}) votes?: Record<string, Vote | undefined>;
 }

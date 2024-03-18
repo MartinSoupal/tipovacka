@@ -247,4 +247,15 @@ export class ApiService {
         },
       }
     )
+
+  getSeasons = () =>
+    this.http.get<number[]>(
+      `${this.publicUrl}/seasons`,
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
 }

@@ -36,9 +36,13 @@ export class AppComponent implements OnInit {
     if (selectedLeagues) {
       this.dataService.setSelectedLeagues(JSON.parse(selectedLeagues));
     }
-
+    const selectedSeasons = localStorage.getItem('selectedSeasons');
+    if (selectedSeasons) {
+      this.dataService.setSelectedSeasons(JSON.parse(selectedSeasons));
+    }
     void this.dataService.loadLeagues();
     void this.dataService.loadLastCalculationDate();
+    void this.dataService.loadSeasons();
     combineLatest([
       this.authService.isSignIn$,
       this.route.queryParams,

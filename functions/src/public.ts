@@ -8,6 +8,7 @@ import {
 } from './standings/getStandings';
 import {getNextFixtures, getPrevFixtures} from './fixtures/getFixtures';
 import {getLeagues} from './leagues/getLeagues';
+import {getSeasons} from './seasons/getSeasons';
 
 const app = express();
 app.use(cors({origin: true}));
@@ -17,6 +18,7 @@ app.get('/standings/calculationDate', getLastStandingCalculationDate);
 app.get('/fixtures/next/test', getNextFixtures);
 app.get('/fixtures/prev/test', getPrevFixtures);
 app.get('/leagues/test', getLeagues);
+app.get('/seasons', getSeasons);
 
 app.post('/standings/calculate', calculateStanding);
 
