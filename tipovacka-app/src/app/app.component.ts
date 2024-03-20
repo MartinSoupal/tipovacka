@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {HeaderComponent} from './components/header/header.component';
 import {ActivatedRoute, RouterOutlet} from '@angular/router';
-import {JsonPipe, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {TranslocoService} from '@ngneat/transloco';
 import {DataService} from './services/data.service';
 import {AuthService} from './services/auth.service';
@@ -16,8 +16,6 @@ import {combineLatest} from 'rxjs';
     HeaderComponent,
     RouterOutlet,
     NgIf,
-    JsonPipe,
-
   ],
 })
 export class AppComponent implements OnInit {
@@ -32,14 +30,6 @@ export class AppComponent implements OnInit {
     const browserLang = navigator.language;
     const lang = localStorage.getItem('lang');
     this.translocoService.setActiveLang(lang || browserLang);
-    const selectedLeagues = localStorage.getItem('selectedLeagues');
-    if (selectedLeagues) {
-      this.dataService.setSelectedLeagues(JSON.parse(selectedLeagues));
-    }
-    const selectedSeasons = localStorage.getItem('selectedSeasons');
-    if (selectedSeasons) {
-      this.dataService.setSelectedSeasons(JSON.parse(selectedSeasons));
-    }
     void this.dataService.loadLeagues();
     void this.dataService.loadLastCalculationDate();
     void this.dataService.loadSeasons();

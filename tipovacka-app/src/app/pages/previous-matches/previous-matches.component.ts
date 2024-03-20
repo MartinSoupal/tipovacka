@@ -12,7 +12,7 @@ import {FixturesComponent} from '../../components/fixtures/fixtures.component';
     NgIf,
     AsyncPipe,
     TranslocoPipe,
-    FixturesComponent
+    FixturesComponent,
   ]
 })
 export class PreviousMatchesComponent {
