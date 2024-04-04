@@ -39,6 +39,7 @@
     "Regular Season - 37": "Round 37",
     "Regular Season - 38": "Round 38",
     "Round of 16": "Round of 16",
+    "Quarter-finals": "Quarter final",
     "Knockout Round Play-offs": "Play-off"
   },
   "STAGE": {
@@ -125,5 +126,6 @@
     "LEAGUES": "Leagues",
     "SEASONS": "Seasons",
     "SEASONS_DESCRIPTION": "Seasons filter apply only on standings."
-  }
+  },
+  "TOTAL": "Total"
 }

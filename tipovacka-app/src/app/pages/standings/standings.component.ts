@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {AuthService} from '../../services/auth.service';
 import {SortByPipe} from '../../pipes/sort-by.pipe';
@@ -13,10 +13,13 @@ import {
   NgSwitchDefault
 } from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {combineLatest, map, Observable} from 'rxjs';
-import * as R from 'ramda';
-import {User} from '../../models/user.model';
+import {first, map} from 'rxjs';
 import {DateFormatPipe} from '../../pipes/date-format.pipe';
+import {SwipeGestureDirective} from '../../directives/swipeGesture.directive';
+import {League} from '../../models/league.model';
+import {
+  SortAndFilterStandingPipe
+} from '../../pipes/sort-and-filter-standing.pipe';
 
 @Component({
   selector: 'app-standings',
@@ -34,47 +37,43 @@ import {DateFormatPipe} from '../../pipes/date-format.pipe';
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    DateFormatPipe
+    DateFormatPipe,
+    SwipeGestureDirective,
+    SortAndFilterStandingPipe
   ],
 })
-export class StandingsComponent {
+export class StandingsComponent implements OnInit {
   loadingArray = [0, 1, 2, 3, 4];
   dataService = inject(DataService);
   authService = inject(AuthService);
   seasons: number[] = [];
-  data$: Observable<User[]> = combineLatest([
-    this.dataService.standings$,
-    this.dataService.selectedLeagues$,
-    this.dataService.selectedSeasons$,
-  ])
+  activeLeague = 0;
+  leagues$ = this.dataService.leagues$
     .pipe(
       map(
-        ([users, selectedLeagues, selectedSeasons]) =>
-          R.map(
-            (user): User => {
-              user.points = 0;
-              user.correctVotes = 0;
-              user.incorrectVotes = 0;
-              for (const seasonKey in user.seasons) {
-                if (!selectedSeasons?.length || selectedSeasons.indexOf(Number(seasonKey)) !== -1) {
-                  const season = user.seasons[seasonKey];
-
-                  // Iterate through each userBase within the season
-                  for (const leagueKey in season) {
-                    const league = season[leagueKey];
-                    if (!selectedLeagues?.length || selectedLeagues.indexOf(leagueKey) !== -1) {
-                      // Sum up correct and incorrect votes
-                      user.correctVotes += league.correctVotes;
-                      user.incorrectVotes += league.incorrectVotes;
-                    }
-                  }
-                }
-              }
-              user.points = user.correctVotes - user.incorrectVotes;
-              return user;
-            },
-            users || []
-          )
+        (leagues) => {
+          return [{id: 'all', name: 'TOTAL'}, ...(leagues ?? [])] as League[];
+        }
       )
     )
+
+  ngOnInit() {
+    addEventListener('swipeRight', () => {
+      if (!this.activeLeague) {
+        return;
+      }
+      this.activeLeague--;
+      document.getElementById(`league-badge-${this.activeLeague}`)!.scrollIntoView({inline: 'center'})
+    })
+    addEventListener('swipeLeft', () => {
+      this.dataService.leagues$.pipe(first()).subscribe({
+        next: (leagues) => {
+          if ((leagues?.length || 0) > (this.activeLeague)) {
+            this.activeLeague++;
+            document.getElementById(`league-badge-${this.activeLeague}`)!.scrollIntoView({inline: 'center'})
+          }
+        }
+      })
+    })
+  }
 }

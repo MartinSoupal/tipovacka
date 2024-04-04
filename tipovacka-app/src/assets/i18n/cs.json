@@ -39,6 +39,7 @@
     "Regular Season - 37": "37. kolo",
     "Regular Season - 38": "38. kolo",
     "Round of 16": "Osmifinále",
+    "Quarter-finals": "Čtvrtfinále",
     "Knockout Round Play-offs": "Vyřazovací fáze"
   },
   "STAGE": {
@@ -125,5 +126,6 @@
     "LEAGUES": "Soutěže",
     "SEASONS": "Sezóny",
     "SEASONS_DESCRIPTION": "Filtr sezón se aplikuje pouze na pořadí."
-  }
+  },
+  "TOTAL": "Celkově"
 }

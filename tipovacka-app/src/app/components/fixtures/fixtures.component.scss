@@ -1,7 +1,3 @@
 :host {
   display: contents;
 }
-
-::ng-deep .cdk-virtual-scroll-content-wrapper {
-  @apply flex flex-col w-full gap-y-8;
-}

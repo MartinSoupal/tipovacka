@@ -7,7 +7,7 @@ import {Directive, HostListener} from '@angular/core';
 export class SwipeGestureDirective {
   private startX = 0;
   private startY = 0;
-  private threshold = 100;
+  private threshold = 30;
 
   constructor() {
   }
@@ -30,13 +30,11 @@ export class SwipeGestureDirective {
     const diffX = endX - this.startX;
     const diffY = endY - this.startY;
 
-    if (Math.abs(diffX) > Math.abs(diffY)) { // Ensure horizontal movement
-      if (Math.abs(diffX) >= this.threshold) {
-        if (diffX > 0) {
-          dispatchEvent(new CustomEvent('swipeRight'))
-        } else {
-          dispatchEvent(new CustomEvent('swipeLeft'))
-        }
+    if (Math.abs(diffX) >= this.threshold && Math.abs(diffY) <= 200) {
+      if (diffX > 0) {
+        dispatchEvent(new CustomEvent('swipeRight'))
+      } else {
+        dispatchEvent(new CustomEvent('swipeLeft'))
       }
     }
   }

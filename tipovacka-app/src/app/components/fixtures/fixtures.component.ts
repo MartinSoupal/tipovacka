@@ -17,8 +17,9 @@ import {DataService} from '../../services/data.service';
 import {AuthService} from '../../services/auth.service';
 import {Fixture} from '../../models/fixture.model';
 import {Vote} from '../../models/vote.model';
-import {first} from 'rxjs';
+import {first, map} from 'rxjs';
 import {SwipeGestureDirective} from '../../directives/swipeGesture.directive';
+import {League} from '../../models/league.model';
 
 @Component({
   selector: 'app-fixtures',
@@ -49,6 +50,13 @@ export class FixturesComponent implements OnInit {
   @Input({required: true}) votes?: Record<string, Vote | undefined>;
 
   activeLeague = 0;
+  leagues$ = this.dataService.leagues$.pipe(
+    map(
+      (leagues) => {
+        return [{id: 'all', name: 'TOTAL'}, ...(leagues ?? [])] as League[];
+      }
+    )
+  )
 
   ngOnInit() {
     addEventListener('swipeRight', () => {

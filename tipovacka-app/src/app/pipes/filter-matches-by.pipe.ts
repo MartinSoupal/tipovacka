@@ -13,7 +13,7 @@ export class FilterMatchesByPipe implements PipeTransform {
       return matches;
     }
 
-    if (!leagues.length) {
+    if (!leagues.length || leagues.includes('TOTAL')) {
       return matches;
     }
 
