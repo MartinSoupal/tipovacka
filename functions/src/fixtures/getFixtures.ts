@@ -12,7 +12,7 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
   const today = new Date()
     .toISOString()
     .substring(0, 10);
-  const twoWeeksFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  const twoWeeksFromNow = new Date(Date.now() + 31 * 24 * 60 * 60 * 1000)
     .toISOString()
     .substring(0, 10);
   const responses = await getFixturesFromTo(today, twoWeeksFromNow);
