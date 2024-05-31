@@ -49,8 +49,8 @@
     "Championship Round - 3": "Championship group - Round 3",
     "Championship Round - 4": "Championship group - Round 4",
     "Championship Round - 5": "Championship group - Round 5",
-    "Middle Play-offs - Final": "Conference league play off - Final",
-    "Middle Play-offs - Semi-finals": "Conference league play off - Semi final",
+    "Middle Play-offs - Final": "Conference league play off - Semi final",
+    "Middle Play-offs - Semi-finals": "Conference league play off - Quarter final",
     "Relegation Round - 1": "Relegation group - Round 1",
     "Relegation Round - 2": "Relegation group - Round 2",
     "Relegation Round - 3": "Relegation group - Round 3",
@@ -58,7 +58,8 @@
     "Relegation Round - 5": "Relegation group - Round 5",
     "Group Stage - 1": "Group stage - Round 1",
     "Group Stage - 2": "Group stage - Round 2",
-    "Group Stage - 3": "Group stage - Round 3"
+    "Group Stage - 3": "Group stage - Round 3",
+    "Conference League Play-offs - Final": "Conference league play off - Final"
   },
   "STAGE": {
     "MAIN_STAGE": "Main stage",

@@ -15,9 +15,9 @@ app.use(cors({origin: true}));
 app.use(express.json());
 app.get('/standings', getStandings);
 app.get('/standings/calculationDate', getLastStandingCalculationDate);
-app.get('/fixtures/next/test2', getNextFixtures);
-app.get('/fixtures/prev/test2', getPrevFixtures);
-app.get('/leagues/test2', getLeagues);
+app.get('/fixtures/next/test', getNextFixtures);
+app.get('/fixtures/prev/test', getPrevFixtures);
+app.get('/leagues/test', getLeagues);
 app.get('/seasons', getSeasons);
 
 app.post('/standings/calculate', calculateStanding);

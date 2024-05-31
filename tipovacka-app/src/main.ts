@@ -64,7 +64,9 @@ bootstrapApplication(
         RouterModule.forRoot(routes),
         ReactiveFormsModule,
         TranslocoRootModule,
-        HotToastModule.forRoot()
+        HotToastModule.forRoot({
+          duration: 1000,
+        })
       ])
     ],
   }

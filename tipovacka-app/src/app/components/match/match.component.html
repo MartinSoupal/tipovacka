@@ -1,59 +1,27 @@
-<div class="flex flex-col w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-gray-50 transition-all max-w-2xl mx-auto max-h-[196px]">
+<div class="flex flex-col gap-2 w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-gray-50 transition-all max-w-2xl mx-auto max-h-[196px]">
   <div
     [ngClass]="{
       'opacity-10': hides['1'],
       'opacity-50': !hides['1'],
-      'w-2/3': states['1'] === 'highlight' || states['1'] === 'correct',
-      'w-1/3': hides['1'],
-      'w-1/2': states['1'] === 'normal' && !hides['1']
+      'w-1/2': states['1'] === 'highlight' || states['1'] === 'correct',
+      'w-1/4': hides['1'],
+      'w-1/3': states['1'] === 'normal' && !hides['1']
     }"
     [style.--tw-gradient-from]="data.homeTeam.color"
-    class="absolute w-1/2 left-0 bottom-0 h-full bg-gradient-to-r from-blue-300"
+    class="absolute w-1/3 left-0 bottom-0 h-full bg-gradient-to-r from-blue-300"
   ></div>
   <div
     [ngClass]="{
       'opacity-10': hides['2'],
       'opacity-50': !hides['2'],
-      'w-2/3': states['2'] === 'highlight' || states['2'] === 'correct',
-      'w-1/3': hides['2'],
-      'w-1/2': states['2'] === 'normal' && !hides['2']
+      'w-1/2': states['2'] === 'highlight' || states['2'] === 'correct',
+      'w-1/4': hides['2'],
+      'w-1/3': states['2'] === 'normal' && !hides['2']
     }"
     [style.--tw-gradient-from]="data.awayTeam.color"
-    class="absolute w-1/2 right-0 bottom-0 h-full bg-gradient-to-l from-blue-300 opacity-30"
+    class="absolute w-1/3 right-0 bottom-0 h-full bg-gradient-to-l from-blue-300 opacity-30"
   ></div>
-  <div class="absolute md:-left-12 -left-16 top-0 h-full flex items-end">
-    <img
-      (error)="imageError($event)"
-      [alt]="'Player of ' + data.homeTeam.name"
-      [ngClass]="{
-        'opacity-50': hides['1']
-      }"
-      [src]="'assets/images/players/' + data.homeTeam.id + '.webp'"
-      class="h-[90%] w-auto"
-    >
-  </div>
-  <div class="absolute md:-right-12 -right-16 top-0 h-full flex items-end justify-end">
-    <img
-      (error)="imageError($event)"
-      [alt]="'Player of ' + data.awayTeam.name"
-      [ngClass]="{
-        'opacity-50': hides['2']
-      }"
-      [src]="'assets/images/players/' + data.awayTeam.id + '.webp'"
-      class="h-[90%] w-auto"
-    >
-  </div>
-  <div class="z-20 flex items-center gap-4 text-xxs text-gray-950/70">
-    <div>{{('ROUND.' + data.round) | transloco}}</div>
-    <img
-      [alt]="data.leagueName"
-      [title]="data.leagueName"
-      class="h-4 w-auto opacity-70"
-      src="assets/images/{{data.leagueName}}.webp"
-    >
-    <div>{{data.date | datetimeFormatBy}}</div>
-  </div>
-  <div class="z-20 flex items-end mt-8 gap-1 text-xs md:text-base w-full">
+  <div class="z-20 flex items-end gap-1 text-xs md:text-base w-full">
     <div class="flex-1 gap-1 flex flex-col items-end">
       <div class="flex gap-2 items-baseline">
         <span
@@ -68,13 +36,22 @@
       </div>
     </div>
     <div
-      *ngIf="data.result === null"
-      class="opacity-30 text-center font-normal leading-tight">vs
-    </div>
-    <div
-      *ngIf="data.result !== null"
-      class="opacity-30 text-center font-normal leading-tight">
-      {{data.homeTeam.goals}}-{{data.awayTeam.goals}}
+      class="gap-1 flex flex-col mx-2">
+      <img
+        [alt]="data.leagueName"
+        [title]="data.leagueName"
+        class="h-3 w-auto opacity-70 mb-4"
+        src="assets/images/{{data.leagueName}}.webp"
+      >
+      <div
+        *ngIf="data.result === null"
+        class="opacity-30 text-center font-normal leading-tight">vs
+      </div>
+      <div
+        *ngIf="data.result !== null"
+        class="opacity-30 text-center font-normal leading-tight">
+        {{data.homeTeam.goals}}-{{data.awayTeam.goals}}
+      </div>
     </div>
     <div class="flex-1 gap-1 flex flex-col">
       <div class="flex items-baseline gap-2">
@@ -92,7 +69,7 @@
   </div>
   <div
     *ngIf="(authService.isSignIn$ | async) && !votes"
-    class="z-20 flex gap-2 mt-2 w-full h-[54px] justify-center items-center text-xs text-gray-600"
+    class="z-20 flex gap-2 w-full h-[54px] justify-center items-center text-xs text-gray-600"
   >
     {{ 'VOTE_LOADING' | transloco }}
   </div>
@@ -100,7 +77,7 @@
     [ngClass]="{
       'hidden': (authService.isSignIn$ | async) && !votes
     }"
-    class="z-20 flex gap-2 mt-2 w-full justify-center"
+    class="z-20 flex gap-2 w-full justify-center"
   >
     <button
       (click)="chooseResult(1)"
@@ -144,5 +121,9 @@
         class="max-h-full"
       >
     </button>
+  </div>
+  <div class="z-20 flex items-center gap-4 mt-2 text-xxs text-gray-950/50">
+    <div>{{('ROUND.' + data.round) | transloco}}</div>
+    <div>{{data.date | datetimeFormatBy}}</div>
   </div>
 </div>
