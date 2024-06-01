@@ -12,7 +12,7 @@ export interface Fixture {
 interface Team {
   id: string;
   name: string;
-  color: string;
+  color: string | undefined;
   goals: number;
   form?: string;
   rank?: number;

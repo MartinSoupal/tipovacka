@@ -45,10 +45,34 @@
 }
 
 .btn-white {
-  @apply text-gray-900 bg-gray-50 border-2;
+  @apply text-gray-900 bg-gray-50 border-2 border-gray-200;
 
   &:not(:disabled) {
     @apply hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+  }
+}
+
+.btn-black {
+  @apply text-gray-50 bg-gray-900 border-2 border-gray-900;
+
+  &:not(:disabled) {
+    @apply hover:bg-gray-800 focus:z-10 focus:ring-4 focus:ring-gray-200
+  }
+}
+
+.btn-green {
+  @apply text-gray-50 bg-green-600 border-2 border-green-600;
+
+  &:not(:disabled) {
+    @apply hover:bg-green-800 focus:z-10 focus:ring-4 focus:ring-gray-200
+  }
+}
+
+.btn-red {
+  @apply text-gray-50 bg-red-600 border-2 border-red-600;
+
+  &:not(:disabled) {
+    @apply hover:bg-red-800 focus:z-10 focus:ring-4 focus:ring-gray-200
   }
 }
 
