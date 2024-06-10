@@ -61,7 +61,7 @@
     "TITLE": "Informace a pravidla",
     "MATCH_TIP_DEADLINE": "Tip na konečný výsledek lze zadat kdykoliv před oficiálním startem zápasu.",
     "MATCH_RESULT_WRITE": "Výsledky pro hrací den se vyhodnocují ve 4:00 hod. následující den.",
-    "MATCH_DEADLINE": "Zápasy se zobrazují v rozmezí 7 dnů do budoucna a 7 dnů do minulosti."
+    "MATCH_DEADLINE": "Lze tipovat pro zápasy v následujících 7 dnech a zobrazit si výsledky zápasů za posledních 7 dnů."
   },
   "SETTINGS": {
     "TITLE": "Uživatelské nastavení",
@@ -69,15 +69,10 @@
       "cs": "Česky",
       "en": "English"
     },
-    "SIGN_OUT": "Odhlásit se"
+    "SIGN_OUT": "Odhlásit se",
+    "SIGN_IN": "Přihlásit se"
   },
   "SIGN_IN": "Přihlásit se",
   "VOTE_LOADING": "Tvůj tip se načítá...",
-  "FILTER": {
-    "TITLE": "Filtrování",
-    "LEAGUES": "Soutěže",
-    "SEASONS": "Sezóny",
-    "SEASONS_DESCRIPTION": "Filtr sezón se aplikuje pouze na pořadí."
-  },
   "TOTAL": "Celkově"
 }

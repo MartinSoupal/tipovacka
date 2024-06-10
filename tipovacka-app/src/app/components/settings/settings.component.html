@@ -2,7 +2,9 @@
   <h1>{{ 'SETTINGS.TITLE' | transloco }}</h1>
 </header>
 <div class="flex flex-col gap-8">
-  <div class="flex items-center gap-4">
+  <div
+    *ngIf="authService.isSignIn$ | async"
+    class="flex items-center gap-4">
     <img
       [src]="(authService.getUserData$ | async)?.photoURL"
       alt="user image"
@@ -20,7 +22,16 @@
       {{ ('SETTINGS.LANG.' + actualLang) | transloco }}
     </button>
     <button
+      (click)="signIn()"
+      *ngIf="!(authService.isSignIn$ | async)"
+      class="btn btn-secondary"
+    >
+      <span class="material-icons">login</span>
+      {{ "SETTINGS.SIGN_IN" | transloco }}
+    </button>
+    <button
       (click)="signOut()"
+      *ngIf="authService.isSignIn$ | async"
       class="btn btn-secondary"
     >
       <span class="material-icons">logout</span>

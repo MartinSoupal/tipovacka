@@ -4,9 +4,6 @@ import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {DialogService} from '@ngneat/dialog';
 import {SettingsComponent} from '../settings/settings.component';
-import {
-  LeaguesFilterComponent
-} from '../leagues-filter/leagues-filter.component';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {filter} from 'rxjs';
 
@@ -34,10 +31,6 @@ export class HeaderComponent implements OnInit {
 
   openSettingsModal = () => {
     this.dialogService.open(SettingsComponent);
-  }
-
-  openLeagueFilterModal = () => {
-    this.dialogService.open(LeaguesFilterComponent);
   }
 
   ngOnInit() {

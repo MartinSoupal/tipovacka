@@ -61,7 +61,7 @@
     "TITLE": "Informations and rules",
     "MATCH_TIP_DEADLINE": "You can enter your vote for the final result at any time before the official start of the match.",
     "MATCH_RESULT_WRITE": "The results for the playing day are evaluated at 4:00 a.m. the following day.",
-    "MATCH_DEADLINE": "Matches are displayed 7 days into the future and 7 days into the past."
+    "MATCH_DEADLINE": "You can bet on the matches in the next 7 days and see the results of the last 7 days."
   },
   "SETTINGS": {
     "TITLE": "User settings",
@@ -69,15 +69,10 @@
       "cs": "Česky",
       "en": "English"
     },
-    "SIGN_OUT": "Sign out"
+    "SIGN_OUT": "Sign out",
+    "SIGN_IN": "Sign in"
   },
   "SIGN_IN": "Sign in",
   "VOTE_LOADING": "Your vote is loading...",
-  "FILTER": {
-    "TITLE": "Filters",
-    "LEAGUES": "Leagues",
-    "SEASONS": "Seasons",
-    "SEASONS_DESCRIPTION": "Seasons filter apply only on standings."
-  },
   "TOTAL": "Total"
 }

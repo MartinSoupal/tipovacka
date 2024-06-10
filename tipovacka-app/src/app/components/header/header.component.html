@@ -36,17 +36,18 @@
     <div class="flex items-center justify-center">
       <button
         (click)="openSettingsModal()"
-        *ngIf="authService.isSignIn$ | async"
-        class="bg-blue-600 rounded-full hover:bg-blue-700 flex flex-col items-center text-white p-2"
-      >
-        <span class="material-icons md-18">manage_accounts</span>
+        *ngIf="authService.isSignIn$ | async">
+        <img
+          [src]="(authService.getUserData$ | async)?.photoURL"
+          alt="user image"
+          class="h-8 w-8 rounded-full">
       </button>
       <button
-        (click)="authService.signIn()"
+        (click)="openSettingsModal()"
         *ngIf="!(authService.isSignIn$ | async)"
         class="bg-blue-600 rounded-full hover:bg-blue-700 flex flex-col items-center text-white p-2"
       >
-        <span class="material-icons md-18">login</span>
+        <span class="material-icons md-18">manage_accounts</span>
       </button>
     </div>
   </div>
