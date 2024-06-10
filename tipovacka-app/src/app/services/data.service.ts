@@ -162,7 +162,7 @@ export class DataService {
       .pipe(
         first(),
         switchMap(
-          ([votes, matches]) => {
+          ([votes]) => {
             this.votesOfNextMatches$.next({
               ...votes,
               [matchId]: {
@@ -196,7 +196,7 @@ export class DataService {
       .pipe(
         first(),
         switchMap(
-          ([votes, matches]) => {
+          ([votes]) => {
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
             return this.apiService.deleteVote(matchId)
               .pipe(

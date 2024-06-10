@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
       this.route.queryParams,
     ])
       .subscribe({
-        next: ([token, queryParams]) => {
+        next: ([token]) => {
           if (token) {
             this.dataService.loadPrevMatches()
               .then(
