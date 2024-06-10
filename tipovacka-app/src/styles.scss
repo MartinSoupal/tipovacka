@@ -29,7 +29,7 @@
 }
 
 .btn-primary {
-  @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300;
+  @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 border-blue-900 border-2;
 
   &:not(:disabled) {
     @apply hover:bg-blue-800 focus:ring-4 focus:ring-blue-300;
@@ -45,7 +45,15 @@
 }
 
 .btn-white {
-  @apply text-gray-900 bg-gray-50 border-2 border-gray-200;
+  @apply text-inherit bg-gray-400/50;
+
+  &:not(:disabled) {
+    @apply hover:bg-gray-50 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+  }
+}
+
+.btn-white-highlight {
+  @apply text-gray-950 bg-white;
 
   &:not(:disabled) {
     @apply hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200
@@ -53,7 +61,7 @@
 }
 
 .btn-black {
-  @apply text-gray-50 bg-gray-900 border-2 border-gray-900;
+  @apply text-gray-50 bg-gray-700 border-2 border-gray-900;
 
   &:not(:disabled) {
     @apply hover:bg-gray-800 focus:z-10 focus:ring-4 focus:ring-gray-200

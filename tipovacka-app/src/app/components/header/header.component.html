@@ -6,6 +6,7 @@
       }"
       [routerLink]="['/schedule']"
       class="bottom-navbar__item group"
+      queryParamsHandling="merge"
     >
       <span class="material-icons md-18">calendar_month</span>
       <span class="text-xxs">{{ 'MENU.SCHEDULE' | transloco }}</span>
@@ -16,6 +17,7 @@
       }"
       [routerLink]="['/results']"
       class="bottom-navbar__item group"
+      queryParamsHandling="merge"
     >
       <span class="material-icons md-18">rule</span>
       <span class="text-xxs">{{ 'MENU.RESULTS' | transloco }}</span>
@@ -26,6 +28,7 @@
       }"
       [routerLink]="['/standings']"
       class="bottom-navbar__item group"
+      queryParamsHandling="merge"
     >
       <span class="material-icons md-18">leaderboard</span>
       <span class="text-xxs">{{ 'MENU.STANDINGS' | transloco }}</span>

@@ -186,7 +186,7 @@ export class ApiService {
 
   getNextFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/next/test`,
+      `${this.publicUrl}/fixtures/next`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ export class ApiService {
 
   getPrevFixtures = () =>
     this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/prev/test`,
+      `${this.publicUrl}/fixtures/prev`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ export class ApiService {
 
   getLeagues = () =>
     this.http.get<League[]>(
-      `${this.publicUrl}/leagues/test`,
+      `${this.publicUrl}/leagues`,
       {
         headers: {
           'Content-Type': 'application/json',

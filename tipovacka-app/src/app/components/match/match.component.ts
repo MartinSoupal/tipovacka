@@ -3,7 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {Vote, VoteResult} from '../../models/vote.model';
 import {DataService} from '../../services/data.service';
 import {TranslocoPipe} from '@ngneat/transloco';
-import {AsyncPipe, DecimalPipe, NgClass, NgIf} from '@angular/common';
+import {AsyncPipe, DecimalPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {first} from 'rxjs';
 import {DialogService} from '@ngneat/dialog';
 import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
@@ -32,11 +32,13 @@ type TeamState =
     ImageSrcErrorDirective,
     DecimalPipe,
     FormComponent,
+    NgForOf,
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {
   @Input({required: true}) data!: Fixture;
   @Input() votes?: Record<string, Vote | undefined>;
+  @Input({required: true}) leagueColor: string = '#333333'
 
   now = new Date();
 
@@ -52,6 +54,8 @@ export class MatchComponent implements OnChanges, OnInit {
     0: false,
     2: false,
   }
+  tips: VoteResult[] = [1, 0, 2];
+  protected readonly undefined = undefined;
   private dataService = inject(DataService);
   private dialogService = inject(DialogService);
 

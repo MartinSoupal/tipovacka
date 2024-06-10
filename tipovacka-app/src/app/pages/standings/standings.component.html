@@ -2,7 +2,7 @@
   <ng-container *ngIf="(dataService.standings$ | async) as standings">
     <div class="flex gap-2 overflow-auto p-4">
       <button
-        (click)="activeLeague = i"
+        (click)="setActiveLeague(i)"
         *ngFor="let league of leagues$ | async; let i = index"
         [ngClass]="{
         'bg-gray-100': i !== activeLeague,
@@ -23,11 +23,7 @@
       swipeGesture
     >
       <div
-        *ngFor="let league of leagues$ | async; let i = index"
-        [ngClass]="{
-          '-translate-x-[100%]': activeLeague > i,
-          'translate-x-[100%]': activeLeague < i
-        }"
+        *ngIf="((dataService.leagues$ | async) ?? [])[activeLeague] as league"
         class="w-full h-full absolute transition-all overflow-scroll p-4 text-sm"
       >
         <table class="w-full">

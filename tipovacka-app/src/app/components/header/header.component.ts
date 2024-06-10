@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
       )
       .subscribe({
         next: (data) => {
-          this.activeTab = (data as NavigationEnd).urlAfterRedirects as Tabs;
+          this.activeTab = ((data as NavigationEnd).urlAfterRedirects.split('?')[0]) as Tabs;
         }
       })
   }

@@ -9,7 +9,7 @@ export async function getLeagues(req: CustomRequest, res: any) {
       .docs
       .map(
         async (leagueRef) => ({
-          id: leagueRef.id,
+          id: Number(leagueRef.id),
           name: (await axios.get(
             `https://v3.football.api-sports.io/leagues?id=${leagueRef.id}`,
             {
@@ -19,8 +19,9 @@ export async function getLeagues(req: CustomRequest, res: any) {
               },
             }
           )).data.response[0].league.name,
+          color: leagueRef.data().color,
         })
       )
   );
-  res.status(200).send(JSON.stringify(leagues));
+  res.status(200).send(JSON.stringify(leagues.sort((a, b) => a.id - b.id)));
 }

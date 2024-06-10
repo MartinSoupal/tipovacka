@@ -13,10 +13,6 @@ export class FilterMatchesByPipe implements PipeTransform {
       return matches;
     }
 
-    if (!leagues.length || leagues.includes('TOTAL')) {
-      return matches;
-    }
-
     return filter(
       (match) => includes(match.leagueName, leagues),
       matches
