@@ -1,9 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {Router, RouterLink} from '@angular/router';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
+import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {DialogService} from '@ngneat/dialog';
 import {SettingsComponent} from '../settings/settings.component';
+import {TranslocoPipe} from '@ngneat/transloco';
+import {filter} from 'rxjs';
+
+type Tabs = '/schedule' | '/results' | '/standings';
 
 @Component({
   selector: 'app-header',
@@ -13,20 +17,31 @@ import {SettingsComponent} from '../settings/settings.component';
   imports: [
     RouterLink,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    TranslocoPipe,
+    NgClass
   ]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   authService = inject(AuthService);
-  private router = inject(Router);
+  activeTab: Tabs = '/schedule';
   private dialogService = inject(DialogService);
-
-  goToAdmin = () => {
-    void this.router.navigate(['admin']);
-  }
+  private router = inject(Router);
 
   openSettingsModal = () => {
     this.dialogService.open(SettingsComponent);
+  }
+
+  ngOnInit() {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe({
+        next: (data) => {
+          this.activeTab = ((data as NavigationEnd).urlAfterRedirects.split('?')[0]) as Tabs;
+        }
+      })
   }
 }

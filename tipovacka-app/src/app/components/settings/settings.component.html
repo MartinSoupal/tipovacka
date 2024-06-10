@@ -1,12 +1,19 @@
 <header>
   <h1>{{ 'SETTINGS.TITLE' | transloco }}</h1>
 </header>
-<div class="flex flex-col items-center gap-8">
-  <ul class="list-disc list-inside space-y-4">
-    <li>{{ 'INFO.MATCH_TIP_DEADLINE' | transloco }}</li>
-    <li>{{ 'INFO.MATCH_RESULT_WRITE' | transloco }}</li>
-    <li>{{ 'INFO.MATCH_DEADLINE' | transloco }}</li>
-  </ul>
+<div class="flex flex-col gap-8">
+  <div
+    *ngIf="authService.isSignIn$ | async"
+    class="flex items-center gap-4">
+    <img
+      [src]="(authService.getUserData$ | async)?.photoURL"
+      alt="user image"
+      class="h-12 w-12 rounded">
+    <div class="flex flex-col">
+      {{(authService.getUserData$ | async)?.displayName}}
+      <div class="text-xxs text-gray-600">({{(authService.getUserData$ | async)?.email}})</div>
+    </div>
+  </div>
   <div class="flex gap-2">
     <button
       (click)="changeLang()"
@@ -15,13 +22,29 @@
       {{ ('SETTINGS.LANG.' + actualLang) | transloco }}
     </button>
     <button
+      (click)="signIn()"
+      *ngIf="!(authService.isSignIn$ | async)"
+      class="btn btn-secondary"
+    >
+      <span class="material-icons">login</span>
+      {{ "SETTINGS.SIGN_IN" | transloco }}
+    </button>
+    <button
       (click)="signOut()"
+      *ngIf="authService.isSignIn$ | async"
       class="btn btn-secondary"
     >
       <span class="material-icons">logout</span>
       {{ "SETTINGS.SIGN_OUT" | transloco }}
     </button>
   </div>
+  <h2>{{ 'INFO.TITLE' | transloco }}</h2>
+  <ul class="list-disc list-inside space-y-4">
+    <li>{{ 'INFO.MATCH_TIP_DEADLINE' | transloco }}</li>
+    <li>{{ 'INFO.MATCH_RESULT_WRITE' | transloco }}</li>
+    <li>{{ 'INFO.MATCH_DEADLINE' | transloco }}</li>
+  </ul>
+  <div class="italic opacity-70">© 2024 Martin Šoupal. All rights reserved.</div>
 </div>
 <footer>
   <button

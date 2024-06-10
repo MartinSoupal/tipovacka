@@ -1,6 +1,5 @@
 import {db} from '../firebaseConfig';
 import {CustomRequest} from '../types';
-import {Vote} from './types';
 
 interface Request extends CustomRequest {
   body: {
@@ -13,20 +12,28 @@ export async function getVotes(req: Request, res: any) {
     res.status(200).send(JSON.stringify([]));
     return;
   }
-
-  const snapshot =
-    await db.collection('votes')
-      .where('matchId', 'in', req.body.matchIds)
-      .where('userUid', '==', req.userUid)
-      .get();
-  const votes: Vote[] = snapshot.docs.map(
-    (doc) => {
+  const chunkSize = 30;
+  const matchIds = req.body.matchIds;
+  const userUid = req.userUid;
+  const chunks = [];
+  for (let i = 0; i < matchIds.length; i += chunkSize) {
+    chunks.push(matchIds.slice(i, i + chunkSize));
+  }
+  const votesPromises = chunks.map((chunk) =>
+    db.collection('votes')
+      .where('matchId', 'in', chunk)
+      .where('userUid', '==', userUid)
+      .get()
+  );
+  const snapshots = await Promise.all(votesPromises);
+  const votes = snapshots.flatMap((snapshot) =>
+    snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         matchId: data.matchId,
         result: data.result,
       };
-    }
+    })
   );
   res.status(200).send(JSON.stringify(votes));
 }

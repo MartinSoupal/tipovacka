@@ -1,0 +1,74 @@
+<div class="flex flex-col h-[100dvh]">
+  <ng-container *ngIf="(dataService.standings$ | async) as standings">
+    <div class="flex gap-2 overflow-auto p-4">
+      <button
+        (click)="setActiveLeague(i)"
+        *ngFor="let league of leagues$ | async; let i = index"
+        [ngClass]="{
+        'bg-gray-100': i !== activeLeague,
+        'bg-blue-600 text-white': i === activeLeague
+      }"
+        class="badge flex items-center gap-2 bg-gray-100 border-[1px] whitespace-nowrap"
+        id="league-badge-{{i}}"
+      >{{league.name | transloco}}</button>
+    </div>
+    <div
+      *ngIf="(dataService.lastCalculationDate$ | async) as lastCalculationDate"
+      class="text-xxs text-gray-600 italic p-4">
+      {{('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}
+    </div>
+    <div
+      *ngIf="standings"
+      class="flex-1 overflow-hidden relative"
+      swipeGesture
+    >
+      <div
+        *ngIf="((dataService.leagues$ | async) ?? [])[activeLeague] as league"
+        class="w-full h-full absolute transition-all overflow-scroll p-4 text-sm"
+      >
+        <table class="w-full">
+          <tr
+            *ngFor="let user of standings | sortAndFilterStanding: [league.name]; let i = index"
+            [ngClass]="{
+              'font-bold': (authService.getUserData$ | async)?.uid === user.uid
+            }"
+            class="border-gray-200 border-b-[1px] last:border-b-0"
+          >
+            <td
+              [ngSwitch]="i"
+              class="text-gray-700 text-right"
+            >
+              <ng-container *ngSwitchCase="0">🥇</ng-container>
+              <ng-container *ngSwitchCase="1">🥈</ng-container>
+              <ng-container *ngSwitchCase="2">🥉</ng-container>
+              <ng-container *ngSwitchDefault>{{i + 1}}.</ng-container>
+            </td>
+            <td class="w-full">{{user.name}}</td>
+            <td class="font-bold">{{user.points}}</td>
+            <td class="text-xxs text-gray-600 italic text-right whitespace-nowrap">
+              {{user.correctVotes}} / {{user.correctVotes + user.incorrectVotes}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div
+      *ngIf="!standings.length"
+      class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-50"
+      role="alert">
+      {{ 'STANDINGS.EMPTY' | transloco }}
+    </div>
+  </ng-container>
+  <div
+    *ngIf="!(dataService.standings$ | async)"
+    class="animate-pulse flex flex-col">
+    <div
+      *ngFor="let _ of loadingArray"
+      class="border-gray-200 border-b-[1px] last:border-b-0 flex">
+      <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-12"></div>
+      <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-full"></div>
+      <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-12"></div>
+      <div class="rounded bg-gray-200 my-4 mx-2 h-5 w-20"></div>
+    </div>
+  </div>
+</div>

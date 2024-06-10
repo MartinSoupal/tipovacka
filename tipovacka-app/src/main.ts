@@ -12,32 +12,34 @@ import {RouterModule, RouterOutlet, Routes} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TranslocoRootModule} from './app/transloco-root.module';
 import {HotToastModule} from '@ngneat/hot-toast';
-import {DashboardComponent} from './app/pages/dashboard/dashboard.component';
 import {UserTokenResolver} from './app/resolver/token.resolver';
-import {AdminComponent} from './app/pages/admin/admin.component';
 import {
-  JoinUserLeagueComponent
-} from './app/pages/joinUserLeague/joinUserLeague.component';
+  NextMatchesComponent
+} from './app/pages/next-matches/next-matches.component';
+import {
+  PreviousMatchesComponent
+} from './app/pages/previous-matches/previous-matches.component';
+import {StandingsComponent} from './app/pages/standings/standings.component';
 
 const routes: Routes = [
   {
-    path: 'dashboard/:activeTab',
-    component: DashboardComponent,
+    path: 'schedule',
+    component: NextMatchesComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
-    path: 'admin',
-    component: AdminComponent,
+    path: 'results',
+    component: PreviousMatchesComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
-    path: ':userLeagueId/join',
-    component: JoinUserLeagueComponent,
+    path: 'standings',
+    component: StandingsComponent,
     resolve: {'isSignIn': () => inject(UserTokenResolver).resolve()}
   },
   {
     path: '**',
-    redirectTo: '/dashboard/next'
+    redirectTo: 'schedule'
   }
 ];
 

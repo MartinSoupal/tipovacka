@@ -18,11 +18,11 @@ export class DatetimeFormatPipe implements PipeTransform {
     const activeLang = this.translocoSerice.getActiveLang();
     switch (activeLang) {
       case 'cs':
-        return formatDate(date, "d.M. 'v' H:mm", 'cs', undefined);
+        return formatDate(date, "EEEE, d.M. 'v' H:mm", 'cs', undefined);
       case 'en':
-        return formatDate(date, "d/M 'at' H:mm", 'en', undefined);
+        return formatDate(date, "EEEE, d/M 'at' H:mm", 'en', undefined);
       default:
-        return formatDate(date, "d.M. 'v' H:mm", 'cs', undefined);
+        return formatDate(date, "EEEE, d.M. 'v' H:mm", 'cs', undefined);
     }
   }
 }

@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Team} from '../models/team.model';
-import {EditedMatch, Match, MatchResult, NewMatch} from '../models/match.model';
+import {MatchResult} from '../models/match.model';
 import {map} from 'rxjs';
 import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
@@ -12,6 +12,7 @@ import {
   UserInUserLeague,
   UserLeague
 } from '../models/user-league.model';
+import {Fixture} from '../models/fixture.model';
 
 export type returnIdValue = { id: string };
 
@@ -37,93 +38,6 @@ export class ApiService {
       {
         headers: {
           'Content-Type': 'application/json',
-        },
-      }
-    )
-
-  getPrevMatches = () =>
-    this.http.get<Match[]>(
-      `${this.publicUrl}/matches/prev`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            match => ({
-              ...match,
-              datetime: new Date(match.datetime),
-              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
-            })
-          )
-        )
-      )
-
-  getNextMatches = () =>
-    this.http.get<Match[]>(
-      `${this.publicUrl}/matches/next`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            match => ({
-              ...match,
-              datetime: new Date(match.datetime),
-              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
-            })
-          )
-        )
-      )
-
-  getAllMatches = () =>
-    this.http.get<Match[]>(
-      `${this.privateUrl}/match/all`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : '',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            match => ({
-              ...match,
-              datetime: new Date(match.datetime),
-              totalVotes: R.defaultTo(0, match[0]) + R.defaultTo(0, match[1]) + R.defaultTo(0, match[2]),
-            })
-          )
-        )
-      )
-
-  addMatch = (newMatch: NewMatch) =>
-    this.http.post<string>(
-      `${this.privateUrl}/match`,
-      newMatch,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : ''
-        },
-      }
-    )
-
-  deleteMatch = (matchId: string) =>
-    this.http.delete<void>(
-      `${this.privateUrl}/match/${matchId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       }
     )
@@ -168,67 +82,12 @@ export class ApiService {
       }
     )
 
-  editMatch = (matchId: string, editedMatch: Partial<EditedMatch>) =>
-    this.http.patch<string>(
-      `${this.privateUrl}/match/${matchId}`,
-      editedMatch,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : ''
-        },
-      }
-    )
-
   getStandings = () =>
     this.http.get<User[]>(
       `${this.publicUrl}/standings`,
       {
         headers: {
           'Content-Type': 'application/json',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            (user) => ({
-              ...user,
-              correctRatio: (user.correctVotes / user.totalVotes) || 0,
-              points: user.correctVotes - (user.totalVotes - user.correctVotes),
-            })
-          )
-        )
-      )
-
-  getStandingsForUserLeague = (userLeagueId: string) =>
-    this.http.get<User[]>(
-      `${this.publicUrl}/standings/${userLeagueId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            (user) => ({
-              ...user,
-              correctRatio: (user.correctVotes / user.totalVotes) || 0,
-              points: user.correctVotes - (user.totalVotes - user.correctVotes),
-            })
-          )
-        )
-      )
-
-  getAllLeagues = () =>
-    this.http.get<League[]>(
-      `${this.privateUrl}/leagues/all`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : '',
         },
       }
     )
@@ -323,5 +182,80 @@ export class ApiService {
           'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       },
+    )
+
+  getNextFixtures = () =>
+    this.http.get<Fixture[]>(
+      `${this.publicUrl}/fixtures/next`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+      .pipe(
+        map(
+          R.map(
+            (fixture) => ({
+              ...fixture,
+              date: new Date(fixture.date),
+            })
+          )
+        )
+      )
+
+  getPrevFixtures = () =>
+    this.http.get<Fixture[]>(
+      `${this.publicUrl}/fixtures/prev`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+      .pipe(
+        map(
+          R.map(
+            (fixture) => ({
+              ...fixture,
+              date: new Date(fixture.date),
+            })
+          )
+        )
+      )
+
+  getLeagues = () =>
+    this.http.get<League[]>(
+      `${this.publicUrl}/leagues`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  getLastCalculationDate = () =>
+    this.http.get<{ lastCalculationDate: string }>(
+      `${this.publicUrl}/standings/calculationDate`,
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
+    )
+
+  getSeasons = () =>
+    this.http.get<number[]>(
+      `${this.publicUrl}/seasons`,
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Authorization': this.token ? `Bearer ${this.token}` : ''
+        },
+      }
     )
 }

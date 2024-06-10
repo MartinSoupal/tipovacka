@@ -13,18 +13,5 @@
         ]
       }
     }
-  ],
-  "dataGroups": [
-    {
-      "name": "api-performance",
-      "urls": [
-        "**/public/teams"
-      ],
-      "cacheConfig": {
-        "maxSize": 100,
-        "maxAge": "30d",
-        "strategy": "performance"
-      }
-    }
   ]
 }

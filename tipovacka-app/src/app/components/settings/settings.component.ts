@@ -30,6 +30,11 @@ export class SettingsComponent implements OnInit {
     this.ref.close();
   }
 
+  signIn = () => {
+    this.authService.signIn();
+    this.ref.close();
+  }
+
   changeLang = () => {
     switch (this.actualLang) {
       case 'cs':

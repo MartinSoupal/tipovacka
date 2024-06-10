@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {MatchWithTeamName} from '../models/match.model';
 import {filter, includes} from 'ramda';
+import {Fixture} from '../models/fixture.model';
 
 @Pipe({
   name: 'filterMatchesBy',
@@ -8,17 +8,13 @@ import {filter, includes} from 'ramda';
 })
 export class FilterMatchesByPipe implements PipeTransform {
 
-  transform(matches: MatchWithTeamName[], leagues: string[]): MatchWithTeamName[] {
+  transform(matches: Fixture[], leagues: string[]): Fixture[] {
     if (!Array.isArray(matches)) {
       return matches;
     }
 
-    if (!leagues.length) {
-      return matches;
-    }
-
     return filter(
-      (match) => includes(match.league, leagues),
+      (match) => includes(match.leagueName, leagues),
       matches
     )
   }

@@ -1,137 +1,169 @@
-import {CustomRequest} from '../types';
+import {CustomRequest, FixtureResponse} from '../types';
 import {db} from '../firebaseConfig';
-import {User} from './types';
-import {Match} from '../matches/types';
-import {UserLeagueData} from '../userLeagues/types';
-import {getDisplayName} from '../helpers';
+import {getDisplayName, getFixturesForDate} from '../helpers';
 
 export async function getStandings(req: CustomRequest, res: any) {
-  const matchesSnapshot = await db.collection('matches').get();
-  const votesSnapshot = await db.collection('votes').get();
-  const matches: Record<string, Match> = {};
-  matchesSnapshot.forEach(
-    (doc) => {
-      const data = doc.data();
-      if (data.result !== null && !data.postponed) {
-        matches[doc.id] = {
-          id: doc.id,
-          home: data.home,
-          away: data.away,
-          datetime: data.datetime.toDate(),
-          round: data.round,
-          result: data.result,
-          league: data.league,
-          stage: data.stage,
-          0: data[0],
-          1: data[1],
-          2: data[2],
-          postponed: data.postponed,
-        };
-      }
-    }
-  );
-  const users: Record<string, [number, number]> = {};
-  votesSnapshot.forEach(
-    (doc) => {
-      const vote = doc.data();
-      if (!Object.prototype.hasOwnProperty.call(matches, vote.matchId)) {
-        return;
-      }
-      if (!Object.prototype.hasOwnProperty.call(users, vote.userUid)) {
-        users[vote.userUid] = [0, 0];
-      }
-      users[vote.userUid][0]++;
-      if (vote.result === matches[vote.matchId].result) {
-        users[vote.userUid][1]++;
-      }
-    }
-  );
+  const now = new Date();
+  const nextDay5AM = new Date(now);
+  nextDay5AM.setDate(now.getDate() + 1);
+  nextDay5AM.setHours(4, 20, 0, 0);
+  const diffInSeconds =
+    Math.round((nextDay5AM.getTime() - now.getTime()) / 1000);
+  res.set('Cache-Control', `public, max-age=${diffInSeconds}`);
+  const standing =
+    ((await db.collection('standings').doc('all').get()).data() as Standing)
+      .data;
 
-  const standing: User[] = await Promise.all(
-    Object.keys(users).map(
+  const standingWithUserName = await Promise.all(
+    Object.keys(standing).map(
       async (key) => ({
         uid: key,
-        totalVotes: users[key][0],
-        correctVotes: users[key][1],
+        seasons: standing[key],
         name: await getDisplayName(key),
       })
     )
   );
-  res.status(200).send(JSON.stringify(standing));
+  res.status(200).send(JSON.stringify(standingWithUserName));
 }
 
-interface Request extends CustomRequest {
-  params: {
-    userLeague: string;
-  }
+export interface Standing {
+  lastCalculationDate: string;
+  data: Record<string, StandingData>;
 }
 
-export async function getStandingsForUserLeague(req: Request, res: any) {
-  const userLeagueSnapshot =
-    await db.collection('userLeagues')
-      .doc(req.params.userLeague)
-      .get();
-  if (!userLeagueSnapshot.exists) {
-    res.status(404).send();
+type StandingData = Record<string, Record<string, StandingDataBase>>;
+
+interface StandingDataBase {
+  correctVotes: number;
+  incorrectVotes: number;
+}
+
+export async function calculateStanding(req: CustomRequest, res: any) {
+  const yesterday = new Date(Date.now() - (24 * 60 * 60 * 1000))
+    .toISOString()
+    .substring(0, 10);
+  const standingRef = await db.collection('standings').doc('all').get();
+  const standing: Standing = standingRef.data()! as Standing;
+  if (standing.lastCalculationDate === yesterday) {
+    res.status(200).send();
     return;
   }
-  const userLeagueData =
-    userLeagueSnapshot.data() as UserLeagueData;
-
-  const matchesSnapshot =
-    await db.collection('matches')
-      .where('league', 'in', userLeagueData.leagues)
-      .where('result', '!=', null)
-      .where('postponed', '==', false)
-      .get();
-  const matchIds: string[] = [];
-  const matches: Record<string, number | null> = {};
-  matchesSnapshot.forEach(
-    (doc) => {
-      const data = doc.data();
-      matches[doc.id] = data.result;
-      matchIds.push(doc.id);
-    }
+  const SD: Record<string, StandingData> = standing.data;
+  const apiResponses = await getFixturesForDate(yesterday);
+  const fixtureIds: number[] = [];
+  const fixturesInHasMap: Record<string, FixtureResponse> = {};
+  apiResponses.forEach(
+    (apiResponse) => {
+      apiResponse.data.response.forEach(
+        (response) => {
+          fixturesInHasMap[response.fixture.id] = response;
+          fixtureIds.push(response.fixture.id);
+        }
+      );
+    },
   );
-
-  if (!matchIds.length) {
-    res.status(200).send(JSON.stringify([]));
+  const chunkSize = 30;
+  const chunks = [];
+  for (let i = 0; i < fixtureIds.length; i += chunkSize) {
+    chunks.push(fixtureIds.slice(i, i + chunkSize));
   }
-
-  if (!userLeagueData.users.length) {
-    res.status(200).send(JSON.stringify([]));
-    return;
-  }
-  const votesSnapshot =
-    await db.collection('votes')
-      .where('matchId', 'in', matchIds)
-      .where('userUid', 'in', userLeagueData.users)
-      .get();
-  const users: Record<string, [number, number]> = {};
-  userLeagueData.users.forEach(
-    (user) => {
-      users[user] = [0, 0];
+  const votesPromises = chunks.map((chunk) =>
+    db.collection('votes')
+      .where('matchId', 'in', chunk)
+      .get()
+  );
+  const voteSnapshots = await Promise.all(votesPromises);
+  const seasons: number[] = [];
+  voteSnapshots.forEach(
+    (votes) => {
+      votes.forEach(
+        (vote) => {
+          const voteData = vote.data();
+          const fix = fixturesInHasMap[voteData.matchId];
+          if (
+            ['FT', 'AET', 'PEN'].indexOf(fix.fixture.status.short) !== -1
+          ) {
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(SD, voteData.userUid)
+            ) {
+              SD[voteData.userUid] = {};
+            }
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(SD[voteData.userUid], fix.league.season)
+            ) {
+              SD[voteData.userUid][fix.league.season] = {};
+            }
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(
+                  SD[voteData.userUid][fix.league.season],
+                  fix.league.name
+                )
+            ) {
+              SD[voteData.userUid][fix.league.season][fix.league.name] = {
+                correctVotes: 0,
+                incorrectVotes: 0,
+              };
+            }
+            let correct = false;
+            switch (voteData.result) {
+              case 1:
+                if (
+                  Number(fix.score.fulltime.home) >
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+              case 2:
+                if (
+                  Number(fix.score.fulltime.home) <
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+              case 0:
+                if (
+                  Number(fix.score.fulltime.home) ===
+                  Number(fix.score.fulltime.away)
+                ) {
+                  correct = true;
+                }
+                break;
+            }
+            seasons.push(fix.league.season);
+            if (correct) {
+              SD[voteData.userUid][fix.league.season][fix.league.name]
+                .correctVotes += 1;
+            } else {
+              SD[voteData.userUid][fix.league.season][fix.league.name]
+                .incorrectVotes += 1;
+            }
+          }
+        }
+      );
     }
   );
-  votesSnapshot.forEach(
-    (doc) => {
-      const vote = doc.data();
-      users[vote.userUid][0]++;
-      if (vote.result === matches[vote.matchId]) {
-        users[vote.userUid][1]++;
-      }
-    }
-  );
+  await db.collection('general').doc('all')
+    .update({seasons: [...new Set(seasons)]});
+  await standingRef.ref.update({
+    data: SD,
+    lastCalculationDate: yesterday,
+  });
+  res.status(200).send();
+}
 
-  const standing: User[] = await Promise.all(
-    Object.keys(users).map(
-      async (key) => ({
-        uid: key,
-        totalVotes: users[key][0],
-        correctVotes: users[key][1],
-        name: await getDisplayName(key),
-      })
-    )
-  );
-  res.status(200).send(JSON.stringify(standing));
+export async function getLastStandingCalculationDate(
+  req: CustomRequest,
+  res: any
+) {
+  const standingRef =
+    await db.collection('standings').doc('all').get();
+  const standing: Standing = standingRef.data()! as Standing;
+  res.status(200).send(JSON.stringify({
+    lastCalculationDate: standing.lastCalculationDate,
+  }));
 }

@@ -1,10 +1,11 @@
-<div class="container mx-auto px-4 pb-4 grid grid-cols-1">
-  <ng-container *ngIf="!isBrowserInApp">
-    <app-header></app-header>
-    <router-outlet/>
-  </ng-container>
+<ng-container *ngIf="!isBrowserInApp">
+  <app-header/>
+  <router-outlet/>
+</ng-container>
+<div
+  *ngIf="isBrowserInApp"
+  class="container mx-auto p-4 flex flex-col">
   <div
-    *ngIf="isBrowserInApp"
     class="p-4 mt-4 text-sm text-gray-800 rounded-lg bg-gray-50 flex flex-col gap-2"
     role="alert">
     Prosím otevřete odkaz mimo prohlížeč aplikace Messenger.<br><br>
@@ -14,7 +15,6 @@
     Děkujeme.
   </div>
   <div
-    *ngIf="isBrowserInApp"
     class="p-4 mt-4 text-sm text-gray-800 rounded-lg bg-gray-50 flex flex-col gap-2"
     role="alert">
     Please open the link outside the Messenger app browser.<br><br>
@@ -23,5 +23,5 @@
     and open in browser.<br>
     Thanks.
   </div>
+  <footer class="flex justify-center p-4 text-xxs text-gray-600">© 2024 Martin Šoupal</footer>
 </div>
-<footer class="flex justify-center p-4 text-xxs text-gray-600">© 2024 Martin Šoupal</footer>

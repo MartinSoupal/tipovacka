@@ -1,8 +1,11 @@
-export interface User {
+export interface User extends UserBase {
   uid: string;
   name: string;
   points: number;
-  totalVotes: number;
+  seasons: Record<string, Record<string, UserBase>>;
+}
+
+interface UserBase {
   correctVotes: number;
-  correctRatio: number;
+  incorrectVotes: number;
 }
