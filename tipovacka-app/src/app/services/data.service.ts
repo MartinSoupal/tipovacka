@@ -1,14 +1,12 @@
 import {inject, Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, first, of, switchMap} from 'rxjs';
+import {BehaviorSubject, first, of, switchMap} from 'rxjs';
 import * as R from 'ramda';
 import {User} from '../models/user.model';
-import {UserLeague} from '../models/user-league.model';
 import {arrayToHashMap} from '../utils/arrayToHashMap.fnc';
 import {ApiService} from './api.service';
 import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Fixture} from '../models/fixture.model';
 import {League} from '../models/league.model';
 
@@ -18,21 +16,12 @@ import {League} from '../models/league.model';
 export class DataService {
 
   prevMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
-  leaguesOfPrevMatches$ = new BehaviorSubject<string[]>([]);
   votesOfPrevMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
   nextMatches$ = new BehaviorSubject<Fixture[] | undefined>(undefined);
-  leaguesOfNextMatches$ = new BehaviorSubject<string[]>([]);
   votesOfNextMatches$ = new BehaviorSubject<Record<string, Vote> | undefined>(undefined);
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
-  userLeagues$ = new BehaviorSubject<UserLeague[] | undefined>(undefined);
-  selectedUserLeague$ = new BehaviorSubject<UserLeague | undefined>(undefined);
   leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
-  selectedLeagues$ = new BehaviorSubject<string[] | undefined>(undefined);
   lastCalculationDate$ = new BehaviorSubject<Date | undefined>(undefined);
-  seasons$ = new BehaviorSubject<number[] | undefined>(undefined);
-  selectedSeasons$ = new BehaviorSubject<number[] | undefined>(undefined);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private apiService = inject(ApiService);
   private toastService = inject(HotToastService);
   private translocoService = inject(TranslocoService);
@@ -40,11 +29,6 @@ export class DataService {
   clearAllMatchesVotes = () => {
     this.votesOfPrevMatches$.next({});
     this.votesOfNextMatches$.next({});
-  }
-
-  clearUserLeagues = () => {
-    this.userLeagues$.next(undefined);
-    this.selectedUserLeague$.next(undefined);
   }
 
   loadPrevMatchesVotes = () => {
@@ -93,13 +77,6 @@ export class DataService {
     this.apiService.getPrevFixtures()
       .subscribe({
         next: (fixtures) => {
-          const leaguesOfPrevMatches: string[] = R.uniq(
-            R.map(
-              (fixture) => fixture.leagueName,
-              fixtures,
-            )
-          );
-          this.leaguesOfPrevMatches$.next(leaguesOfPrevMatches);
           this.prevMatches$.next(
             R.sortWith<Fixture>([
               R.descend(R.prop('date')),
@@ -119,13 +96,6 @@ export class DataService {
       .subscribe({
         next: (fixtures) => {
           const now = new Date();
-          const leaguesOfNextMatches: string[] = R.uniq(
-            R.map(
-              (fixture) => fixture.leagueName,
-              fixtures,
-            )
-          );
-          this.leaguesOfNextMatches$.next(leaguesOfNextMatches);
           this.nextMatches$.next(
             R.sortWith<Fixture>([
               R.descend((fixture) => fixture.date < now ? -1 : 1),
@@ -155,14 +125,11 @@ export class DataService {
   }
 
   addVote = (matchId: string, result: VoteResult): Promise<void> => new Promise((resolve) => {
-    combineLatest([
-      this.votesOfNextMatches$,
-      this.nextMatches$,
-    ])
+    this.votesOfNextMatches$
       .pipe(
         first(),
         switchMap(
-          ([votes]) => {
+          (votes) => {
             this.votesOfNextMatches$.next({
               ...votes,
               [matchId]: {
@@ -189,14 +156,11 @@ export class DataService {
   })
 
   deleteVote = (matchId: string): Promise<void> => new Promise((resolve) => {
-    combineLatest([
-      this.votesOfNextMatches$,
-      this.nextMatches$,
-    ])
+    this.votesOfNextMatches$
       .pipe(
         first(),
         switchMap(
-          ([votes]) => {
+          (votes) => {
             this.votesOfNextMatches$.next(R.omit([matchId], votes));
             return this.apiService.deleteVote(matchId)
               .pipe(
@@ -216,33 +180,6 @@ export class DataService {
       })
   })
 
-  setSelectedUserLeague = (selectedUserLeague?: UserLeague | string) => {
-    combineLatest([
-      this.selectedUserLeague$,
-      typeof selectedUserLeague === 'string' ?
-        this.apiService.getUserLeague(selectedUserLeague) :
-        of(selectedUserLeague)
-    ])
-      .pipe(
-        first()
-      )
-      .subscribe({
-        next: ([actualSelectedUserLeague, newSelectedUserLeague]) => {
-          if (actualSelectedUserLeague?.id !== newSelectedUserLeague?.id) {
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: {
-                ul: newSelectedUserLeague?.id,
-              },
-              queryParamsHandling: 'merge',
-            });
-            this.selectedUserLeague$.next(newSelectedUserLeague);
-            this.loadStandings();
-          }
-        }
-      })
-  }
-
   loadLeagues = (): Promise<void> => new Promise((resolve, reject) => {
     this.apiService.getLeagues()
       .subscribe({
@@ -256,11 +193,6 @@ export class DataService {
       })
   })
 
-  setSelectedLeagues = (selectedLeagues?: string[] | undefined) => {
-    this.selectedLeagues$.next(selectedLeagues);
-    localStorage.setItem('selectedLeagues', JSON.stringify(selectedLeagues));
-  }
-
   loadLastCalculationDate = () => {
     this.apiService.getLastCalculationDate()
       .subscribe({
@@ -268,19 +200,5 @@ export class DataService {
           this.lastCalculationDate$.next(new Date(lastCalculationDate));
         }
       })
-  }
-
-  loadSeasons = () => {
-    this.apiService.getSeasons()
-      .subscribe({
-        next: (seasons) => {
-          this.seasons$.next(seasons);
-        }
-      })
-  }
-
-  setSelectedSeasons = (selectedSeasons?: number[] | undefined) => {
-    this.selectedSeasons$.next(selectedSeasons);
-    localStorage.setItem('selectedSeasons', JSON.stringify(selectedSeasons));
   }
 }

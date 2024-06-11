@@ -67,7 +67,7 @@ export class MatchComponent implements OnChanges, OnInit {
       .subscribe({
         next: (isSignIn) => {
           if (!isSignIn) {
-            this.dialogService.open(SignInAlertComponent);
+            this.dialogService.open(SignInAlertComponent, {size: 'sm'});
             return;
           }
           this.sendingVote = chosenResult;
