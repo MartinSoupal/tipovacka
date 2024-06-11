@@ -18,15 +18,19 @@
       {{('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}
     </div>
     <div
-      *ngIf="standings"
       class="flex-1 overflow-hidden relative"
       swipeGesture
     >
       <div
         *ngIf="((dataService.leagues$ | async) ?? [])[activeLeague] as league"
+        [ngClass]="{
+          'flex items-center justify-center': !standings.length
+        }"
         class="w-full h-full absolute transition-all overflow-scroll p-4 text-sm"
       >
-        <table class="w-full">
+        <table
+          *ngIf="standings.length"
+          class="w-full">
           <tr
             *ngFor="let user of standings | sortAndFilterStanding: [league.name]; let i = index"
             [ngClass]="{
@@ -50,13 +54,13 @@
             </td>
           </tr>
         </table>
+        <div
+          *ngIf="!standings.length"
+          class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-100"
+          role="alert">
+          {{ 'STANDINGS.EMPTY' | transloco }}
+        </div>
       </div>
-    </div>
-    <div
-      *ngIf="!standings.length"
-      class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-50"
-      role="alert">
-      {{ 'STANDINGS.EMPTY' | transloco }}
     </div>
   </ng-container>
   <div
