@@ -39,14 +39,6 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
       );
     }
   );
-  const teams = await db.collection('teams').get();
-  const teamsColorInHashMap: Record<string, string> = {};
-  teams.forEach(
-    (team) => {
-      const teamData = team.data();
-      teamsColorInHashMap[team.id] = teamData.color;
-    }
-  );
   const allowTeamDetail: Record<string, boolean> = {};
   (await db.collection('leagues').get())
     .docs
@@ -67,7 +59,6 @@ export async function getNextFixtures(req: CustomRequest, res: any) {
             fixtures.push(
               fixtureDto2Fixture(
                 fixture,
-                teamsColorInHashMap,
                 standingsHashMap,
                 allowTeamDetail,
               )
@@ -117,14 +108,6 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
       );
     }
   );
-  const teams = await db.collection('teams').get();
-  const teamsColorInHashMap: Record<string, string> = {};
-  teams.forEach(
-    (team) => {
-      const teamData = team.data();
-      teamsColorInHashMap[team.id] = teamData.color;
-    }
-  );
   const allowTeamDetail: Record<string, boolean> = {};
   (await db.collection('leagues').get())
     .docs
@@ -145,7 +128,6 @@ export async function getPrevFixtures(req: CustomRequest, res: any) {
             fixtures.push(
               fixtureDto2Fixture(
                 fixture,
-                teamsColorInHashMap,
                 standingsHashMap,
                 allowTeamDetail,
               )
@@ -172,7 +154,6 @@ interface Fixture {
 interface Team {
   id: number;
   name: string;
-  color: string;
   goals: number;
   form?: string;
   rank?: number;
@@ -180,7 +161,6 @@ interface Team {
 
 function fixtureDto2Fixture(
   dto: FixtureResponse,
-  teamsColor: Record<string, string>,
   standingsHashMap: Record<string, Record<string, Standing>>,
   allowTeamDetail: Record<string, boolean>,
 ): Fixture {
@@ -202,7 +182,6 @@ function fixtureDto2Fixture(
     homeTeam: {
       id: dto.teams.home.id,
       name: dto.teams.home.name,
-      color: teamsColor[dto.teams.home.id],
       goals: dto.goals.home,
       form: allowTeamDetail[dto.league.id] ?
         standingsHashMap[dto.league.id][dto.teams.home.id]?.form :
@@ -214,7 +193,6 @@ function fixtureDto2Fixture(
     awayTeam: {
       id: dto.teams.away.id,
       name: dto.teams.away.name,
-      color: teamsColor[dto.teams.away.id],
       goals: dto.goals.away,
       form: allowTeamDetail[dto.league.id] ?
         standingsHashMap[dto.league.id][dto.teams.away.id]?.form :

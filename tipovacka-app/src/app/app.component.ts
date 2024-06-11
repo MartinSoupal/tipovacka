@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
     this.translocoService.setActiveLang(lang || browserLang);
     void this.dataService.loadLeagues();
     void this.dataService.loadLastCalculationDate();
-    void this.dataService.loadSeasons();
     combineLatest([
       this.authService.isSignIn$,
       this.route.queryParams,
@@ -61,7 +60,6 @@ export class AppComponent implements OnInit {
       })
     addEventListener('signOut', () => {
       this.dataService.clearAllMatchesVotes();
-      this.dataService.clearUserLeagues();
     });
   }
 }
