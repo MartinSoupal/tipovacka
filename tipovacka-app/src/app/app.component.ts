@@ -1,11 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {HeaderComponent} from './components/header/header.component';
-import {ActivatedRoute, RouterOutlet} from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {TranslocoService} from '@ngneat/transloco';
 import {DataService} from './services/data.service';
 import {AuthService} from './services/auth.service';
-import {combineLatest} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +23,6 @@ export class AppComponent implements OnInit {
   authService = inject(AuthService);
   private translocoService = inject(TranslocoService);
   private dataService = inject(DataService);
-  private route = inject(ActivatedRoute);
 
   ngOnInit() {
     const browserLang = navigator.language;
@@ -32,12 +30,9 @@ export class AppComponent implements OnInit {
     this.translocoService.setActiveLang(lang || browserLang);
     void this.dataService.loadLeagues();
     void this.dataService.loadLastCalculationDate();
-    combineLatest([
-      this.authService.isSignIn$,
-      this.route.queryParams,
-    ])
+    this.authService.isSignIn$
       .subscribe({
-        next: ([token]) => {
+        next: (token) => {
           if (token) {
             this.dataService.loadPrevMatches()
               .then(
