@@ -55,7 +55,6 @@ export async function getFixturesForDate(date: string)
 export async function getLeaguesStanding()
   : Promise<AxiosResponse<StaningsApiResponse>[]> {
   const leagues = await getLeaguesWithCurrentSeason();
-  console.log(leagues);
   return Promise.all(
     leagues.map(
       (league) => axios.get(
@@ -96,6 +95,7 @@ export async function getLeaguesWithCurrentSeason(): Promise<{
     (leagueInfo) => {
       const id = leagueInfo.data.response[0].league.id;
       let currentSeason = 0;
+      console.log(leagueInfo.data.response[0]);
       leagueInfo.data.response[0].seasons.forEach(
         (season) => {
           if (season.current) {
