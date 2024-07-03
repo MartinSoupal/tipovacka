@@ -2,11 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MatchResult} from '../models/match.model';
 import {map} from 'rxjs';
-import * as R from 'ramda';
 import {Vote} from '../models/vote.model';
 import {User} from '../models/user.model';
 import {League} from '../models/league.model';
-import {Fixture} from '../models/fixture.model';
+import {Fixture2} from '../models/fixture.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,55 +65,13 @@ export class ApiService {
 
   getStandings = () =>
     this.http.get<User[]>(
-      `${this.publicUrl}/standings`,
+      `${this.publicUrl}/standings2`,
       {
         headers: {
           'Content-Type': 'application/json',
         },
       }
     )
-
-  getNextFixtures = () =>
-    this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/next`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : ''
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            (fixture) => ({
-              ...fixture,
-              date: new Date(fixture.date),
-            })
-          )
-        )
-      )
-
-  getPrevFixtures = () =>
-    this.http.get<Fixture[]>(
-      `${this.publicUrl}/fixtures/prev`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.token ? `Bearer ${this.token}` : ''
-        },
-      }
-    )
-      .pipe(
-        map(
-          R.map(
-            (fixture) => ({
-              ...fixture,
-              date: new Date(fixture.date),
-            })
-          )
-        )
-      )
 
   getLeagues = () =>
     this.http.get<League[]>(
@@ -138,14 +95,32 @@ export class ApiService {
       }
     )
 
-  getSeasons = () =>
-    this.http.get<number[]>(
-      `${this.publicUrl}/seasons`,
+  getFixturesForLeague = (leagueId: string) =>
+    this.http.get<{ prev: Fixture2[], next: Fixture2[] }>(
+      `${this.publicUrl}/fixtures/${leagueId}`,
       {
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
           'Authorization': this.token ? `Bearer ${this.token}` : ''
         },
       }
     )
+      .pipe(
+        map(
+          ({prev, next}) => ({
+            prev: prev.map(
+              (fixture) => ({
+                ...fixture,
+                date: new Date(fixture.date),
+              })
+            ),
+            next: next.map(
+              (fixture) => ({
+                ...fixture,
+                date: new Date(fixture.date),
+              })
+            )
+          })
+        )
+      )
 }

@@ -9,8 +9,8 @@ import {DialogService} from '@ngneat/dialog';
 import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {ImageSrcErrorDirective} from '../../directives/imgSrcError.directive';
-import {Fixture} from '../../models/fixture.model';
-import {FormComponent} from '../form/form.component';
+import {Fixture2} from '../../models/fixture.model';
+import {League} from 'src/app/models/league.model';
 
 type TeamState =
   'normal'
@@ -31,14 +31,13 @@ type TeamState =
     DatetimeFormatPipe,
     ImageSrcErrorDirective,
     DecimalPipe,
-    FormComponent,
     NgForOf,
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {
-  @Input({required: true}) data!: Fixture;
-  @Input() votes?: Record<string, Vote | undefined>;
-  @Input({required: true}) leagueColor: string = '#333333'
+  @Input({required: true}) data!: Fixture2;
+  @Input() votes?: Record<string, Vote>;
+  @Input({required: true}) league!: League;
 
   now = new Date();
 
@@ -72,7 +71,7 @@ export class MatchComponent implements OnChanges, OnInit {
           }
           this.sendingVote = chosenResult;
           if (this.votes && chosenResult === this.votes[this.data.id]?.result) {
-            this.dataService.deleteVote(this.data.id)
+            this.dataService.deleteVote(this.data.id, this.league.id)
               .then(
                 () => {
                   this.sendingVote = undefined;
@@ -80,7 +79,7 @@ export class MatchComponent implements OnChanges, OnInit {
               )
             return;
           }
-          this.dataService.addVote(this.data.id, chosenResult)
+          this.dataService.addVote(this.data.id, chosenResult, this.league.id)
             .then(
               () => {
                 this.sendingVote = undefined;

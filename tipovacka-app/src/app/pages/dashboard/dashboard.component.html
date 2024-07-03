@@ -1,0 +1,14 @@
+<app-header/>
+
+<ng-container [ngSwitch]="activeTab">
+  <app-next-matches
+    *ngSwitchCase="'next'"
+  />
+  <app-previous-matches
+    *ngSwitchCase="'results'"
+  />
+  <app-standings
+    *ngSwitchCase="'standings'"
+  />
+  <app-next-matches *ngSwitchDefault/>
+</ng-container>

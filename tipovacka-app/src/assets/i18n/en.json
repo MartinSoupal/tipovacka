@@ -74,5 +74,8 @@
   },
   "SIGN_IN": "Sign in",
   "VOTE_LOADING": "Your vote is loading...",
-  "TOTAL": "Total"
+  "TOTAL": "Total",
+  "AFTER_FULLTIME": "After fulltime",
+  "AFTER_EXTRATIME": "After extratime",
+  "AFTER_PENALTY": "After penalty"
 }

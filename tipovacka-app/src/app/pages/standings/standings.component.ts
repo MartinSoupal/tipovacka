@@ -47,13 +47,17 @@ export class StandingsComponent implements OnInit {
   loadingArray = [0, 1, 2, 3, 4];
   dataService = inject(DataService);
   authService = inject(AuthService);
-  seasons: number[] = [];
-  activeLeague = 0;
+
+  activeLeagueIndex = 0;
+  activeLeague!: League;
+
+  private readonly totalLeague: League = {id: 'all', name: 'TOTAL', color: ''};
+
   leagues$ = this.dataService.leagues$
     .pipe(
       map(
         (leagues) => {
-          return [{id: 'all', name: 'TOTAL'}, ...(leagues ?? [])] as League[];
+          return [this.totalLeague, ...(leagues ?? [])] as League[];
         }
       )
     )
@@ -62,16 +66,16 @@ export class StandingsComponent implements OnInit {
 
   ngOnInit() {
     addEventListener('swipeRight', () => {
-      if (!this.activeLeague) {
+      if (!this.activeLeagueIndex) {
         return;
       }
-      this.setActiveLeague(this.activeLeague - 1)
+      this.setActiveLeague(this.activeLeagueIndex - 1);
     })
     addEventListener('swipeLeft', () => {
       this.dataService.leagues$.pipe(first()).subscribe({
         next: (leagues) => {
-          if ((leagues?.length || 0) > (this.activeLeague)) {
-            this.setActiveLeague(this.activeLeague + 1);
+          if ((leagues?.length || 0) > (this.activeLeagueIndex + 1)) {
+            this.setActiveLeague(this.activeLeagueIndex + 1);
           }
         }
       })
@@ -87,10 +91,9 @@ export class StandingsComponent implements OnInit {
                   if (!leagues?.length) {
                     return;
                   }
-                  this.activeLeague = leagues.findIndex(
+                  this.setActiveLeague(leagues.findIndex(
                     (league) => league.name === params.get('league')
-                  ) + 1;
-                  document.getElementById(`league-badge-${this.activeLeague}`)?.scrollIntoView({inline: 'center'});
+                  ) + 1);
                 }
               })
           }
@@ -99,10 +102,10 @@ export class StandingsComponent implements OnInit {
   }
 
   setActiveLeague = (id: number) => {
-    this.activeLeague = id;
-    document.getElementById(`league-badge-${this.activeLeague}`)!.scrollIntoView({inline: 'center'});
+    this.activeLeagueIndex = id;
+    document.getElementById(`league-badge-${this.activeLeagueIndex}`)?.scrollIntoView({inline: 'center'});
 
-    if (this.activeLeague === 0) {
+    if (this.activeLeagueIndex === 0) {
       this.router.navigate(
         [],
         {
@@ -111,6 +114,7 @@ export class StandingsComponent implements OnInit {
           queryParamsHandling: 'merge'
         }
       );
+      this.activeLeague = this.totalLeague;
       return;
     }
 
@@ -123,11 +127,12 @@ export class StandingsComponent implements OnInit {
           if (!leagues?.length) {
             return;
           }
+          this.activeLeague = leagues[id - 1];
           this.router.navigate(
             [],
             {
               relativeTo: this.route,
-              queryParams: {league: leagues[id - 1].name},
+              queryParams: {league: this.activeLeague.name},
               queryParamsHandling: 'merge'
             }
           );

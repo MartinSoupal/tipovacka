@@ -28,8 +28,31 @@ export class AppComponent implements OnInit {
     const browserLang = navigator.language;
     const lang = localStorage.getItem('lang');
     this.translocoService.setActiveLang(lang || browserLang);
-    void this.dataService.loadLeagues();
+    void this.dataService.loadLeagues()
+      .then(
+        (leagues) => {
+          leagues.forEach(
+            (league) => {
+              this.dataService.loadMatchesForLeague(league.id)
+                .then(
+                  () => {
+                    this.authService.isSignIn$
+                      .subscribe({
+                        next: (token) => {
+                          if (token) {
+                            this.dataService.loadFixturesVotesForLeague(league.id);
+                          }
+                        }
+                      })
+                  }
+                )
+            }
+          )
+        }
+      )
     void this.dataService.loadLastCalculationDate();
+    this.dataService.loadStandings();
+    /*
     this.authService.isSignIn$
       .subscribe({
         next: (token) => {
@@ -53,6 +76,7 @@ export class AppComponent implements OnInit {
           this.dataService.loadStandings();
         }
       })
+     */
     addEventListener('signOut', () => {
       this.dataService.clearAllMatchesVotes();
     });

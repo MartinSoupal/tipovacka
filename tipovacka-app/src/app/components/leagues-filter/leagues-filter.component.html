@@ -1,0 +1,31 @@
+<header>
+  <h1>{{ 'USER_LEAGUES_OVERVIEW.TITLE' | transloco }}</h1>
+</header>
+<div
+  [formGroup]="formGroup"
+  class="grid grid-cols-2 gap-4">
+  <div
+    *ngFor="let league of ((dataService.leagues$ | async) || []) | sortBy: ['name']"
+    class="flex items-center">
+    <input
+      [formControlName]="league.name"
+      [id]="league.name"
+      class="input-checkbox"
+      type="checkbox"
+    >
+    <label
+      [for]="league.name"
+      class="input-checkbox-label">
+      <img
+        [alt]="league.name"
+        class="h-6 w-auto"
+        src="assets/images/{{league.name}}.webp"
+      >
+    </label>
+  </div>
+</div>
+<footer>
+  <button
+    (click)="ref.close()"
+    class="btn btn-secondary">{{ 'CANCEL_BUTTON' | transloco }}</button>
+</footer>
