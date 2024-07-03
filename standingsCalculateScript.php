@@ -38,7 +38,7 @@ curl_close($ch);
 
 // Nastavení příjemce a odesílatele emailu
 $to = 'sportovsky.info@gmail.com';
-$headers = 'From: football.sportovsky.info@gmail.com' . "\r\n" .
+$headers = 'From: sportovsky.info@gmail.com' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
 
 // Odeslání emailu

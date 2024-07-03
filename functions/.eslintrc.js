@@ -29,5 +29,6 @@ module.exports = {
     'import/no-unresolved': 0,
     'indent': ['error', 2, {'SwitchCase': 1}],
     'require-jsdoc': 0,
+    'max-len': 'off',
   },
 };

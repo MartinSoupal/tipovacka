@@ -5,24 +5,24 @@
         (click)="setActiveLeague(i)"
         *ngFor="let league of leagues$ | async; let i = index"
         [ngClass]="{
-        'bg-gray-100': i !== activeLeague,
-        'bg-blue-600 text-white': i === activeLeague
+        'bg-gray-100': i !== activeLeagueIndex,
+        'bg-blue-600 text-white': i === activeLeagueIndex
       }"
         class="badge flex items-center gap-2 bg-gray-100 border-[1px] whitespace-nowrap"
         id="league-badge-{{i}}"
-      >{{league.name | transloco}}</button>
+      >{{ league.name | transloco }}
+      </button>
     </div>
     <div
       *ngIf="(dataService.lastCalculationDate$ | async) as lastCalculationDate"
       class="text-xxs text-gray-600 italic p-4">
-      {{('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}
+      {{ ('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}
     </div>
     <div
       class="flex-1 overflow-hidden relative"
       swipeGesture
     >
       <div
-        *ngIf="((dataService.leagues$ | async) ?? [])[activeLeague] as league"
         [ngClass]="{
           'flex items-center justify-center': !standings.length
         }"
@@ -32,7 +32,7 @@
           *ngIf="standings.length"
           class="w-full">
           <tr
-            *ngFor="let user of standings | sortAndFilterStanding: [league.name]; let i = index"
+            *ngFor="let user of standings | sortAndFilterStanding: [activeLeague?.name ?? 'TOTAL']; let i = index"
             [ngClass]="{
               'font-bold': (authService.getUserData$ | async)?.uid === user.uid
             }"
@@ -45,12 +45,12 @@
               <ng-container *ngSwitchCase="0">🥇</ng-container>
               <ng-container *ngSwitchCase="1">🥈</ng-container>
               <ng-container *ngSwitchCase="2">🥉</ng-container>
-              <ng-container *ngSwitchDefault>{{i + 1}}.</ng-container>
+              <ng-container *ngSwitchDefault>{{ i + 1 }}.</ng-container>
             </td>
-            <td class="w-full">{{user.name}}</td>
-            <td class="font-bold">{{user.points}}</td>
+            <td class="w-full">{{ user.name }}</td>
+            <td class="font-bold">{{ user.points }}</td>
             <td class="text-xxs text-gray-600 italic text-right whitespace-nowrap">
-              {{user.correctVotes}} / {{user.correctVotes + user.incorrectVotes}}
+              {{ user.correctVotes }} / {{ user.correctVotes + user.incorrectVotes }}
             </td>
           </tr>
         </table>

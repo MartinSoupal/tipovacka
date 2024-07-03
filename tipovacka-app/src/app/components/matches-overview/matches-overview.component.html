@@ -1,0 +1,10 @@
+<cdk-virtual-scroll-viewport
+  class="flex-1"
+  itemSize="180">
+  <app-match
+    *cdkVirtualFor="let match of matches | filterMatchesBy: (dataService.selectedLeagues$ | async) || []"
+    [data]="match"
+    [votes]="votes"
+  />
+  <div></div>
+</cdk-virtual-scroll-viewport>

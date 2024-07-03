@@ -2,7 +2,7 @@
   [ngClass]="{
       'text-gray-50': data.leagueName === 'UEFA Champions League'
     }"
-  class="flex flex-col gap-2 w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-white transition-all max-w-2xl mx-auto max-h-[196px]"
+  class="flex flex-col gap-2 w-full items-center rounded-xl relative overflow-hidden pt-4 pb-2 bg-white transition-all max-w-2xl mx-auto"
 >
   <div
     *ngIf="data.leagueName === 'UEFA Champions League'"
@@ -16,10 +16,10 @@
   </div>
   <div class="absolute bottom-0 left-0 w-full h-full flex">
     <div
-      [style.background-color]="leagueColor"
+      [style.background-color]="league.color"
       class="w-6 h-full"></div>
     <div
-      [style.background-color]="leagueColor"
+      [style.background-color]="league.color"
       class="w-full h-full opacity-10"></div>
   </div>
   <div
@@ -33,16 +33,10 @@
     >
     <div class="z-20 flex items-end gap-4 text-xs md:text-base w-full">
       <div class="flex-1 gap-1 flex flex-col items-end">
-        <div class="flex gap-2 items-baseline">
-          <span
-            *ngIf="data.homeTeam.rank"
-            class="opacity-70 text-gray-950 text-xxs">{{data.homeTeam.rank}}</span>
-          <app-form [data]="data.homeTeam.form"/>
-        </div>
         <div
           class="drop-shadow-md text-right font-bold leading-tight flex gap-2 items-center"
         >
-          {{data.homeTeam.name}}
+          {{ data.homeTeam.name }}
           <img
             (error)="imageError($event)"
             [src]="'assets/images/club_logos/for_white_bg/' + data.homeTeam.id + '.webp'"
@@ -56,16 +50,22 @@
       </div>
       <div
         *ngIf="data.result !== null"
-        class="text-center font-normal leading-tight">
-        {{data.homeTeam.goals}}-{{data.awayTeam.goals}}
+        class="text-center font-normal leading-tight flex items-center gap-0.5">
+        @switch (data.status) {
+          @default {
+            {{ data.score.fulltime.home }}-{{ data.score.fulltime.away }}
+          }
+          @case ('AET') {
+            {{ data.score.fulltime.home! + data.score.extratime.home! }}-{{ data.score.fulltime.away! + data.score.extratime.away! }}
+          }
+          @case ('PEN') {
+            <span class="text-xxs opacity-70">({{ data.score.penalty.home }})</span>
+            {{ data.score.fulltime.home! + data.score.extratime.home! }}-{{ data.score.fulltime.away! + data.score.extratime.away! }}
+            <span class="text-xxs opacity-70">({{ data.score.penalty.away }})</span>
+          }
+        }
       </div>
       <div class="flex-1 gap-1 flex flex-col items-start">
-        <div class="flex gap-2 items-baseline">
-          <app-form [data]="data.awayTeam.form"/>
-          <span
-            *ngIf="data.awayTeam.rank"
-            class="opacity-70 text-gray-950 text-xxs">{{data.awayTeam.rank}}</span>
-        </div>
         <div
           class="drop-shadow-md font-bold leading-tight flex gap-2 items-center"
         >
@@ -74,7 +74,7 @@
             [src]="'assets/images/club_logos/for_white_bg/' + data.awayTeam.id + '.webp'"
             class="h-3"
           >
-          {{data.awayTeam.name}}
+          {{ data.awayTeam.name }}
         </div>
       </div>
     </div>
@@ -103,11 +103,24 @@
       }"
       class="btn w-[72px] flex justify-center shadow-2xl transition-all"
     >
-      {{tip}}
+      {{ tip }}
     </button>
   </div>
-  <div class="z-20 flex items-center gap-4 mt-2 text-xxs opacity-70 px-2 rounded">
-    <div>{{data.round}}</div>
-    <div>{{data.date | datetimeFormatBy}}</div>
+  <div class="z-20 grid grid-cols-3 gap-4 mt-2 text-xxs opacity-70 px-2">
+    <div class="place-self-end">{{ data.round }}</div>
+    <div class="place-self-center">
+      @switch (data.status) {
+        @default {
+          {{ 'AFTER_FULLTIME' | transloco }}
+        }
+        @case ('AET') {
+          {{ 'AFTER_EXTRATIME' | transloco }}
+        }
+        @case ('PEN') {
+          {{ 'AFTER_PENALTY' | transloco }}
+        }
+      }
+    </div>
+    <div class="place-self-start">{{ data.date | datetimeFormatBy }}</div>
   </div>
 </div>
