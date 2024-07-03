@@ -8,7 +8,12 @@
       }"
     class="badge flex items-center gap-2 bg-gray-100 border-[1px] whitespace-nowrap"
     id="league-badge-{{i}}"
-  >{{league.name | transloco}}</button>
+  >
+    {{ league.name | transloco }}
+    <span class="text-xxs flex items-center justify-center py-0.5 px-1.5 rounded-full bg-gray-900/50 text-white">
+      {{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }}
+    </span>
+  </button>
 </div>
 @if (activeLeague) {
   <app-fixtures
