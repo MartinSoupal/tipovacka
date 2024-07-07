@@ -106,21 +106,29 @@
       {{ tip }}
     </button>
   </div>
-  <div class="z-20 grid grid-cols-3 gap-4 mt-2 text-xxs opacity-70 px-2">
+  <div
+    [ngClass]="{
+      'grid-cols-2': data.result === null,
+      'grid-cols-3': data.result !== null
+    }"
+    class="z-20 grid gap-4 mt-2 text-xxs opacity-70 px-2"
+  >
     <div class="place-self-end">{{ data.round }}</div>
-    <div class="place-self-center">
-      @switch (data.status) {
-        @default {
-          {{ 'AFTER_FULLTIME' | transloco }}
+    @if (data.date! < now) {
+      <div class="place-self-center">
+        @switch (data.status) {
+          @default {
+            {{ 'AFTER_FULLTIME' | transloco }}
+          }
+          @case ('AET') {
+            {{ 'AFTER_EXTRATIME' | transloco }}
+          }
+          @case ('PEN') {
+            {{ 'AFTER_PENALTY' | transloco }}
+          }
         }
-        @case ('AET') {
-          {{ 'AFTER_EXTRATIME' | transloco }}
-        }
-        @case ('PEN') {
-          {{ 'AFTER_PENALTY' | transloco }}
-        }
-      }
-    </div>
+      </div>
+    }
     <div class="place-self-start">{{ data.date | datetimeFormatBy }}</div>
   </div>
 </div>

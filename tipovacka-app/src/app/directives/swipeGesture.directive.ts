@@ -7,7 +7,7 @@ import {Directive, HostListener} from '@angular/core';
 export class SwipeGestureDirective {
   private startX = 0;
   private startY = 0;
-  private threshold = 200;
+  private threshold = 150;
 
   constructor() {
   }

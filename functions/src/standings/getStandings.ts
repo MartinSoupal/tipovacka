@@ -110,28 +110,22 @@ export async function calculateStanding(req: CustomRequest, res: any) {
             let correct = false;
             switch (voteData.result) {
               case 1:
-                if (
-                  Number(fix.score.fulltime.home) >
-                  Number(fix.score.fulltime.away)
-                ) {
+                if (fix.teams.home.winner) {
                   correct = true;
                 }
                 break;
               case 2:
-                if (
-                  Number(fix.score.fulltime.home) <
-                  Number(fix.score.fulltime.away)
-                ) {
+                if (fix.teams.away.winner) {
                   correct = true;
                 }
                 break;
               case 0:
-                if (
-                  Number(fix.score.fulltime.home) ===
-                  Number(fix.score.fulltime.away)
-                ) {
+                if (!fix.teams.home.winner && !fix.teams.away.winner) {
                   correct = true;
                 }
+                break;
+              default:
+                correct = false;
                 break;
             }
             seasons.push(fix.league.season);
