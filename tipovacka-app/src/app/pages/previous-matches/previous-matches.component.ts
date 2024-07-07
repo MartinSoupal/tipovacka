@@ -60,6 +60,8 @@ export class PreviousMatchesComponent implements OnInit, AfterContentChecked {
                   ));
                 }
               })
+          } else {
+            this.setActiveLeague(0);
           }
         }
       })

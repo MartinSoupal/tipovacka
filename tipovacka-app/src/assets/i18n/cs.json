@@ -74,5 +74,9 @@
   },
   "SIGN_IN": "Přihlásit se",
   "VOTE_LOADING": "Tvůj tip se načítá...",
-  "TOTAL": "Celkově"
+  "TOTAL": "Celkově",
+  "AFTER_FULLTIME": "90'",
+  "AFTER_EXTRATIME": "120'",
+  "AFTER_PENALTY": "Pen",
+  "Czech Liga": "Chance liga"
 }

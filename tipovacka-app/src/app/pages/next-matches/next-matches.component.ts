@@ -60,6 +60,8 @@ export class NextMatchesComponent implements OnInit, AfterContentChecked {
                   ));
                 }
               })
+          } else {
+            this.setActiveLeague(0);
           }
         }
       })
