@@ -7,7 +7,7 @@ import {ApiService} from './api.service';
 import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
-import {Fixture2} from '../models/fixture.model';
+import {Fixture} from '../models/fixture.model';
 import {League} from '../models/league.model';
 
 @Injectable({
@@ -18,8 +18,8 @@ export class DataService {
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
   lastCalculationDate$ = new BehaviorSubject<Date | undefined>(undefined);
-  prevLeaguesMatches$: Record<string, BehaviorSubject<Fixture2[]> | undefined> = {};
-  nextLeaguesMatches$: Record<string, BehaviorSubject<Fixture2[]> | undefined> = {};
+  prevLeaguesMatches$: Record<string, BehaviorSubject<Fixture[]> | undefined> = {};
+  nextLeaguesMatches$: Record<string, BehaviorSubject<Fixture[]> | undefined> = {};
   prevLeaguesVotes$: Record<string, BehaviorSubject<Record<string, Vote>> | undefined> = {};
   nextLeaguesVotes$: Record<string, BehaviorSubject<Record<string, Vote>> | undefined> = {};
   private apiService = inject(ApiService);
@@ -127,12 +127,12 @@ export class DataService {
       .subscribe({
         next: (fixtures) => {
           if (!this.prevLeaguesMatches$[leagueId]) {
-            this.prevLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture2[]>(fixtures.prev);
+            this.prevLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.prev);
           } else {
             this.prevLeaguesMatches$[leagueId]!.next(fixtures.prev);
           }
           if (!this.nextLeaguesMatches$[leagueId]) {
-            this.nextLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture2[]>(fixtures.next);
+            this.nextLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.next);
           } else {
             this.nextLeaguesMatches$[leagueId]!.next(fixtures.next);
           }

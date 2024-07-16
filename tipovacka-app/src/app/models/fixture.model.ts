@@ -1,4 +1,4 @@
-export interface Fixture2 {
+export interface Fixture {
   id: string;
   date: Date;
   leagueName: string;
