@@ -5,7 +5,7 @@ import {map} from 'rxjs';
 import {Vote} from '../models/vote.model';
 import {User} from '../models/user.model';
 import {League} from '../models/league.model';
-import {Fixture2} from '../models/fixture.model';
+import {Fixture} from '../models/fixture.model';
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +96,7 @@ export class ApiService {
     )
 
   getFixturesForLeague = (leagueId: string) =>
-    this.http.get<{ prev: Fixture2[], next: Fixture2[] }>(
+    this.http.get<{ prev: Fixture[], next: Fixture[] }>(
       `${this.publicUrl}/fixtures/${leagueId}`,
       {
         headers: {

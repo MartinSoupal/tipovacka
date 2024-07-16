@@ -6,7 +6,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {MatchComponent} from '../match/match.component';
 import {FilterMatchesByPipe} from '../../pipes/filter-matches-by.pipe';
-import {Fixture2} from '../../models/fixture.model';
+import {Fixture} from '../../models/fixture.model';
 import {DataService} from '../../services/data.service';
 import {
   CdkFixedSizeVirtualScroll,
@@ -35,7 +35,7 @@ import {
   ]
 })
 export class MatchesOverviewComponent {
-  @Input() matches: Fixture2[] = [];
+  @Input() matches: Fixture[] = [];
   @Input() votes?: Record<string, Vote | undefined>;
   dataService = inject(DataService);
 }

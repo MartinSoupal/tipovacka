@@ -7,7 +7,7 @@ import {
 } from '../match-skeleton/match-skeleton.component';
 import {MatchComponent} from '../match/match.component';
 import {AuthService} from '../../services/auth.service';
-import {Fixture2} from '../../models/fixture.model';
+import {Fixture} from '../../models/fixture.model';
 import {Vote} from '../../models/vote.model';
 import {BehaviorSubject} from 'rxjs';
 import {SwipeGestureDirective} from '../../directives/swipeGesture.directive';
@@ -31,7 +31,7 @@ import {League} from '../../models/league.model';
 })
 export class FixturesComponent {
   authService = inject(AuthService);
-  @Input({required: true}) fixtures?: BehaviorSubject<Fixture2[]>;
+  @Input({required: true}) fixtures?: BehaviorSubject<Fixture[]>;
   @Input({required: true}) votes?: BehaviorSubject<Record<string, Vote>>;
   @Input({required: true}) league!: League;
 

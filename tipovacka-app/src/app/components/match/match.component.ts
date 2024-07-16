@@ -9,7 +9,7 @@ import {DialogService} from '@ngneat/dialog';
 import {SignInAlertComponent} from '../sign-in-alert/sign-in-alert.component';
 import {DatetimeFormatPipe} from '../../pipes/datetime-format.pipe';
 import {ImageSrcErrorDirective} from '../../directives/imgSrcError.directive';
-import {Fixture2} from '../../models/fixture.model';
+import {Fixture} from '../../models/fixture.model';
 import {League} from 'src/app/models/league.model';
 
 type TeamState =
@@ -35,7 +35,7 @@ type TeamState =
   ]
 })
 export class MatchComponent implements OnChanges, OnInit {
-  @Input({required: true}) data!: Fixture2;
+  @Input({required: true}) data!: Fixture;
   @Input() votes?: Record<string, Vote>;
   @Input({required: true}) league!: League;
 
