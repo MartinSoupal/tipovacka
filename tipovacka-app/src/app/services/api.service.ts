@@ -65,7 +65,7 @@ export class ApiService {
 
   getStandings = () =>
     this.http.get<User[]>(
-      `${this.publicUrl}/standings2`,
+      `${this.publicUrl}/standings`,
       {
         headers: {
           'Content-Type': 'application/json',
