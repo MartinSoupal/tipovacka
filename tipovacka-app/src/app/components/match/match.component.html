@@ -39,7 +39,7 @@
           {{ data.homeTeam.name }}
           <img
             (error)="imageError($event)"
-            [src]="'assets/images/club_logos/for_white_bg/' + data.homeTeam.id + '.webp'"
+            [src]="'assets/images/club_logos/' + data.homeTeam.id + '.webp'"
             class="h-3"
           >
         </div>
@@ -71,7 +71,7 @@
         >
           <img
             (error)="imageError($event)"
-            [src]="'assets/images/club_logos/for_white_bg/' + data.awayTeam.id + '.webp'"
+            [src]="'assets/images/club_logos/' + data.awayTeam.id + '.webp'"
             class="h-3"
           >
           {{ data.awayTeam.name }}
