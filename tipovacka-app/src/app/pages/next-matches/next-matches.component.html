@@ -1,4 +1,5 @@
-<div class="flex gap-2 overflow-auto p-4">
+<div class="p-4 pb-0">
+  <!--
   <button
     (click)="setActiveLeague(i)"
     *ngFor="let league of dataService.leagues$ | async; let i = index"
@@ -14,6 +15,19 @@
       {{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }}
     </span>
   </button>
+  -->
+  <select
+    (change)="selectActiveLeague($event)"
+    class="input">
+    @for (league of dataService.leagues$ | async; track league.id) {
+      <option
+        [selected]="league.id === activeLeague.id"
+        [value]="league.id"
+      >
+        {{ league.name }} ({{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }})
+      </option>
+    }
+  </select>
 </div>
 @if (activeLeague) {
   <app-fixtures

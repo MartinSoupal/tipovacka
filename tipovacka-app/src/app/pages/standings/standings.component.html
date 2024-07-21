@@ -1,27 +1,26 @@
 <div class="flex flex-col h-[100dvh]">
   <ng-container *ngIf="(dataService.standings$ | async) as standings">
-    <div class="flex gap-2 overflow-auto p-4">
-      <button
-        (click)="setActiveLeague(i)"
-        *ngFor="let league of leagues$ | async; let i = index"
-        [ngClass]="{
-        'bg-gray-100': i !== activeLeagueIndex,
-        'bg-blue-600 text-white': i === activeLeagueIndex
-      }"
-        class="badge flex items-center gap-2 bg-gray-100 border-[1px] whitespace-nowrap"
-        id="league-badge-{{i}}"
-      >{{ league.name | transloco }}
-      </button>
+    <div class="p-4 pb-0">
+      <select
+        (change)="selectActiveLeague($event)"
+        class="input">
+        <option value="">{{ 'TOTAL' | transloco }}</option>
+        @for (league of dataService.leagues$ | async; track league.id) {
+          <option
+            [selected]="league.id === activeLeague?.id"
+            [value]="league.id"
+          >
+            {{ league.name }}
+          </option>
+        }
+      </select>
     </div>
     <div
       *ngIf="(dataService.lastCalculationDate$ | async) as lastCalculationDate"
       class="text-xxs text-gray-600 italic p-4">
       {{ ('STANDINGS.LAST_CALCULATION_DATE' | transloco) + (lastCalculationDate | dateFormat) }}
     </div>
-    <div
-      class="flex-1 overflow-hidden relative"
-      swipeGesture
-    >
+    <div class="flex-1 overflow-hidden relative">
       <div
         [ngClass]="{
           'flex items-center justify-center': !standings.length
