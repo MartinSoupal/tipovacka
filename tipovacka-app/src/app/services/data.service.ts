@@ -122,27 +122,38 @@ export class DataService {
       })
   }
 
-  loadMatchesForLeague = (leagueId: string): Promise<void> => new Promise((resolve, reject) => {
-    this.apiService.getFixturesForLeague(leagueId)
-      .subscribe({
-        next: (fixtures) => {
-          if (!this.prevLeaguesMatches$[leagueId]) {
-            this.prevLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.prev);
-          } else {
-            this.prevLeaguesMatches$[leagueId]!.next(fixtures.prev);
+  loadMatchesForLeague = (leagueId: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      this.apiService.getFixturesForLeague(leagueId)
+        .subscribe({
+          next: (fixtures) => {
+            if (!this.prevLeaguesMatches$[leagueId]) {
+              this.prevLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.prev.sort(
+                  (a, b) => b.date.getTime() - a.date.getTime(),
+                )
+              );
+            } else {
+              this.prevLeaguesMatches$[leagueId]!.next(fixtures.prev.sort(
+                (a, b) => b.date.getTime() - a.date.getTime(),
+              ));
+            }
+            if (!this.nextLeaguesMatches$[leagueId]) {
+              this.nextLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.next.sort(
+                (a, b) => a.date.getTime() - b.date.getTime(),
+              ));
+            } else {
+              this.nextLeaguesMatches$[leagueId]!.next(fixtures.next.sort(
+                (a, b) => a.date.getTime() - b.date.getTime(),
+              ));
+            }
+            resolve();
+          },
+          error: () => {
+            reject()
           }
-          if (!this.nextLeaguesMatches$[leagueId]) {
-            this.nextLeaguesMatches$[leagueId] = new BehaviorSubject<Fixture[]>(fixtures.next);
-          } else {
-            this.nextLeaguesMatches$[leagueId]!.next(fixtures.next);
-          }
-          resolve();
-        },
-        error: () => {
-          reject()
-        }
-      })
-  })
+        })
+    });
+  }
 
   loadFixturesVotesForLeague = (leagueId: string) => {
     this.nextLeaguesMatches$[leagueId]!
