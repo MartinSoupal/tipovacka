@@ -5,7 +5,7 @@ import {TranslocoPipe} from '@ngneat/transloco';
 import {FixturesComponent} from '../../components/fixtures/fixtures.component';
 import {League} from '../../models/league.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {first} from 'rxjs';
+import {filter, first} from 'rxjs';
 
 @Component({
   selector: 'app-previous-matches',
@@ -53,7 +53,10 @@ export class PreviousMatchesComponent implements OnInit {
 
   setActiveLeague = (id: string) => {
     this.dataService.leagues$
-      .pipe(first())
+      .pipe(
+        filter(leagues => !!leagues),
+        first()
+      )
       .subscribe({
         next: (leagues) => {
           if (!leagues?.length) {
