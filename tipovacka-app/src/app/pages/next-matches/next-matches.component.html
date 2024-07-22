@@ -13,7 +13,6 @@
   </select>
 </div>
 @if (activeLeague) {
-  zobrazeno
   <app-fixtures
     [fixtures]="dataService.nextLeaguesMatches$[activeLeague.id]"
     [league]="activeLeague"
