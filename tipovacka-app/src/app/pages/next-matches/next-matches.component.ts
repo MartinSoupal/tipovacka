@@ -55,7 +55,7 @@ export class NextMatchesComponent implements OnInit {
     this.dataService.leagues$
       .pipe(
         filter(leagues => !!leagues),
-        first()
+        first(),
       )
       .subscribe({
         next: (leagues) => {
