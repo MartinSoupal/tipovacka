@@ -4,7 +4,7 @@
     class="input">
     @for (league of dataService.leagues$ | async; track league.id) {
       <option
-        [selected]="league.id === activeLeague.id"
+        [selected]="league.id === activeLeague?.id"
         [value]="league.id"
       >
         {{ league.name }} ({{ (dataService.prevLeaguesMatches$[league.id] | async)?.length ?? '-' }})

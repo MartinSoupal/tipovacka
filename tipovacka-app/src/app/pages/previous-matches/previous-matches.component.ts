@@ -22,7 +22,7 @@ import {first} from 'rxjs';
 })
 export class PreviousMatchesComponent implements OnInit {
   dataService = inject(DataService);
-  activeLeague!: League;
+  activeLeague: League | undefined;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
