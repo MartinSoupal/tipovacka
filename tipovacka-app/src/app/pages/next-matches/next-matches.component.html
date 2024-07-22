@@ -1,21 +1,4 @@
 <div class="p-4 pb-0">
-  <!--
-  <button
-    (click)="setActiveLeague(i)"
-    *ngFor="let league of dataService.leagues$ | async; let i = index"
-    [ngClass]="{
-        'bg-gray-100': i !== activeLeagueIndex,
-        'bg-blue-600 text-white': i === activeLeagueIndex
-      }"
-    class="badge flex items-center gap-2 bg-gray-100 border-[1px] whitespace-nowrap"
-    id="league-badge-{{i}}"
-  >
-    {{ league.name | transloco }}
-    <span class="text-xxs flex items-center justify-center py-0.5 px-1.5 rounded-full bg-gray-900/50 text-white">
-      {{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }}
-    </span>
-  </button>
-  -->
   <select
     (change)="selectActiveLeague($event)"
     class="input">
@@ -30,6 +13,7 @@
   </select>
 </div>
 @if (activeLeague) {
+  zobrazeno
   <app-fixtures
     [fixtures]="dataService.nextLeaguesMatches$[activeLeague.id]"
     [league]="activeLeague"

@@ -4,7 +4,7 @@ import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
 import {FixturesComponent} from '../../components/fixtures/fixtures.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {first} from 'rxjs';
+import {filter, first} from 'rxjs';
 import {League} from '../../models/league.model';
 
 @Component({
@@ -53,7 +53,10 @@ export class NextMatchesComponent implements OnInit {
 
   setActiveLeague = (id: string) => {
     this.dataService.leagues$
-      .pipe(first())
+      .pipe(
+        filter(leagues => !!leagues),
+        first()
+      )
       .subscribe({
         next: (leagues) => {
           if (!leagues?.length) {
