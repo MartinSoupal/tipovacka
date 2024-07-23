@@ -1,3 +1,6 @@
+import {BehaviorSubject} from 'rxjs';
+import {Vote} from './vote.model';
+
 export interface Fixture {
   id: string;
   date: Date;
@@ -32,3 +35,7 @@ interface Team2 {
   id: string;
   name: string;
 }
+
+export type FixturesObservables = Record<string, BehaviorSubject<Fixture[]> | undefined>;
+
+export type VotesObservables = Record<string, BehaviorSubject<Record<string, Vote>> | undefined>;

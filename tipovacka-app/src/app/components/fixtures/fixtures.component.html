@@ -1,21 +1,47 @@
-<div class="h-[calc(100dvh-74px)] overflow-hidden relative">
-  <div class="container h-full mx-auto px-4 flex flex-col w-full gap-y-8 overflow-scroll pb-24">
-    <ng-container *ngIf="(fixtures | async) as _fixtures; else loading">
-      <app-match
-        *ngFor="let fixture of _fixtures"
-        [data]="fixture"
-        [league]="league"
-        [votes]="(votes | async) || {}"
-      />
-      <div
-        *ngIf="!_fixtures.length"
-        class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-100"
-        role="alert">
-        {{ 'NO_SCHEDULE_MATCHES' | transloco }}
+@if (activeLeague) {
+  <div class="container px-4 relative h-screen mx-auto grid overflow-scroll pb-24">
+    <div class="z-50 sticky top-0">
+      <div class="bg-white py-4">
+        <select
+          (change)="selectActiveLeague($event)"
+          class="input">
+          @for (league of dataService.leagues$ | async; track league.id) {
+            <option
+              [selected]="league.id === activeLeague.id"
+              [value]="league.id"
+            >
+              {{ league.name }} ({{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }})
+            </option>
+          }
+        </select>
       </div>
-    </ng-container>
+      <div class="h-4 bg-gradient-to-b from-white to-white/0"></div>
+    </div>
+    <div class="grid gap-y-8">
+      <ng-container *ngIf="(fixtures[activeLeague.id] | async) as _fixtures; else loading">
+        <app-match
+          *ngFor="let fixture of _fixtures"
+          [data]="fixture"
+          [league]="activeLeague"
+          [votes]="(votes[activeLeague.id] | async) || {}"
+        />
+        <div
+          *ngIf="!_fixtures.length"
+          class="p-4 text-sm text-center text-gray-800 rounded-lg bg-gray-100"
+          role="alert">
+          {{ 'NO_SCHEDULE_MATCHES' | transloco }}
+        </div>
+      </ng-container>
+    </div>
   </div>
-</div>
+} @else {
+  <div class="flex h-screen justify-center items-center">
+    <img
+      class="animate-pulse"
+      src="../../../assets/icons/icon-512x512.png"
+      alt="logo"/>
+  </div>
+}
 
 <ng-template #loading>
   <app-match-skeleton></app-match-skeleton>
