@@ -110,17 +110,17 @@ export async function calculateStanding(req: CustomRequest, res: any) {
             let correct = false;
             switch (voteData.result) {
               case 1:
-                if (fix.teams.home.winner) {
+                if (fix.score.fulltime.home! > fix.score.fulltime.away!) {
                   correct = true;
                 }
                 break;
               case 2:
-                if (fix.teams.away.winner) {
+                if (fix.score.fulltime.home! < fix.score.fulltime.away!) {
                   correct = true;
                 }
                 break;
               case 0:
-                if (!fix.teams.home.winner && !fix.teams.away.winner) {
+                if (fix.score.fulltime.home === fix.score.fulltime.away) {
                   correct = true;
                 }
                 break;

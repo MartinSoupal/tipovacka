@@ -94,9 +94,9 @@ function fixtureDto2Fixture2(dto: FixtureResponse): Fixture2 {
     result:
       now < new Date(dto.fixture.date) ?
         null :
-        dto.teams.home.winner ?
+        dto.score.fulltime.home! > dto.score.fulltime.away! ?
           1 :
-          dto.teams.away.winner ?
+          dto.score.fulltime.home! < dto.score.fulltime.away! ?
             2 :
             0,
     homeTeam: {
