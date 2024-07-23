@@ -7,7 +7,11 @@ import {ApiService} from './api.service';
 import {Vote, VoteResult} from '../models/vote.model';
 import {HotToastService} from '@ngneat/hot-toast';
 import {TranslocoService} from '@ngneat/transloco';
-import {Fixture} from '../models/fixture.model';
+import {
+  Fixture,
+  FixturesObservables,
+  VotesObservables
+} from '../models/fixture.model';
 import {League} from '../models/league.model';
 
 @Injectable({
@@ -18,10 +22,10 @@ export class DataService {
   standings$ = new BehaviorSubject<User[] | undefined>(undefined);
   leagues$ = new BehaviorSubject<League[] | undefined>(undefined);
   lastCalculationDate$ = new BehaviorSubject<Date | undefined>(undefined);
-  prevLeaguesMatches$: Record<string, BehaviorSubject<Fixture[]> | undefined> = {};
-  nextLeaguesMatches$: Record<string, BehaviorSubject<Fixture[]> | undefined> = {};
-  prevLeaguesVotes$: Record<string, BehaviorSubject<Record<string, Vote>> | undefined> = {};
-  nextLeaguesVotes$: Record<string, BehaviorSubject<Record<string, Vote>> | undefined> = {};
+  prevLeaguesMatches$: FixturesObservables = {};
+  nextLeaguesMatches$: FixturesObservables = {};
+  prevLeaguesVotes$: VotesObservables = {};
+  nextLeaguesVotes$: VotesObservables = {};
   private apiService = inject(ApiService);
   private toastService = inject(HotToastService);
   private translocoService = inject(TranslocoService);

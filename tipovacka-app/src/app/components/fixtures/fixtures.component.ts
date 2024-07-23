@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {TranslocoPipe} from '@ngneat/transloco';
 
@@ -7,11 +7,15 @@ import {
 } from '../match-skeleton/match-skeleton.component';
 import {MatchComponent} from '../match/match.component';
 import {AuthService} from '../../services/auth.service';
-import {Fixture} from '../../models/fixture.model';
-import {Vote} from '../../models/vote.model';
-import {BehaviorSubject} from 'rxjs';
+import {
+  FixturesObservables,
+  VotesObservables
+} from '../../models/fixture.model';
+import {filter, first} from 'rxjs';
 import {SwipeGestureDirective} from '../../directives/swipeGesture.directive';
 import {League} from '../../models/league.model';
+import {DataService} from '../../services/data.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-fixtures',
@@ -29,10 +33,57 @@ import {League} from '../../models/league.model';
     SwipeGestureDirective
   ],
 })
-export class FixturesComponent {
+export class FixturesComponent implements OnInit {
   authService = inject(AuthService);
-  @Input({required: true}) fixtures?: BehaviorSubject<Fixture[]>;
-  @Input({required: true}) votes?: BehaviorSubject<Record<string, Vote>>;
-  @Input({required: true}) league!: League;
+  @Input({required: true}) fixtures!: FixturesObservables;
+  @Input({required: true}) votes!: VotesObservables;
+
+  dataService = inject(DataService);
+  activeLeague: League | undefined;
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  ngOnInit() {
+    this.route.queryParamMap
+      .subscribe({
+        next: (params) => {
+          if (params.has('league')) {
+            this.setActiveLeague(params.get('league')!);
+          } else {
+            this.setActiveLeague('');
+          }
+        }
+      })
+  }
+
+  selectActiveLeague = (event: Event) => {
+    const leagueId: string = (event.target as HTMLSelectElement).value;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {league: leagueId},
+        queryParamsHandling: 'merge'
+      }
+    );
+  }
+
+  setActiveLeague = (id: string) => {
+    this.dataService.leagues$
+      .pipe(
+        filter(leagues => !!leagues),
+        first(),
+      )
+      .subscribe({
+        next: (leagues) => {
+          if (!leagues?.length) {
+            return;
+          }
+          this.activeLeague = leagues?.find(
+            (league) => league.id == id,
+          ) ?? leagues[0];
+        }
+      })
+  }
 
 }

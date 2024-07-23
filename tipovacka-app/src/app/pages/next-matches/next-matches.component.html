@@ -1,28 +1,4 @@
-@if (activeLeague) {
-  <div class="p-4">
-    <select
-      (change)="selectActiveLeague($event)"
-      class="input">
-      @for (league of dataService.leagues$ | async; track league.id) {
-        <option
-          [selected]="league.id === activeLeague.id"
-          [value]="league.id"
-        >
-          {{ league.name }} ({{ (dataService.nextLeaguesMatches$[league.id] | async)?.length ?? '-' }})
-        </option>
-      }
-    </select>
-  </div>
-  <app-fixtures
-    [fixtures]="dataService.nextLeaguesMatches$[activeLeague.id]"
-    [league]="activeLeague"
-    [votes]="dataService.nextLeaguesVotes$[activeLeague.id]"
-  />
-} @else {
-  <div class="flex h-screen justify-center items-center">
-    <img
-      class="animate-pulse"
-      src="../../../assets/icons/icon-512x512.png"
-      alt="logo"/>
-  </div>
-}
+<app-fixtures
+  [fixtures]="dataService.nextLeaguesMatches$"
+  [votes]="dataService.nextLeaguesVotes$"
+/>
