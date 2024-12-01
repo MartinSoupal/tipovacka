@@ -38,11 +38,13 @@ curl_close($ch);
 
 // Nastavení příjemce a odesílatele emailu
 $to = 'sportovsky.info@gmail.com';
-$headers = 'From: sportovsky.info@gmail.com' . "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
+$from = 'noreply@sportovsky.info'; // Definujte správnou návratovou adresu (Return-Path)
+$headers = 'From: ' . $from . "\r\n" .
+           'Reply-To: ' . $from . "\r\n" .
+           'X-Mailer: PHP/' . phpversion();
 
 // Odeslání emailu
-if (!mail($to, $subject, $message, $headers)) {
+if (!mail($to, $subject, $message, $headers, "-f $from")) {
     // Logování, pokud odeslání selže
     error_log("Failed to send email to $to");
 }
